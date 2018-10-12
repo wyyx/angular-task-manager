@@ -6,13 +6,18 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 	styleUrls: [ './header.component.scss' ]
 })
 export class HeaderComponent implements OnInit {
-	@Output() toggle = new EventEmitter<void>()
+	@Output() toggleSidenav = new EventEmitter<void>()
+	@Output() toggleTheme = new EventEmitter<boolean>()
 
 	constructor() {}
 
 	ngOnInit() {}
 
-	toggleSidebar() {
-		this.toggle.emit()
+	onToggleSidenav() {
+		this.toggleSidenav.emit()
+	}
+
+	onToggleTheme(checked: boolean) {
+		this.toggleTheme.emit(checked)
 	}
 }

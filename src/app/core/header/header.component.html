@@ -1,6 +1,10 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="toggleSidebar()">
+  <button mat-icon-button (click)="onToggleSidenav()">
     <mat-icon aria-label="toggle sidebar">menu</mat-icon>
   </button>
   <span>企业协作平台</span>
+  <div class="filler"></div>
+  <mat-slide-toggle (change)="onToggleTheme($event.checked)">
+    暗色主题
+  </mat-slide-toggle>
 </mat-toolbar>

@@ -1,3 +1,24 @@
-<p>
-  login works!
-</p>
+<div class="form-wrapper">
+  <form class="form">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>登陆</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="full-width">
+          <input matInput type="text" placeholder="邮箱">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <input matInput type="password" placeholder="密码">
+        </mat-form-field>
+        <div class="text-center">
+          <button mat-raised-button type="button">登陆</button>
+        </div>
+      </mat-card-content>
+      <mat-card-actions class="text-center">
+        <p>还没有账户？<a href="">注册</a></p>
+        <p>忘记密码？<a href="">找回</a></p>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+</div>
