@@ -8,6 +8,7 @@ import { MatCardModule } from '@angular/material/card'
 import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
+import { MatGridListModule } from '@angular/material/grid-list'
 
 @NgModule({
 	exports: [
@@ -19,7 +20,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 		MatCardModule,
 		MatInputModule,
 		MatListModule,
-		MatSlideToggleModule
+		MatSlideToggleModule,
+		MatGridListModule
 	]
 })
 export class MyCustomMaterialModule {}
