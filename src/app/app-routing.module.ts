@@ -6,7 +6,9 @@ import { LoginComponent } from './login/login/login.component'
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
-	{ path: '**', component: PageNotFoundComponent }
+	{ path: 'project', redirectTo: '/project', pathMatch: 'full' },
+	{ path: 'task', redirectTo: '/task', pathMatch: 'full' }
+	// { path: '**', component: PageNotFoundComponent }
 ]
 
 @NgModule({

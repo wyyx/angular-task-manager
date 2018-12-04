@@ -9,6 +9,8 @@ import { MatInputModule } from '@angular/material/input'
 import { MatListModule } from '@angular/material/list'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatGridListModule } from '@angular/material/grid-list'
+import { MatDialogModule } from '@angular/material/dialog'
+import { MatAutocompleteModule, MatMenuModule } from '@angular/material'
 
 @NgModule({
 	exports: [
@@ -21,7 +23,11 @@ import { MatGridListModule } from '@angular/material/grid-list'
 		MatInputModule,
 		MatListModule,
 		MatSlideToggleModule,
-		MatGridListModule
+		MatGridListModule,
+		MatDialogModule,
+		MatAutocompleteModule,
+		MatMenuModule,
+		MatListModule
 	]
 })
 export class MyCustomMaterialModule {}
