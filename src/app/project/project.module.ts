@@ -6,16 +6,17 @@ import { InviteComponent } from './invite/invite.component'
 import { NewProjectComponent } from './new-project/new-project.component'
 import { ProjectRoutingModule } from './project-routing.module'
 import { SharedModule } from '../shared/shared.module'
-import { MyCustomMaterialModule } from '../my-custom-material/my-custom-material.module'
+import { EditProjectComponent } from './edit-project/edit-project.component'
 
 @NgModule({
-	imports: [ CommonModule, SharedModule, ProjectRoutingModule, MyCustomMaterialModule ],
+	imports: [ CommonModule, SharedModule, ProjectRoutingModule, SharedModule ],
 	declarations: [
 		ProjectListComponent,
 		ProjectItemComponent,
 		InviteComponent,
-		NewProjectComponent
+		NewProjectComponent,
+		EditProjectComponent
 	],
-	entryComponents: [ NewProjectComponent, InviteComponent ]
+	entryComponents: [ NewProjectComponent, InviteComponent, EditProjectComponent ]
 })
 export class ProjectModule {}

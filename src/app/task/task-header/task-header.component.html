@@ -3,7 +3,7 @@
     <h4>{{listType}}</h4>
   </div>
   <div class="new-task">
-    <button mat-icon-button>
+    <button mat-icon-button (click)="onNewTaskClick()">
       <mat-icon class="mr-5">add_circle_outline</mat-icon>
       <span>新任务</span>
     </button>
@@ -18,14 +18,15 @@
 
 
 <mat-menu #menu="matMenu">
-  <button mat-menu-item>
+  <button mat-menu-item (click)="onModifyListName()">
     <mat-icon>mode_edit</mat-icon>
     <span>修改列表名称</span>
   </button>
-  <button mat-menu-item>
+  <button mat-menu-item (click)="onMoveAllClick()">
     <mat-icon>compare_arrows</mat-icon>
     <span>移动本列表所有内容</span>
-  </button> <button mat-menu-item>
+  </button>
+  <button mat-menu-item (click)="onDeleteListClick()">
     <mat-icon>delete_forever</mat-icon>
     <span>删除列表</span>
   </button>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
-import { NewProjectComponent } from '../new-project/new-project.component'
 import { InviteComponent } from '../invite/invite.component'
+import { EditProjectComponent } from '../edit-project/edit-project.component'
+import { NewProjectComponent } from '../new-project/new-project.component'
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component'
 
 @Component({
 	selector: 'app-project-list',
@@ -24,7 +26,9 @@ export class ProjectListComponent implements OnInit {
 
 	constructor(public dialog: MatDialog) {}
 
-	openDialog(): void {
+	ngOnInit() {}
+
+	openNewProjectDialog(): void {
 		const dialogRef = this.dialog.open(NewProjectComponent, {
 			data: { name: 'xxxxxxxxxxxxxxxxx' }
 		})
@@ -34,9 +38,26 @@ export class ProjectListComponent implements OnInit {
 		})
 	}
 
-	onInvite() {
+	openInviteDialog() {
 		const dialogRef = this.dialog.open(InviteComponent)
 	}
 
-	ngOnInit() {}
+	openEditProjectDialog(project) {
+		this.dialog.open(EditProjectComponent, {
+			data: {
+				project: project
+			}
+		})
+	}
+
+	openDeleteProjectDialog() {
+		const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+			data: {
+				title: '删除项目'
+			}
+		})
+		dialogRef.afterClosed().subscribe(result => {
+			console.log('detele project:', result)
+		})
+	}
 }
