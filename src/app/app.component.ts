@@ -8,6 +8,7 @@ import { OverlayContainer } from '@angular/cdk/overlay'
 })
 export class AppComponent {
 	isDarkTheme = false
+	squareState = 'red'
 
 	constructor(private oc: OverlayContainer) {}
 

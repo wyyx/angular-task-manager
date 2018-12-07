@@ -2,7 +2,7 @@
   'priority-normal': task.priority === 3,
   'priority-important': task.priority === 2,
   'priority-emergency': task.priority === 1}"
-  (click)="onEditTaskClick()">
+  (click)="onEditTaskClick()" [@item]="itemState">
   <mat-checkbox [checked]="task.completed" class="status" (click)="onStatusClick($event)"></mat-checkbox>
   <div matLine class="content" [ngClass]="{'completed': task.completed}">
     <span [matTooltip]="task.desc">{{task.desc}}</span>

@@ -8,9 +8,10 @@ import { MatIconRegistry } from '@angular/material/icon'
 import { DomSanitizer } from '@angular/platform-browser'
 import { loadSvgResources } from '../utils/svg.util'
 import { HttpClientModule } from '@angular/common/http'
+import { RouterModule } from '@angular/router'
 
 @NgModule({
-	imports: [ CommonModule, MyCustomMaterialModule, HttpClientModule ],
+	imports: [ CommonModule, MyCustomMaterialModule, HttpClientModule, RouterModule ],
 	declarations: [ HeaderComponent, FooterComponent, SidebarComponent ],
 	exports: [ HeaderComponent, FooterComponent, SidebarComponent ]
 })

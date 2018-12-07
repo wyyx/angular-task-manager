@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, HostBinding } from '@angular/core'
 import { MatDialog } from '@angular/material'
 import { NewTaskComponent } from '../new-task/new-task.component'
 import { CopyTaskComponent } from '../copy-task/copy-task.component'
@@ -6,11 +6,13 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
 import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
 import { EditTaskComponent } from '../edit-task/edit-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
+import { slideToRight } from 'src/app/animations/route.anim'
 
 @Component({
 	selector: 'app-task-home',
 	templateUrl: './task-home.component.html',
-	styleUrls: [ './task-home.component.scss' ]
+	styleUrls: [ './task-home.component.scss' ],
+	animations: [ slideToRight ]
 })
 export class TaskHomeComponent implements OnInit {
 	lists = [
@@ -89,6 +91,7 @@ export class TaskHomeComponent implements OnInit {
 			]
 		}
 	]
+	@HostBinding('@routeAnim') state
 	constructor(public dialog: MatDialog) {}
 	ngOnInit() {}
 

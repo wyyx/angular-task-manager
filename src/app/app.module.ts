@@ -10,17 +10,19 @@ import { Router } from '@angular/router'
 import { ProjectModule } from './project/project.module'
 import { TaskModule } from './task/task.module'
 import { SharedModule } from './shared/shared.module'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 @NgModule({
 	declarations: [ AppComponent, PageNotFoundComponent ],
 	imports: [
 		BrowserModule,
 		CoreModule,
+		SharedModule,
 		LoginModule,
 		AppRoutingModule,
 		ProjectModule,
 		TaskModule,
-		SharedModule
+		BrowserAnimationsModule
 	],
 	providers: [],
 	bootstrap: [ AppComponent ]
