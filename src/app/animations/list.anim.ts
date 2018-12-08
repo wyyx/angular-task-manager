@@ -12,7 +12,7 @@ import {
 } from '@angular/animations'
 
 export const listAnim = trigger('list', [
-	transition('* => *', [
+	transition(':increment', [
 		query(
 			':enter',
 			[
@@ -25,15 +25,17 @@ export const listAnim = trigger('list', [
 				])
 			],
 			{ optional: true }
-		),
+		)
+	]),
+	transition(':decrement', [
 		query(
 			':leave',
 			[
 				style({ transform: 'scale(1)', opacity: 1 }),
 				stagger(100, [
 					group([
-						animate('0.5s', style({ transform: 'scale(0)' })),
-						animate('0.5s', style({ opacity: 0 }))
+						animate('0.2s ease-in-out', style({ transform: 'scale(0)' })),
+						animate('0.2s ease-in-out', style({ opacity: 0 }))
 					])
 				])
 			],

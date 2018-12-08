@@ -21,7 +21,7 @@ export class ProjectItemComponent implements OnInit {
 	@Output() editProject = new EventEmitter<void>()
 	@Output() deleteProject = new EventEmitter<void>()
 
-	@HostBinding('@card') cardState = 'out'
+	cardState = 'out'
 	@HostListener('mouseleave')
 	onMouseLeave() {
 		this.cardState = 'out'
