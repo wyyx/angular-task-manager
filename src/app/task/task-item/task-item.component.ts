@@ -16,6 +16,7 @@ import { itemAnim } from 'src/app/animations/item.anim'
 	animations: [ itemAnim ]
 })
 export class TaskItemComponent implements OnInit {
+	@Input() isLastItem
 	@Input() task
 	@Output() editTask = new EventEmitter<void>()
 

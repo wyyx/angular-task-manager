@@ -7,6 +7,7 @@ import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-tas
 import { EditTaskComponent } from '../edit-task/edit-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
 import { slideToRight } from 'src/app/animations/route.anim'
+import { DragData } from 'src/app/directive/drag-drop.service'
 
 @Component({
 	selector: 'app-task-home',
@@ -131,5 +132,17 @@ export class TaskHomeComponent implements OnInit {
 
 	openNewTaskListDialog() {
 		this.dialog.open(NewTaskListComponent)
+	}
+
+	onDropped(dragData: DragData) {
+		console.log('onDropped()', dragData)
+		switch (dragData.tag) {
+			case 'task-item':
+				console.log('handling task-item')
+				break
+			case 'task-list':
+				console.log('handling task-item')
+				break
+		}
 	}
 }
