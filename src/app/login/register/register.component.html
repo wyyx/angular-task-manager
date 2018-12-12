@@ -1,28 +1,39 @@
 <div class="form-wrapper">
-  <form class="form">
+  <form class="form" [formGroup]="registerForm">
     <mat-card>
       <mat-card-header>
         <mat-card-title>注册</mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="邮箱">
+          <input matInput type="text" placeholder="邮箱" formControlName="email">
+          <mat-error *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
+            <div [hidden]="!registerForm.controls['email'].errors.required">Email is required.</div>
+            <div [hidden]="!registerForm.controls['email'].errors.email">Email is invalid.</div>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput type="password" placeholder="密码">
+          <input matInput type="password" placeholder="密码" formControlName="password">
+          <mat-error *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].touched">
+            <div [hidden]="!registerForm.controls['password'].errors.required">Password is
+              required.</div>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput type="password" placeholder="再次输入密码">
+          <input matInput type="password" placeholder="再次输入密码" formControlName="rePassword">
+          <mat-error *ngIf="registerForm.controls['rePassword'].errors && registerForm.controls['rePassword'].touched">
+            <div [hidden]="!registerForm.controls['rePassword'].errors.required">Inconsistent
+              password
+              entered.</div>
+          </mat-error>
         </mat-form-field>
         <div class="text-center">
           <button mat-raised-button type="button">注册</button>
         </div>
       </mat-card-content>
-      <mat-grid-list cols="6" rowHeight="1:1">
-        <mat-grid-tile *ngFor="let avatar of avatars">
-          <mat-icon [svgIcon]="avatar"></mat-icon>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <app-avatar-selector [useSvgIcon]="true" [cols]="6" [rowHeight]="'1:1'" [title]="'选择你的头像：'"
+        [itemWidth]="'64px'" [items]="items" formControlName="avatar">
+      </app-avatar-selector>
       <mat-card-actions class="text-center">
         <p>已经注册了？<a routerLink="/login">登陆</a></p>
         <p>忘记密码？<a href="">找回</a></p>

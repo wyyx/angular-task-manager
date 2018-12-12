@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core'
+import { FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 @Component({
 	selector: 'app-register',
@@ -6,9 +7,17 @@ import { Component, OnInit } from '@angular/core'
 	styleUrls: [ './register.component.scss' ]
 })
 export class RegisterComponent implements OnInit {
-	avatars: string[] = []
+	registerForm = this.fb.group({
+		email: [ '', Validators.compose([ Validators.required, Validators.email ]) ],
+		password: [ '', Validators.compose([ Validators.required ]) ],
+		rePassword: [ '', Validators.compose([ Validators.required ]) ],
+		avatar: [ '', Validators.compose([ Validators.required ]) ]
+	})
 
-	constructor() {}
+	items: string[] = []
+	selected: string
+
+	constructor(private fb: FormBuilder) {}
 
 	ngOnInit() {
 		this.getAvatars()
@@ -16,7 +25,7 @@ export class RegisterComponent implements OnInit {
 
 	getAvatars() {
 		for (let index = 0; index < 16; index++) {
-			this.avatars.push(`avatars:svg-${index + 1}`)
+			this.items.push(`avatars:svg-${index + 1}`)
 		}
 	}
 }
