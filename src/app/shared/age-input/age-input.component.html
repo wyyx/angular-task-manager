@@ -1,0 +1,24 @@
+<div [formGroup]="form" class="age-input">
+  <mat-form-field class="birthday mr-20">
+    <input matInput [matDatepicker]="birthdayPicker" type="text" placeholder="出生日期" formControlName="birthday">
+    <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
+    <mat-datepicker #birthdayPicker></mat-datepicker>
+    <mat-error *ngIf="birthday.invalid && birthday.touched">
+      <div *ngIf="birthday.errors.required">生日不能为空</div>
+      <div *ngIf="birthday.errors.birthdayValidation && !birthday.errors.required">日期不合法</div>
+    </mat-error>
+  </mat-form-field>
+  <ng-container formGroupName="age">
+    <mat-form-field class="age-num ml-20">
+      <input matInput type="number" placeholder="年龄" formControlName="ageNum">
+      <mat-error *ngIf="ageNum.invalid && ageNum.touched">
+        <div *ngIf="ageNum.errors.min">不能为负数</div>
+      </mat-error>
+    </mat-form-field>
+    <mat-button-toggle-group formControlName="ageUnit" class="age-unit" #group="matButtonToggleGroup">
+      <mat-button-toggle *ngFor="let unit of ageUnits" [value]="unit.value" [checked]="unit.value == 0">
+        {{ unit.label }}
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </ng-container>
+</div>

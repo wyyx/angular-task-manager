@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router'
 import { DirectiveModule } from '../directive/directive.module'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AvatarSelectorComponent } from './avatar-selector/avatar-selector.component'
+import { AgeInputComponent } from './age-input/age-input.component'
 
 @NgModule({
 	imports: [
@@ -16,7 +17,7 @@ import { AvatarSelectorComponent } from './avatar-selector/avatar-selector.compo
 		FormsModule,
 		ReactiveFormsModule
 	],
-	declarations: [ ConfirmDialogComponent, AvatarSelectorComponent ],
+	declarations: [ ConfirmDialogComponent, AvatarSelectorComponent, AgeInputComponent ],
 	exports: [
 		CommonModule,
 		MyCustomMaterialModule,
@@ -24,7 +25,8 @@ import { AvatarSelectorComponent } from './avatar-selector/avatar-selector.compo
 		DirectiveModule,
 		FormsModule,
 		ReactiveFormsModule,
-		AvatarSelectorComponent
+		AvatarSelectorComponent,
+		AgeInputComponent
 	],
 	entryComponents: [ ConfirmDialogComponent ]
 })
