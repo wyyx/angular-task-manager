@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core'
 import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms'
 import { Observable, combineLatest } from 'rxjs'
-import { merge, map, filter, startWith } from 'rxjs/operators'
+import { merge, map, filter, startWith, tap } from 'rxjs/operators'
 import { AgeUnit } from './models'
-import { validateAge, validateBirthday, convertAgeToDate } from './validators'
+import { validateAge, validateBirthday, convertAgeToDate, isValidDate } from './validators'
+import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns'
+import { debug } from '../../utils/debug'
 
 @Component({
 	selector: 'app-age-input',
@@ -55,25 +57,34 @@ export class AgeInputComponent implements OnInit {
 
 	startObserveForm() {
 		this.birthday$ = this.birthday.valueChanges.pipe(
+			startWith(this.birthday.value),
+			debug('birthday'),
 			map(v => {
 				return {
 					from: 'birthday',
 					date: v
 				}
-			}),
-			filter(v => !!!validateBirthday(this.birthday))
+			})
 		)
+
 		this.ageNum$ = this.ageNum.valueChanges.pipe(startWith(this.ageNum.value))
-		this.ageUnit$ = this.ageUnit.valueChanges.pipe(startWith(this.ageUnit.value))
+
+		this.ageUnit$ = this.ageUnit.valueChanges.pipe(
+			startWith(this.ageUnit.value),
+			// When ageUnit changed set ageNum's value with current value for updating
+			// ageNum$ last value
+			tap(v => this.ageNum.setValue(this.ageNum.value))
+		)
+
 		this.age$ = combineLatest(this.ageNum$, this.ageUnit$).pipe(
+			debug('age'),
 			map(v => {
 				const date = convertAgeToDate(v[0], v[1])
 				return {
 					from: 'age',
 					date: date
 				}
-			}),
-			filter(v => !!!validateAge('ageNum', 'ageUnit')(this.age))
+			})
 		)
 
 		// Merged$ from birthday$ and age$
@@ -85,10 +96,35 @@ export class AgeInputComponent implements OnInit {
 		const mergedSubscription = merged$.subscribe(v => {
 			console.log(v)
 
-			if (v.from == 'birthday') {
+			const currentAgeUint = this.ageUnit.value
+			const now = Date.now()
+
+			if (v.from == 'birthday' && isValidDate(v.date)) {
+				switch (currentAgeUint) {
+					case AgeUnit.Year:
+						this.ageNum.setValue(differenceInYears(now, v.date), {
+							emitEvent: false
+						})
+						break
+					case AgeUnit.Month:
+						this.ageNum.setValue(differenceInMonths(now, v.date), {
+							emitEvent: false
+						})
+						break
+					case AgeUnit.Day:
+						this.ageNum.setValue(differenceInDays(now, v.date), {
+							emitEvent: false
+						})
+						break
+					default:
+						break
+				}
 			}
 
-			if (v.from == 'age') {
+			if (v.from == 'age' && isValidDate(v.date)) {
+				this.birthday.setValue(v.date, {
+					emitEvent: false
+				})
 			}
 		})
 	}

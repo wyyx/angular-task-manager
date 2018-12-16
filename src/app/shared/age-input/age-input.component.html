@@ -11,8 +11,9 @@
   <ng-container formGroupName="age">
     <mat-form-field class="age-num ml-20">
       <input matInput type="number" placeholder="年龄" formControlName="ageNum">
-      <mat-error *ngIf="ageNum.invalid && ageNum.touched">
-        <div *ngIf="ageNum.errors.min">不能为负数</div>
+      <mat-error *ngIf="ageNum.invalid && ageNum.touched && ageNum.value">
+        <div *ngIf="ageNum.errors && ageNum.errors.min">不能小于1</div>
+        <div *ngIf="age.invalid">年龄不合法</div>
       </mat-error>
     </mat-form-field>
     <mat-button-toggle-group formControlName="ageUnit" class="age-unit" #group="matButtonToggleGroup">
@@ -22,3 +23,7 @@
     </mat-button-toggle-group>
   </ng-container>
 </div>
+
+<!-- <div>
+  {{ age.valid}}
+</div> -->

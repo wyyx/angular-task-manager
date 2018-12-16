@@ -37,7 +37,22 @@ export function validateAge(ageNumKey: string, ageUnitKey: string) {
 		const date = convertAgeToDate(ageNum, ageUnit)
 		// console.log('date', date)
 		// console.log('isValidDate(date)', isValidDate(date))
-		return isValidDate(date)
+
+		let isValid = isValidDate(date)
+
+		// Manually set errors of ageNum control when age control is not valid
+		const ageNumControl = group.get(ageNumKey)
+		if (!isValid && ageNumControl.value) {
+			ageNumControl.setErrors({
+				ageValidation: {
+					errorMessage: '年龄不合法'
+				}
+			})
+		} else {
+			group.get(ageNumKey).setErrors(null)
+		}
+
+		return isValid
 			? null
 			: {
 					ageValidation: {
