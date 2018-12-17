@@ -1,6 +1,7 @@
 <div [formGroup]="form" class="age-input">
   <mat-form-field class="birthday mr-20">
-    <input matInput [matDatepicker]="birthdayPicker" type="text" placeholder="出生日期" formControlName="birthday">
+    <input matInput [matDatepicker]="birthdayPicker" type="text" placeholder="出生日期" formControlName="birthday"
+      (focusout)="onFocusOut($event)">
     <mat-datepicker-toggle matSuffix [for]="birthdayPicker"></mat-datepicker-toggle>
     <mat-datepicker #birthdayPicker></mat-datepicker>
     <mat-error *ngIf="birthday.invalid && birthday.touched">
@@ -10,20 +11,17 @@
   </mat-form-field>
   <ng-container formGroupName="age">
     <mat-form-field class="age-num ml-20">
-      <input matInput type="number" placeholder="年龄" formControlName="ageNum">
+      <input matInput type="number" placeholder="年龄" formControlName="ageNum" (focusout)="onFocusOut($event)">
       <mat-error *ngIf="ageNum.invalid && ageNum.touched && ageNum.value">
         <div *ngIf="ageNum.errors && ageNum.errors.min">不能小于1</div>
         <div *ngIf="age.invalid">年龄不合法</div>
       </mat-error>
     </mat-form-field>
-    <mat-button-toggle-group formControlName="ageUnit" class="age-unit" #group="matButtonToggleGroup">
+    <mat-button-toggle-group formControlName="ageUnit" class="age-unit" #group="matButtonToggleGroup"
+      (focusout)="onFocusOut($event)">
       <mat-button-toggle *ngFor="let unit of ageUnits" [value]="unit.value" [checked]="unit.value == 0">
         {{ unit.label }}
       </mat-button-toggle>
     </mat-button-toggle-group>
   </ng-container>
 </div>
-
-<!-- <div>
-  {{ age.valid}}
-</div> -->

@@ -11,7 +11,8 @@ import { AbstractControl, FormGroup } from '@angular/forms'
 import { AgeUnit } from './models'
 
 export function validateBirthday(control: AbstractControl): { [key: string]: any } | null {
-	const date = control.value
+	const date = new Date(control.value)
+	// console.log('validateBirthday')
 
 	return isValidDate(date)
 		? null
@@ -62,7 +63,7 @@ export function validateAge(ageNumKey: string, ageUnitKey: string) {
 	}
 }
 
-export function convertAgeToDate(ageNum, ageUnit) {
+export function convertAgeToDate(ageNum, ageUnit): Date | null {
 	const now = Date.now()
 	let date = null
 

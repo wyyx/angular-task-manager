@@ -1,5 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core'
-import { FormBuilder, FormGroup, AbstractControl, Validators } from '@angular/forms'
+import { Component, OnInit, ViewChild, forwardRef, Input } from '@angular/core'
+import {
+	FormBuilder,
+	FormGroup,
+	AbstractControl,
+	Validators,
+	ControlValueAccessor,
+	NG_VALUE_ACCESSOR
+} from '@angular/forms'
 import { Observable, combineLatest } from 'rxjs'
 import { merge, map, filter, startWith, tap } from 'rxjs/operators'
 import { AgeUnit } from './models'
@@ -10,9 +17,19 @@ import { debug } from '../../utils/debug'
 @Component({
 	selector: 'app-age-input',
 	templateUrl: './age-input.component.html',
-	styleUrls: [ './age-input.component.scss' ]
+	styleUrls: [ './age-input.component.scss' ],
+	providers: [
+		{
+			provide: NG_VALUE_ACCESSOR,
+			useExisting: forwardRef(() => AgeInputComponent),
+			multi: true
+		}
+	]
 })
-export class AgeInputComponent implements OnInit {
+export class AgeInputComponent implements OnInit, ControlValueAccessor {
+	propagateChange
+	propagateTouched
+
 	ageUnits = [
 		{ value: AgeUnit.Year, label: '岁' },
 		{ value: AgeUnit.Month, label: '月' },
@@ -52,17 +69,36 @@ export class AgeInputComponent implements OnInit {
 
 		this.ageUnit.setValue(AgeUnit.Year)
 
-		this.startObserveForm()
+		setTimeout(() => {
+			this.startObserveForm()
+		}, 10)
+	}
+
+	writeValue(obj: any): void {
+		this.birthday.setValue(obj)
+	}
+
+	registerOnChange(fn: any): void {
+		this.propagateChange = fn
+	}
+
+	registerOnTouched(fn: any): void {
+		this.propagateTouched = fn
+	}
+
+	onFocusOut(event: Event) {
+		this.propagateTouched(event)
 	}
 
 	startObserveForm() {
 		this.birthday$ = this.birthday.valueChanges.pipe(
 			startWith(this.birthday.value),
-			debug('birthday'),
+			// debug('birthday'),
 			map(v => {
+				const date = new Date(v)
 				return {
 					from: 'birthday',
-					date: v
+					date: isValidDate(date) ? date : null
 				}
 			})
 		)
@@ -77,7 +113,7 @@ export class AgeInputComponent implements OnInit {
 		)
 
 		this.age$ = combineLatest(this.ageNum$, this.ageUnit$).pipe(
-			debug('age'),
+			// debug('age'),
 			map(v => {
 				const date = convertAgeToDate(v[0], v[1])
 				return {
@@ -95,6 +131,7 @@ export class AgeInputComponent implements OnInit {
 		// Subscribe
 		const mergedSubscription = merged$.subscribe(v => {
 			console.log(v)
+			console.log('is Date', v.date instanceof Date)
 
 			const currentAgeUint = this.ageUnit.value
 			const now = Date.now()
@@ -119,12 +156,16 @@ export class AgeInputComponent implements OnInit {
 					default:
 						break
 				}
+
+				this.propagateChange(v.date.toDateString())
 			}
 
 			if (v.from == 'age' && isValidDate(v.date)) {
 				this.birthday.setValue(v.date, {
 					emitEvent: false
 				})
+
+				this.propagateChange(v.date.toDateString())
 			}
 		})
 	}
