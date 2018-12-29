@@ -1,4 +1,4 @@
-import { NgModule, SkipSelf, Optional } from '@angular/core'
+import { NgModule, SkipSelf, Optional, InjectionToken } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { HeaderComponent } from './header/header.component'
 import { FooterComponent } from './footer/footer.component'
@@ -10,10 +10,18 @@ import { loadSvgResources } from '../utils/svg.util'
 import { HttpClientModule } from '@angular/common/http'
 import { RouterModule } from '@angular/router'
 
+export const BASE_URL = new InjectionToken<string>('App base url')
+
 @NgModule({
-	imports: [ CommonModule, MyCustomMaterialModule, HttpClientModule, RouterModule ],
+	imports: [
+		CommonModule,
+		MyCustomMaterialModule,
+		HttpClientModule,
+		RouterModule
+	],
 	declarations: [ HeaderComponent, FooterComponent, SidebarComponent ],
-	exports: [ HeaderComponent, FooterComponent, SidebarComponent ]
+	exports: [ HeaderComponent, FooterComponent, SidebarComponent ],
+	providers: [ { provide: BASE_URL, useValue: 'http://localhost:3000' } ]
 })
 export class CoreModule {
 	constructor(
@@ -24,7 +32,9 @@ export class CoreModule {
 		ds: DomSanitizer
 	) {
 		if (parent) {
-			throw new Error('CoreModule is already loaded. Import it in the AppModule only')
+			throw new Error(
+				'CoreModule is already loaded. Import it in the AppModule only'
+			)
 		}
 
 		loadSvgResources(ir, ds)

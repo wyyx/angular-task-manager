@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router'
 import { CommonModule } from '@angular/common'
 import { TaskHomeComponent } from './task-home/task-home.component'
 
-const routes: Routes = [ { path: 'task', component: TaskHomeComponent } ]
+const routes: Routes = [ { path: 'tasks', component: TaskHomeComponent } ]
 
 @NgModule({
 	imports: [ CommonModule, RouterModule.forChild(routes) ],

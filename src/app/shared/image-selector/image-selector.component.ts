@@ -2,23 +2,23 @@ import { Component, OnInit, Input, forwardRef } from '@angular/core'
 import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl, NG_VALIDATORS } from '@angular/forms'
 
 @Component({
-	selector: 'app-avatar-selector',
-	templateUrl: './avatar-selector.component.html',
-	styleUrls: [ './avatar-selector.component.scss' ],
+	selector: 'app-image-selector',
+	templateUrl: './image-selector.component.html',
+	styleUrls: [ './image-selector.component.scss' ],
 	providers: [
 		{
 			provide: NG_VALUE_ACCESSOR,
-			useExisting: forwardRef(() => AvatarSelectorComponent),
+			useExisting: forwardRef(() => ImageSelectorComponent),
 			multi: true
 		},
 		{
 			provide: NG_VALIDATORS,
-			useExisting: forwardRef(() => AvatarSelectorComponent),
+			useExisting: forwardRef(() => ImageSelectorComponent),
 			multi: true
 		}
 	]
 })
-export class AvatarSelectorComponent implements OnInit, ControlValueAccessor {
+export class ImageSelectorComponent implements OnInit, ControlValueAccessor {
 	@Input() cols
 	@Input() rowHeight = '1:1'
 	@Input() title
@@ -28,7 +28,7 @@ export class AvatarSelectorComponent implements OnInit, ControlValueAccessor {
 
 	selected: string
 
-	private propagate: (_: any) => {}
+	private propagate
 
 	constructor() {}
 
@@ -39,6 +39,8 @@ export class AvatarSelectorComponent implements OnInit, ControlValueAccessor {
 	}
 
 	registerOnChange(fn: any): void {
+		console.log('registerOnChange')
+
 		this.propagate = fn
 	}
 
@@ -56,7 +58,7 @@ export class AvatarSelectorComponent implements OnInit, ControlValueAccessor {
 				}
 	}
 
-	onAvatarClick(index: number) {
+	onImageClick(index: number) {
 		this.selected = this.items[index]
 		this.propagate(this.selected)
 	}

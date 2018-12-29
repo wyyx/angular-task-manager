@@ -18,24 +18,35 @@ mat-icon.avatar {
 }
 
 .image-container {
-	position: relative;
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.dimmer-container {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	height: 100%;
 }
 
 .dimmer {
 	display: none;
+	flex: 0 0 auto;
 	justify-content: center;
 	align-items: center;
-	position: absolute;
 	width: 32px;
 	height: 32px;
-	top: 0;
-	left: 0;
 	background-color: rgba(0, 0, 0, 0.4);
 }
 
 .image-container:hover .dimmer {
 	display: flex;
-	background-color: rgba(0, 0, 0, 0.2);
 	cursor: pointer;
 }
 
@@ -45,4 +56,8 @@ mat-icon.avatar {
 
 .dimmer mat-icon {
 	color: white;
+}
+
+.preview {
+	width: 150px;
 }

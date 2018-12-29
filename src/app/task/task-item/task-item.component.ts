@@ -1,12 +1,4 @@
-import {
-	Component,
-	OnInit,
-	Input,
-	EventEmitter,
-	Output,
-	HostBinding,
-	HostListener
-} from '@angular/core'
+import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core'
 import { itemAnim } from 'src/app/animations/item.anim'
 
 @Component({
@@ -16,7 +8,6 @@ import { itemAnim } from 'src/app/animations/item.anim'
 	animations: [ itemAnim ]
 })
 export class TaskItemComponent implements OnInit {
-	@Input() isLastItem
 	@Input() task
 	@Output() editTask = new EventEmitter<void>()
 

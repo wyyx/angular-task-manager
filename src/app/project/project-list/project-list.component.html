@@ -1,9 +1,17 @@
-<div class="container" [@list]="projects.length">
-  <app-project-item *ngFor="let project of projects" [item]="project" class="card" (invite)="openInviteDialog()"
-    (editProject)="openEditProjectDialog(project)" (deleteProject)="openDeleteProjectDialog(project)">
+<div class="container"
+     [@list]="projects.length">
+  <app-project-item *ngFor="let project of projects"
+                    [item]="project"
+                    class="card"
+                    (invite)="openInviteDialog()"
+                    (editProject)="openEditProjectDialog(project)"
+                    (deleteProject)="openDeleteProjectDialog(project)"
+                    (click)="onProjectClick(project)">
   </app-project-item>
 </div>
 
-<button mat-fab class="fab-button" (click)="openNewProjectDialog()">
+<button mat-fab
+        class="fab-button"
+        (click)="openNewProjectDialog()">
   <mat-icon>add</mat-icon>
 </button>

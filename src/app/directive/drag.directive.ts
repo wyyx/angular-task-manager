@@ -28,10 +28,15 @@ export class DragDirective {
 
 	@HostListener('dragstart', [ '$event' ])
 	onDragStart(event: Event) {
-		this.rd.addClass(this.el.nativeElement, this.dragClass)
-		console.log({ tag: this.dragTag, data: this.dragData })
+		event.stopPropagation()
 
-		this.dragDropService.setDragData({ tag: this.dragTag, data: this.dragData })
+		this.rd.addClass(this.el.nativeElement, this.dragClass)
+		console.log('onDragStart', { tag: this.dragTag, data: this.dragData })
+
+		this.dragDropService.setDragData({
+			tag: this.dragTag,
+			data: this.dragData
+		})
 
 		this.rd.setProperty(this.el.nativeElement, 'dataTransfer.effectAllowed', 'all')
 		this.rd.setProperty(this.el.nativeElement, 'dataTransfer.dropEffect', 'move')
@@ -39,6 +44,10 @@ export class DragDirective {
 
 	@HostListener('dragend', [ '$event' ])
 	onDragEnd(event: Event) {
+		event.stopPropagation()
+
+		console.log('onDragEnd')
+
 		this.rd.removeClass(this.el.nativeElement, this.dragClass)
 	}
 }

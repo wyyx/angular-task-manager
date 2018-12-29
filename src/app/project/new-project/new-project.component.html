@@ -1,15 +1,38 @@
-<form>
+<form [formGroup]="form"
+      (ngSubmit)="save($event)">
   <h1 mat-dialog-title>新建项目</h1>
   <div mat-dialog-content>
     <mat-form-field class="full-width">
-      <input matInput placeholder="项目名称">
+      <input matInput
+             placeholder="项目名称"
+             formControlName="name">
+      <mat-error *ngIf="form.get('name').errors && form.get('name').touched ">
+        <div>需要填写一个项目名称</div>
+      </mat-error>
     </mat-form-field>
     <mat-form-field class="full-width">
-      <input matInput placeholder="项目描述">
+      <input matInput
+             placeholder="项目描述"
+             formControlName="desc">
+      <mat-error *ngIf="form.get('desc').errors && form.get('desc').touched ">
+        <div>需要填写一个项目描述</div>
+      </mat-error>
     </mat-form-field>
+    <app-image-selector [cols]="4"
+                        [rowHeight]="'1:1'"
+                        [title]="'选择项目封面：'"
+                        [itemWidth]="'64px'"
+                        [useSvgIcon]="false"
+                        [items]="items"
+                        formControlName="coverImg">
+    </app-image-selector>
   </div>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="save()" type="button">保存</button>
-    <button mat-button (click)="closeDialog()" type="button">关闭</button>
+    <button mat-raised-button
+            color="primary"
+            type="submit">保存</button>
+    <button mat-button
+            (click)="closeDialog()"
+            type="button">关闭</button>
   </div>
 </form>

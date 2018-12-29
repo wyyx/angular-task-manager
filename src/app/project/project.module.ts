@@ -9,7 +9,7 @@ import { SharedModule } from '../shared/shared.module'
 import { EditProjectComponent } from './edit-project/edit-project.component'
 
 @NgModule({
-	imports: [ CommonModule, SharedModule, ProjectRoutingModule, SharedModule ],
+	imports: [ CommonModule, SharedModule, ProjectRoutingModule ],
 	declarations: [
 		ProjectListComponent,
 		ProjectItemComponent,

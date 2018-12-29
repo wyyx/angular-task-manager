@@ -7,8 +7,8 @@ import {
 	ControlValueAccessor,
 	NG_VALUE_ACCESSOR
 } from '@angular/forms'
-import { Observable, combineLatest } from 'rxjs'
-import { merge, map, filter, startWith, tap } from 'rxjs/operators'
+import { Observable, combineLatest, merge } from 'rxjs'
+import { map, filter, startWith, tap } from 'rxjs/operators'
 import { AgeUnit } from './models'
 import { validateAge, validateBirthday, convertAgeToDate, isValidDate } from './validators'
 import { differenceInYears, differenceInMonths, differenceInDays } from 'date-fns'
@@ -118,25 +118,22 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
 				const date = convertAgeToDate(v[0], v[1])
 				return {
 					from: 'age',
-					date: date
+					date: isValidDate(date) ? date : null
 				}
 			})
 		)
 
 		// Merged$ from birthday$ and age$
-		const merged$: Observable<{ from: string; date: Date }> = this.birthday$.pipe(
-			merge(this.age$)
-		)
+		const merged$: Observable<{ from: string; date: Date }> = merge(this.birthday$, this.age$)
 
 		// Subscribe
 		const mergedSubscription = merged$.subscribe(v => {
 			console.log(v)
-			console.log('is Date', v.date instanceof Date)
 
 			const currentAgeUint = this.ageUnit.value
 			const now = Date.now()
 
-			if (v.from == 'birthday' && isValidDate(v.date)) {
+			if (v.from == 'birthday' && v.date) {
 				switch (currentAgeUint) {
 					case AgeUnit.Year:
 						this.ageNum.setValue(differenceInYears(now, v.date), {
@@ -160,7 +157,7 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
 				this.propagateChange(v.date.toDateString())
 			}
 
-			if (v.from == 'age' && isValidDate(v.date)) {
+			if (v.from == 'age' && v.date) {
 				this.birthday.setValue(v.date, {
 					emitEvent: false
 				})

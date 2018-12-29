@@ -35,15 +35,18 @@ export class ProjectItemComponent implements OnInit {
 
 	ngOnInit() {}
 
-	onInviteClick() {
+	onInviteClick(event: Event) {
+		event.stopPropagation()
 		this.invite.emit()
 	}
 
-	onEditProjectClick() {
+	onEditProjectClick(event: Event) {
+		event.stopPropagation()
 		this.editProject.emit()
 	}
 
-	onDeleteProjectClick() {
+	onDeleteProjectClick(event: Event) {
+		event.stopPropagation()
 		this.deleteProject.emit()
 	}
 }

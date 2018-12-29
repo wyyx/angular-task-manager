@@ -1,14 +1,29 @@
 <div class="task-lists">
-  <app-task-list *ngFor="let list of lists" class="list-container p-10" appDroppable
-    [dragEnterClass]="'drag-enter'" [dropTags]="['task-item','task-list']" (dropped)="onDropped($event)">
-    <app-task-header [listType]="list.name" (newTask)="openNewTaskDialog()" (moveAll)="openMoveAllDialog()"
-      (deleteList)="openConfirmDialog()" (modifyListName)="openModifyListNameDialog(list.name)"></app-task-header>
+  <app-task-list *ngFor="let list of taskLists"
+                 class="list-container p-10"
+                 appDroppable
+                 [dragEnterClass]="'drag-enter'"
+                 [dropTags]="['task-item','task-list']"
+                 (dropped)="onDropped($event, list)"
+                 [appDraggable]="true"
+                 [dragClass]="'drag-start'"
+                 [dragTag]="'task-list'"
+                 [dragData]="list"
+                 [ngStyle]="{'order': list.order}">
+    <app-task-header [listType]="list.name"
+                     (newTask)="openNewTaskDialog()"
+                     (moveAll)="openMoveAllDialog(list)"
+                     (deleteList)="openConfirmDialog()"
+                     (modifyListName)="openModifyListNameDialog(list.name)"></app-task-header>
     <app-quick-task (quickTask)="onQuickTask($event)"></app-quick-task>
-    <app-task-item *ngFor="let item of list.tasks; let i=index" [task]="item" (editTask)="openEditTaskDialog(item)"
-      [isLastItem]="list.tasks.length -1 == i"></app-task-item>
+    <app-task-item *ngFor="let item of list.tasks; let i=index"
+                   [task]="item"
+                   (editTask)="openEditTaskDialog(item)"></app-task-item>
   </app-task-list>
 </div>
 
-<button mat-fab class="fab-button" (click)="openNewTaskListDialog()">
+<button mat-fab
+        class="fab-button"
+        (click)="openNewTaskListDialog()">
   <mat-icon>add</mat-icon>
 </button>

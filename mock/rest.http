@@ -1,0 +1,35 @@
+GET http://localhost:3000/projects?desc_like=ERP
+###
+
+GET http://localhost:3000/taskLists
+###
+
+POST http://localhost:3000/taskLists
+Content-Type: application/json
+
+{
+  "name":"my first taskList",
+  "projectId":"1",
+  "order": "0"
+}
+###
+
+PUT http://localhost:3000/taskLists/WWiDE5v
+Content-Type: application/json
+
+{
+  "name":"my first taskList xxxxxxxxxx",
+  "projectId":"1",
+  "order": "0"
+}
+###
+
+PATCH http://localhost:3000/taskLists/WWiDE5v
+Content-Type: application/json
+
+{
+  "name":"First TaskList xxx"
+}
+###
+
+GET  http://localhost:3000/taskLists?projectId=Sk2HaTagb

@@ -1,5 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
+import { FormGroup, FormControl, Validators } from '@angular/forms'
 
 export interface DialogData {
 	name: string
@@ -12,6 +13,14 @@ export interface DialogData {
 	styleUrls: [ './new-project.component.scss' ]
 })
 export class NewProjectComponent implements OnInit {
+	form = new FormGroup({
+		name: new FormControl('', Validators.required),
+		desc: new FormControl('', Validators.required),
+		coverImg: new FormControl('', Validators.required)
+	})
+
+	items = []
+
 	constructor(
 		private dialogRef: MatDialogRef<NewProjectComponent>,
 		@Inject(MAT_DIALOG_DATA) private data: DialogData
@@ -19,13 +28,25 @@ export class NewProjectComponent implements OnInit {
 		console.log('data', data)
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.getImages()
+	}
 
 	closeDialog(): void {
 		this.dialogRef.close()
 	}
 
-	save() {
-		this.dialogRef.close('Received message')
+	save(event: Event) {
+		event.preventDefault()
+
+		if (this.form.valid) {
+			this.dialogRef.close('Received message')
+		}
+	}
+
+	getImages() {
+		for (let index = 0; index < 16; index++) {
+			this.items.push(`/assets/img/covers/${index + 1}_tn.jpg`)
+		}
 	}
 }
