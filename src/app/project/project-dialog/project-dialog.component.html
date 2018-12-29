@@ -1,6 +1,6 @@
 <form [formGroup]="form"
       (ngSubmit)="save($event)">
-  <h1 mat-dialog-title>新建项目</h1>
+  <h1 mat-dialog-title>{{title}}</h1>
   <div mat-dialog-content>
     <mat-form-field class="full-width">
       <input matInput
@@ -30,7 +30,8 @@
   <div mat-dialog-actions>
     <button mat-raised-button
             color="primary"
-            type="submit">保存</button>
+            type="submit"
+            [disabled]="!form.valid">保存</button>
     <button mat-button
             (click)="closeDialog()"
             type="button">关闭</button>

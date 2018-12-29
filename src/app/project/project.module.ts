@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common'
 import { ProjectListComponent } from './project-list/project-list.component'
 import { ProjectItemComponent } from './project-item/project-item.component'
 import { InviteComponent } from './invite/invite.component'
-import { NewProjectComponent } from './new-project/new-project.component'
 import { ProjectRoutingModule } from './project-routing.module'
 import { SharedModule } from '../shared/shared.module'
-import { EditProjectComponent } from './edit-project/edit-project.component'
+import { ProjectDialogComponent } from './project-dialog/project-dialog.component'
 
 @NgModule({
 	imports: [ CommonModule, SharedModule, ProjectRoutingModule ],
@@ -14,9 +13,8 @@ import { EditProjectComponent } from './edit-project/edit-project.component'
 		ProjectListComponent,
 		ProjectItemComponent,
 		InviteComponent,
-		NewProjectComponent,
-		EditProjectComponent
+		ProjectDialogComponent
 	],
-	entryComponents: [ NewProjectComponent, InviteComponent, EditProjectComponent ]
+	entryComponents: [ ProjectDialogComponent, InviteComponent ]
 })
 export class ProjectModule {}
