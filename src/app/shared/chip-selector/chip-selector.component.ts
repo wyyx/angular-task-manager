@@ -48,7 +48,7 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAcc
 		this.filteredMembers$ = this.memberControl.valueChanges.pipe(
 			debounceTime(200),
 			distinctUntilChanged(),
-			filter((str: string) => str && str.length > 0),
+			filter((str: string) => str && str.length > 1),
 			mergeMap(filterStr => this.userService.searchUsers(filterStr.trim())),
 			takeUntil(this.subManager$)
 		)

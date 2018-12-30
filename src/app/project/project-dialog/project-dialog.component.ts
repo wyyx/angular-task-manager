@@ -3,11 +3,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Project } from 'src/app/domain/project.model'
 
-export interface DialogData {
-	name: string
-	isDark: boolean
-}
-
 @Component({
 	selector: 'app-project-dialog',
 	templateUrl: './project-dialog.component.html',

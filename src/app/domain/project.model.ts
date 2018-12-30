@@ -1,6 +1,6 @@
 export interface Project {
 	id?: string
-	name: string
+	name?: string
 	desc?: string
 	coverImg?: string
 	enabled?: boolean

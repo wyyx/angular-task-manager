@@ -44,6 +44,14 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 		this.router.navigate([ '/tasks', { projectId: project.id } ])
 	}
 
+	openInviteDialog(project) {
+		const dialogRef = this.dialog.open(InviteComponent, {
+			data: {
+				project
+			}
+		})
+	}
+
 	openNewProjectDialog(): void {
 		const dialogRef = this.dialog.open(ProjectDialogComponent)
 
@@ -55,10 +63,6 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 				this.projectService.add(project).pipe(takeUntil(this.subManager$)).subscribe()
 			}
 		})
-	}
-
-	openInviteDialog() {
-		const dialogRef = this.dialog.open(InviteComponent)
 	}
 
 	openEditProjectDialog(project) {

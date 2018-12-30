@@ -3,7 +3,7 @@
   <app-project-item *ngFor="let project of projects"
                     [item]="project"
                     class="card"
-                    (invite)="openInviteDialog()"
+                    (invite)="openInviteDialog(project)"
                     (editProject)="openEditProjectDialog(project)"
                     (deleteProject)="openDeleteProjectDialog(project)"
                     (click)="onProjectClick(project)">

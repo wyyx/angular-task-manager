@@ -32,10 +32,10 @@ export class ProjectService {
 	update(project: Project): Observable<Project> {
 		const url = `${this.baseUrl}/${this.path}/${project.id}`
 		const partProject = {
-			name: project.name,
-			desc: project.desc,
-			coverImg: project.coverImg
+			...project
 		}
+		delete partProject.id
+		console.log('xxx', project)
 
 		return this.http.patch<Project>(url, JSON.stringify(partProject), {
 			headers: this.headers
@@ -66,5 +66,18 @@ export class ProjectService {
 				members_like: userId
 			}
 		})
+	}
+
+	getProjectById(id: string) {
+		const url = `${this.baseUrl}/${this.path}`
+
+		return this.http
+			.get<Project[]>(url, {
+				headers: this.headers,
+				params: {
+					id
+				}
+			})
+			.pipe(map(projects => projects && projects[0]))
 	}
 }

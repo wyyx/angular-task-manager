@@ -7,6 +7,8 @@ import { mergeMap, count, switchMap, map } from 'rxjs/operators'
 import { TaskList } from '../domain/task-list.model'
 import { Task } from '../domain/task.model'
 import { User } from '../domain/user.model'
+import { ProjectService } from './project.service'
+import { uniq } from 'lodash'
 
 @Injectable({
 	providedIn: 'root'
@@ -17,7 +19,11 @@ export class UserService {
 		'Content-Type': 'application/json'
 	})
 
-	constructor(@Inject(BASE_URL) private baseUrl: string, private http: HttpClient) {}
+	constructor(
+		@Inject(BASE_URL) private baseUrl: string,
+		private http: HttpClient,
+		private projectService: ProjectService
+	) {}
 
 	// Search users by email
 	searchUsers(filter: string): Observable<User[]> {
@@ -43,13 +49,13 @@ export class UserService {
 
 	// Add projectRef to a user
 	addProjectRef(user: User, project: Project): Observable<User> {
-		const url = `${this.baseUrl}/${this.path}`
+		const url = `${this.baseUrl}/${this.path}/${user.id}`
 		const projectIds = user.projectIds ? user.projectIds : []
 
 		return this.http.patch<User>(
 			url,
 			JSON.stringify({
-				projectIds: [ ...projectIds, project.id ]
+				projectIds: uniq([ ...projectIds, project.id ])
 			}),
 			{ headers: this.headers }
 		)
