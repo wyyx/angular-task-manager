@@ -32,4 +32,19 @@ Content-Type: application/json
 }
 ###
 
+// Get taskLists of a project
 GET  http://localhost:3000/taskLists?projectId=Sk2HaTagb
+###
+
+
+// Get users by projectId
+GET  http://localhost:3000/users?projectIds_like=Hya1moGb-
+###
+
+// Get user by user.id
+GET  http://localhost:3000/users?email=wpcfan@163.com
+###
+
+// Get user by email and password
+GET  http://localhost:3000/users?email=wpcfan@163.com&password=wp123456
+###

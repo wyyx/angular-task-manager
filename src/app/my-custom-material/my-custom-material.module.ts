@@ -6,10 +6,11 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatIconModule } from '@angular/material/icon'
 import { MatCardModule } from '@angular/material/card'
 import { MatInputModule } from '@angular/material/input'
-import { MatListModule, MatList } from '@angular/material/list'
+import { MatListModule } from '@angular/material/list'
 import { MatSlideToggleModule } from '@angular/material/slide-toggle'
 import { MatGridListModule } from '@angular/material/grid-list'
 import { MatDialogModule } from '@angular/material/dialog'
+import { MatChipsModule } from '@angular/material/chips'
 import {
 	MatAutocompleteModule,
 	MatMenuModule,
@@ -46,7 +47,8 @@ import {
 		MatNativeDateModule,
 		MatSelectModule,
 		MatDatepickerModule,
-		MatButtonToggleModule
+		MatButtonToggleModule,
+		MatChipsModule
 	]
 })
 export class MyCustomMaterialModule {}

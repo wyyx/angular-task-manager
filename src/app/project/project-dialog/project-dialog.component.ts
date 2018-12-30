@@ -1,7 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { ProjectDialogData } from '../project-list/project-list.component'
 import { Project } from 'src/app/domain/project.model'
 
 export interface DialogData {
@@ -23,21 +22,22 @@ export class ProjectDialogComponent implements OnInit {
 
 	items = []
 
-	title
+	title = '新建项目'
 	project: Project
 
 	constructor(
 		private dialogRef: MatDialogRef<ProjectDialogComponent>,
-		@Inject(MAT_DIALOG_DATA) private data: ProjectDialogData
-	) {
-		console.log('data', data)
-	}
+		@Inject(MAT_DIALOG_DATA) private data: { project: Project }
+	) {}
 
 	ngOnInit() {
-		this.getImages()
-		this.title = this.data.title
-		if (this.data.project) {
-			this.project = this.data.project
+		this.getThumbnails()
+		this.form.get('coverImg').setValue(this.getRandomImg())
+		this.project = this.data && this.data.project
+
+		// Edit project
+		if (this.project) {
+			this.title = '编辑项目'
 			this.form.get('name').setValue(this.project.name)
 			this.form.get('desc').setValue(this.project.desc)
 			this.form.get('coverImg').setValue(this.toSmallSizeUrl(this.project.coverImg))
@@ -46,6 +46,10 @@ export class ProjectDialogComponent implements OnInit {
 
 	toSmallSizeUrl(url: string) {
 		return url.replace('.jpg', '_tn.jpg')
+	}
+
+	toLargeSizeUrl(url: string) {
+		return url.replace('_tn', '')
 	}
 
 	closeDialog(): void {
@@ -59,10 +63,10 @@ export class ProjectDialogComponent implements OnInit {
 			let newProject = {
 				...this.project,
 				...this.form.value,
-				coverImg: this.form.value.coverImg.replace('_tn', '')
+				coverImg: this.toLargeSizeUrl(this.form.value.coverImg)
 			}
 
-			if (!this.project.id) {
+			if (!this.project) {
 				newProject = { ...newProject, members: [ '1' ] }
 			}
 
@@ -70,8 +74,13 @@ export class ProjectDialogComponent implements OnInit {
 		}
 	}
 
-	getImages() {
-		for (let index = 0; index < 20; index++) {
+	getRandomImg() {
+		const index = Math.floor(Math.random() * 40)
+		return `/assets/img/covers/${index}_tn.jpg`
+	}
+
+	getThumbnails() {
+		for (let index = 0; index < 40; index++) {
 			this.items.push(`/assets/img/covers/${index}_tn.jpg`)
 		}
 	}

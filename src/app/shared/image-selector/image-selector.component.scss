@@ -42,11 +42,12 @@ mat-icon.avatar {
 	align-items: center;
 	width: 32px;
 	height: 32px;
-	background-color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.6);
 }
 
 .image-container:hover .dimmer {
 	display: flex;
+	background-color: rgba(0, 0, 0, 0.2);
 	cursor: pointer;
 }
 

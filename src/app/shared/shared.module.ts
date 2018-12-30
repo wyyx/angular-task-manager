@@ -7,6 +7,7 @@ import { DirectiveModule } from '../directive/directive.module'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AgeInputComponent } from './age-input/age-input.component'
 import { ImageSelectorComponent } from './image-selector/image-selector.component'
+import { ChipSelectorComponent } from './chip-selector/chip-selector.component'
 
 @NgModule({
 	imports: [
@@ -17,7 +18,12 @@ import { ImageSelectorComponent } from './image-selector/image-selector.componen
 		FormsModule,
 		ReactiveFormsModule
 	],
-	declarations: [ ConfirmDialogComponent, ImageSelectorComponent, AgeInputComponent ],
+	declarations: [
+		ConfirmDialogComponent,
+		ImageSelectorComponent,
+		AgeInputComponent,
+		ChipSelectorComponent
+	],
 	exports: [
 		CommonModule,
 		MyCustomMaterialModule,
@@ -26,7 +32,8 @@ import { ImageSelectorComponent } from './image-selector/image-selector.componen
 		FormsModule,
 		ReactiveFormsModule,
 		ImageSelectorComponent,
-		AgeInputComponent
+		AgeInputComponent,
+		ChipSelectorComponent
 	],
 	entryComponents: [ ConfirmDialogComponent ]
 })

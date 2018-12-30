@@ -1,0 +1,28 @@
+<div class="container">
+  <mat-form-field class="full-width"
+                  *ngIf="members.length">
+    <mat-chip-list>
+      <mat-chip color="primary"
+                selected
+                *ngFor="let member of members">{{member.name}}
+        <mat-icon matChipRemove
+                  (click)="onCancelClick(member)">cancel
+        </mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-form-field>
+  <mat-form-field class="full-width">
+    <input type="text"
+           [placeholder]="placeholder"
+           matInput
+           [formControl]="memberControl"
+           [matAutocomplete]="auto">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let filteredMember of filteredMembers$ | async"
+                  [value]="filteredMember"
+                  (click)="onAutocompleteClick(filteredMember)">
+        {{filteredMember.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</div>

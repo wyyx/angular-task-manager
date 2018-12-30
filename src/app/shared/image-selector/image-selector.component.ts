@@ -39,8 +39,6 @@ export class ImageSelectorComponent implements OnInit, ControlValueAccessor {
 	}
 
 	registerOnChange(fn: any): void {
-		console.log('registerOnChange')
-
 		this.propagate = fn
 	}
 

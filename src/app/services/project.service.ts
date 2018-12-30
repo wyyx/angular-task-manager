@@ -16,10 +16,7 @@ export class ProjectService {
 		'Content-Type': 'application/json'
 	})
 
-	constructor(
-		@Inject(BASE_URL) private baseUrl: string,
-		private http: HttpClient
-	) {}
+	constructor(@Inject(BASE_URL) private baseUrl: string, private http: HttpClient) {}
 
 	// POST
 	add(project: Project): Observable<Project> {
@@ -49,11 +46,9 @@ export class ProjectService {
 	delete(project: Project): Observable<Project> {
 		const url = `${this.baseUrl}/${this.path}/${project.id}`
 
-		return from(project.taskLists).pipe(
+		return from(project.taskLists || []).pipe(
 			mergeMap(tasklistId =>
-				this.http.delete<TaskList>(
-					`${this.baseUrl}/taskList/${tasklistId}`
-				)
+				this.http.delete<TaskList>(`${this.baseUrl}/taskList/${tasklistId}`)
 			),
 			count(),
 			switchMap(count => this.http.delete<Project>(url)),
