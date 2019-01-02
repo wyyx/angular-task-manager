@@ -2,7 +2,18 @@ import { Component, OnInit, OnDestroy, forwardRef } from '@angular/core'
 import { FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { Subject, Observable, from, of, combineLatest } from 'rxjs'
 import { getProvinces, getCities, getDistricts } from 'src/app/utils/address.util'
-import { filter, takeUntil, mergeMap, tap, startWith } from 'rxjs/operators'
+import {
+	filter,
+	takeUntil,
+	mergeMap,
+	tap,
+	startWith,
+	switchMap,
+	map,
+	take,
+	distinct,
+	mapTo
+} from 'rxjs/operators'
 
 @Component({
 	selector: 'app-address-selector',
@@ -44,38 +55,52 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
 		})
 
 		this.provinces = getProvinces()
-		combineLatest(
-			this.province.valueChanges.pipe(startWith(this.province.value)),
-			this.city.valueChanges.pipe(startWith(this.city.value)),
-			this.district.valueChanges.pipe(startWith(this.district.value))
-		)
-			.pipe(takeUntil(this.kill$))
-			.subscribe(([ province, city, district ]) => {
-				console.log([ province, city, district ])
+		let provinceTemp
+		let cityTemp
 
-				if (province) {
-					this.cities = getCities(province)
-					this.city.enable({ emitEvent: false })
-				} else {
-					this.city.disable({ emitEvent: false })
-				}
-
-				this.districts = getDistricts(province, city)
-				if (this.districts) {
-					this.district.enable({ emitEvent: false })
-				} else {
-					// Province changed or first emit
-					this.district.disable({ emitEvent: false })
-					this.city.setValue('', { emitEvent: false })
-					this.district.setValue('', { emitEvent: false })
-				}
-
-				this.propageteChangeAsync([
-					this.province.value,
-					this.city.value,
-					this.district.value
-				])
+		const province$ = this.province.valueChanges.pipe(
+			startWith(''),
+			distinct(),
+			tap(_ => {
+				this.city.setValue('')
+				this.district.setValue('')
 			})
+		)
+		const city$ = this.city.valueChanges.pipe(startWith(''), distinct())
+		const district$ = this.district.valueChanges.pipe(startWith(''), distinct())
+
+		combineLatest(province$, city$, district$)
+			.pipe(
+				switchMap(_ => of(this.province.value)),
+				switchMap(province => {
+					provinceTemp = province
+					if (province) {
+						this.cities = getCities(province)
+						this.city.enable()
+					} else {
+						this.city.disable()
+					}
+
+					return of(this.city.value)
+				}),
+				switchMap(city => {
+					cityTemp = city
+					if (city) {
+						this.districts = getDistricts(this.province.value, city)
+						this.district.enable()
+					} else {
+						this.district.disable()
+					}
+
+					const address: [any, any, any] = [ provinceTemp, cityTemp, this.district.value ]
+					console.log(address)
+					this.propageteChangeAsync(address)
+
+					return of(null)
+				}),
+				takeUntil(this.kill$)
+			)
+			.subscribe()
 	}
 
 	ngOnDestroy(): void {

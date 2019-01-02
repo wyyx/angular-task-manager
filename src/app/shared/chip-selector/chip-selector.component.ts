@@ -14,7 +14,8 @@ import {
 	distinctUntilChanged,
 	filter,
 	takeUntil,
-	tap
+	tap,
+	switchMap
 } from 'rxjs/operators'
 import { UserService } from 'src/app/services/user.service'
 import { Observable, Subject } from 'rxjs'
@@ -49,7 +50,7 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAcc
 			debounceTime(200),
 			distinctUntilChanged(),
 			filter((str: string) => str && str.length > 1),
-			mergeMap(filterStr => this.userService.searchUsers(filterStr.trim())),
+			switchMap(filterStr => this.userService.searchUsers(filterStr.trim())),
 			takeUntil(this.subManager$)
 		)
 	}

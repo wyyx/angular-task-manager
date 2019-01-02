@@ -8,9 +8,9 @@
 		"test": "ng test",
 		"lint": "ng lint",
 		"e2e": "ng e2e",
-		"client": "ng serve",
+		"ng-server": "ng serve",
 		"server": "json-server ./mock/data.json --watch",
-		"dev": "concurrently \"npm run client\" \"npm run server\""
+		"dev": "concurrently \"npm run ng-server\" \"npm run server\""
 	},
 	"private": true,
 	"dependencies": {
