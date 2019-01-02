@@ -2,59 +2,73 @@
   <form class="form"
         [formGroup]="registerForm">
     <mat-card>
-      <mat-card-header>
-        <mat-card-title>注册</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-form-field class="full-width">
-          <input matInput
-                 type="text"
-                 placeholder="邮箱"
-                 formControlName="email">
-          <mat-error *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
-            <div [hidden]="!registerForm.controls['email'].errors.required">Email is required.</div>
-            <div [hidden]="!registerForm.controls['email'].errors.email">Email is invalid.</div>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput
-                 type="password"
-                 placeholder="密码"
-                 formControlName="password">
-          <mat-error *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].touched">
-            <div [hidden]="!registerForm.controls['password'].errors.required">Password is
-              required.</div>
-          </mat-error>
-        </mat-form-field>
-        <mat-form-field class="full-width">
-          <input matInput
-                 type="password"
-                 placeholder="再次输入密码"
-                 formControlName="rePassword">
-          <mat-error *ngIf="registerForm.controls['rePassword'].errors && registerForm.controls['rePassword'].touched">
-            <div [hidden]="!registerForm.controls['rePassword'].errors.required">Inconsistent
-              password
-              entered.</div>
-          </mat-error>
-        </mat-form-field>
-        <app-age-input formControlName="age"></app-age-input>
-      </mat-card-content>
-      <div class="text-center p-10">
-        <button mat-raised-button
-                type="button">注册</button>
-      </div>
-      <app-image-selector [useSvgIcon]="true"
-                          [cols]="7"
-                          [rowHeight]="'1:1'"
-                          [title]="'选择你的头像：'"
-                          [itemWidth]="'64px'"
-                          [items]="items"
-                          formControlName="avatar">
-      </app-image-selector>
-      <mat-card-actions class="text-center">
-        <p>已经注册了？<a routerLink="/login">登陆</a></p>
-        <p>忘记密码？<a href="">找回</a></p>
-      </mat-card-actions>
+      <mat-tab-group>
+        <mat-tab label="账号信息">
+          <mat-card-content class="pt-10">
+            <mat-form-field class="full-width">
+              <input matInput
+                     type="text"
+                     placeholder="邮箱"
+                     formControlName="email">
+              <mat-error *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
+                <div [hidden]="!registerForm.controls['email'].errors.required">Email is required.</div>
+                <div [hidden]="!registerForm.controls['email'].errors.email">Email is invalid.</div>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput
+                     type="password"
+                     placeholder="密码"
+                     formControlName="password">
+              <mat-error *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].touched">
+                <div [hidden]="!registerForm.controls['password'].errors.required">Password is
+                  required.</div>
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <input matInput
+                     type="password"
+                     placeholder="再次输入密码"
+                     formControlName="rePassword">
+              <mat-error *ngIf="registerForm.controls['rePassword'].errors && registerForm.controls['rePassword'].touched">
+                <div [hidden]="!registerForm.controls['rePassword'].errors.required">Inconsistent
+                  password
+                  entered.</div>
+              </mat-error>
+            </mat-form-field>
+
+          </mat-card-content>
+
+          <app-image-selector [useSvgIcon]="true"
+                              [cols]="7"
+                              [rowHeight]="'1:1'"
+                              [title]="'选择你的头像：'"
+                              [itemWidth]="'64px'"
+                              [items]="items"
+                              formControlName="avatar">
+          </app-image-selector>
+          <mat-card-actions class="text-center">
+            <p>已经注册了？<a routerLink="/login">登陆</a></p>
+            <p>忘记密码？<a href="">找回</a></p>
+          </mat-card-actions>
+        </mat-tab>
+        <mat-tab label="个人信息">
+          <mat-card-content class="pt-10">
+            <app-certificate-selector formControlName="certificate"></app-certificate-selector>
+            <app-age-input formControlName="age"></app-age-input>
+            <app-address-selector></app-address-selector>
+          </mat-card-content>
+          <div class="text-center pb-20">
+            <button mat-raised-button
+                    type="button">注册
+            </button>
+          </div>
+          <mat-card-actions class="text-center">
+            <p>已经注册了？<a routerLink="/login">登陆</a></p>
+            <p>忘记密码？<a href="">找回</a></p>
+          </mat-card-actions>
+        </mat-tab>
+      </mat-tab-group>
     </mat-card>
   </form>
 </div>

@@ -5,4 +5,26 @@ export interface User {
 	name: string
 	avatar: string
 	projectIds: string[]
+	address: Address
+}
+
+export interface Certificate {
+	certificateType: CertificateType
+	certificateNum: string
+}
+
+export enum CertificateType {
+	IdCard = 0,
+	Insurance,
+	Passport,
+	Military,
+	Other
+}
+
+export interface Address {
+	id?: number
+	province: string
+	city: string
+	district: string
+	street?: string
 }

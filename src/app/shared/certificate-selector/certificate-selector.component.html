@@ -1,0 +1,22 @@
+<form [formGroup]="form">
+  <mat-form-field class="cert-type">
+    <mat-select placeholder="证件类型"
+                formControlName="certificateType">
+      <mat-option *ngFor="let type of certificateTypes"
+                  [value]="type.value">
+        {{type.label}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="cert-num">
+    <input matInput
+           placeholder="证件号码"
+           formControlName="certificateNumber"
+           (focusout)="onFocusOut($event)">
+    <mat-error *ngIf="certificateNumberControl.touched && certificateNumberControl.errors">
+      <div *ngIf="certificateNumberControl.errors.required">证件号码为必填项</div>
+      <div *ngIf="certificateNumberControl.errors.certificateNumberValidation"> 证件号码不合法</div>
+    </mat-error>
+  </mat-form-field>
+</form>

@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { AgeInputComponent } from './age-input/age-input.component'
 import { ImageSelectorComponent } from './image-selector/image-selector.component'
 import { ChipSelectorComponent } from './chip-selector/chip-selector.component'
+import { CertificateSelectorComponent } from './certificate-selector/certificate-selector.component'
+import { AddressSelectorComponent } from './address-selector/address-selector.component'
 
 @NgModule({
 	imports: [
@@ -22,7 +24,9 @@ import { ChipSelectorComponent } from './chip-selector/chip-selector.component'
 		ConfirmDialogComponent,
 		ImageSelectorComponent,
 		AgeInputComponent,
-		ChipSelectorComponent
+		ChipSelectorComponent,
+		CertificateSelectorComponent,
+		AddressSelectorComponent
 	],
 	exports: [
 		CommonModule,
@@ -33,7 +37,9 @@ import { ChipSelectorComponent } from './chip-selector/chip-selector.component'
 		ReactiveFormsModule,
 		ImageSelectorComponent,
 		AgeInputComponent,
-		ChipSelectorComponent
+		ChipSelectorComponent,
+		CertificateSelectorComponent,
+		AddressSelectorComponent
 	],
 	entryComponents: [ ConfirmDialogComponent ]
 })

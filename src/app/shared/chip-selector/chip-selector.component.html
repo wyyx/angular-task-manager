@@ -16,7 +16,8 @@
            [placeholder]="placeholder"
            matInput
            [formControl]="memberControl"
-           [matAutocomplete]="auto">
+           [matAutocomplete]="auto"
+           (focusout)="onFocusOut($event)">
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let filteredMember of filteredMembers$ | async"
                   [value]="filteredMember"

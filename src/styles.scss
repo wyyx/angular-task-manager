@@ -23,3 +23,7 @@ mat-sidenav-container,
 main {
 	flex: 1;
 }
+
+.form-wrapper .mat-tab-body-content {
+	overflow: unset !important;
+}

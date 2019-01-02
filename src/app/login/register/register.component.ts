@@ -11,6 +11,7 @@ export class RegisterComponent implements OnInit {
 		email: [ '', Validators.compose([ Validators.required, Validators.email ]) ],
 		password: [ '', Validators.compose([ Validators.required ]) ],
 		rePassword: [ '', Validators.compose([ Validators.required ]) ],
+		certificate: [ '', Validators.required ],
 		age: [ '1990-01-01' ],
 		avatar: [ '', Validators.compose([ Validators.required ]) ]
 	})

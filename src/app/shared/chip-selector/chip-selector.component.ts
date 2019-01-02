@@ -52,15 +52,15 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAcc
 			mergeMap(filterStr => this.userService.searchUsers(filterStr.trim())),
 			takeUntil(this.subManager$)
 		)
-
-		this.memberControl.statusChanges
-			.pipe(takeUntil(this.subManager$))
-			.subscribe(_ => this.propagateTouch())
 	}
 
 	ngOnDestroy(): void {
 		this.subManager$.next()
 		this.subManager$.complete()
+	}
+
+	onFocusOut(event) {
+		this.propagateTouch()
 	}
 
 	writeValue(obj: any): void {
