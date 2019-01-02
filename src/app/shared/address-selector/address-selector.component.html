@@ -3,7 +3,8 @@
     <mat-select placeholder="请输入省份"
                 formControlName="province">
       <mat-option *ngFor="let province of provinces"
-                  [value]="province">
+                  [value]="province"
+                  (focusout)="onFocusOut()">
         {{province}}
       </mat-option>
     </mat-select>

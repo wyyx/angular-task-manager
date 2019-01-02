@@ -15,27 +15,31 @@
                 <div [hidden]="!registerForm.controls['email'].errors.email">Email is invalid.</div>
               </mat-error>
             </mat-form-field>
-            <mat-form-field class="full-width">
-              <input matInput
-                     type="password"
-                     placeholder="密码"
-                     formControlName="password">
-              <mat-error *ngIf="registerForm.controls['password'].errors && registerForm.controls['password'].touched">
-                <div [hidden]="!registerForm.controls['password'].errors.required">Password is
-                  required.</div>
-              </mat-error>
-            </mat-form-field>
-            <mat-form-field class="full-width">
-              <input matInput
-                     type="password"
-                     placeholder="再次输入密码"
-                     formControlName="rePassword">
-              <mat-error *ngIf="registerForm.controls['rePassword'].errors && registerForm.controls['rePassword'].touched">
-                <div [hidden]="!registerForm.controls['rePassword'].errors.required">Inconsistent
-                  password
-                  entered.</div>
-              </mat-error>
-            </mat-form-field>
+            <ng-container formGroupName="passwordGroup">
+              <mat-form-field class="full-width">
+                <input matInput
+                       type="password"
+                       placeholder="密码"
+                       formControlName="password">
+                <mat-error *ngIf="registerForm.get('passwordGroup.password').errors && registerForm.get('passwordGroup.password').touched">
+                  <div [hidden]="!registerForm.get('passwordGroup.password').errors.required">
+                    密码不能为空
+                  </div>
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <input matInput
+                       type="password"
+                       placeholder="再次输入密码"
+                       formControlName="repassword"
+                       [errorStateMatcher]="repasswordMatcher">
+                <mat-error *ngIf="registerForm.get('passwordGroup').errors || registerForm.get('passwordGroup.repassword').errors && registerForm.get('passwordGroup.repassword').touched">
+                  <div *ngIf="registerForm.get('passwordGroup.repassword').errors?.required">必须再次输入密码确认</div>
+                  <div *ngIf="!registerForm.get('passwordGroup.repassword').errors?.required &&registerForm.get('passwordGroup').errors.repassword">两次密码不一致</div>
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+
 
           </mat-card-content>
 
@@ -56,11 +60,12 @@
           <mat-card-content class="pt-10">
             <app-certificate-selector formControlName="certificate"></app-certificate-selector>
             <app-age-input formControlName="age"></app-age-input>
-            <app-address-selector></app-address-selector>
+            <app-address-selector formControlName="address"></app-address-selector>
           </mat-card-content>
           <div class="text-center pb-20">
             <button mat-raised-button
-                    type="button">注册
+                    type="button"
+                    (click)="onRegisterClick()">注册
             </button>
           </div>
           <mat-card-actions class="text-center">

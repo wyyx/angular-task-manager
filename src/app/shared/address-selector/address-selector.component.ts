@@ -1,15 +1,22 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { FormGroup, FormControl } from '@angular/forms'
-import { Subject, Observable, from, of } from 'rxjs'
+import { Component, OnInit, OnDestroy, forwardRef } from '@angular/core'
+import { FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
+import { Subject, Observable, from, of, combineLatest } from 'rxjs'
 import { getProvinces, getCities, getDistricts } from 'src/app/utils/address.util'
 import { filter, takeUntil, mergeMap, tap, startWith } from 'rxjs/operators'
 
 @Component({
 	selector: 'app-address-selector',
 	templateUrl: './address-selector.component.html',
-	styleUrls: [ './address-selector.component.scss' ]
+	styleUrls: [ './address-selector.component.scss' ],
+	providers: [
+		{
+			provide: NG_VALUE_ACCESSOR,
+			useExisting: forwardRef(() => AddressSelectorComponent),
+			multi: true
+		}
+	]
 })
-export class AddressSelectorComponent implements OnInit, OnDestroy {
+export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValueAccessor {
 	kill$: Subject<any> = new Subject()
 
 	form: FormGroup
@@ -20,6 +27,9 @@ export class AddressSelectorComponent implements OnInit, OnDestroy {
 	provinces: string[]
 	cities: string[]
 	districts: string[]
+
+	propagateChange
+	propagateTouch
 
 	constructor() {}
 
@@ -33,35 +43,65 @@ export class AddressSelectorComponent implements OnInit, OnDestroy {
 			district: this.district
 		})
 
-		of(getProvinces())
-			.pipe(
-				mergeMap(provinces => {
-					// Get provinces
-					this.provinces = provinces
-					return this.province.valueChanges
-				}),
-				startWith(this.province.value),
-				tap(v => (!!v ? this.city.enable() : this.city.disable())),
-				mergeMap(province => {
-					// Get cities
-					this.cities = province && getCities(province)
-					return this.city.valueChanges.pipe(
-						startWith(this.city.value),
-						tap(v => (!!v ? this.district.enable() : this.district.disable())),
-						mergeMap(city => {
-							// Get districts
-							this.districts = province && city && getDistricts(province, city)
-							return of(null)
-						})
-					)
-				}),
-				takeUntil(this.kill$)
-			)
-			.subscribe()
+		this.provinces = getProvinces()
+		combineLatest(
+			this.province.valueChanges.pipe(startWith(this.province.value)),
+			this.city.valueChanges.pipe(startWith(this.city.value)),
+			this.district.valueChanges.pipe(startWith(this.district.value))
+		)
+			.pipe(takeUntil(this.kill$))
+			.subscribe(([ province, city, district ]) => {
+				console.log([ province, city, district ])
+
+				if (province) {
+					this.cities = getCities(province)
+					this.city.enable({ emitEvent: false })
+				} else {
+					this.city.disable({ emitEvent: false })
+				}
+
+				if (province && city) {
+					this.districts = getDistricts(province, city)
+					if (this.districts) {
+						this.district.enable({ emitEvent: false })
+					} else {
+						// Change province or first emit
+						this.district.disable({ emitEvent: false })
+						this.city.setValue('', { emitEvent: false })
+						this.district.setValue('', { emitEvent: false })
+					}
+				}
+
+				this.propageteChangeAsync([
+					this.province.value,
+					this.city.value,
+					this.district.value
+				])
+			})
 	}
 
 	ngOnDestroy(): void {
 		this.kill$.next()
 		this.kill$.complete()
+	}
+
+	propageteChangeAsync([ province, city, district ]) {
+		setTimeout(() => {
+			this.propagateChange([ province, city, district ])
+		}, 0)
+	}
+
+	onFocusOut() {
+		this.propagateTouch()
+	}
+
+	writeValue(obj: any): void {}
+
+	registerOnChange(fn: any): void {
+		this.propagateChange = fn
+	}
+
+	registerOnTouched(fn: any): void {
+		this.propagateTouch = fn
 	}
 }
