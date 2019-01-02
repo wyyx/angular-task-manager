@@ -25,5 +25,7 @@ export function getCities(province: string) {
 }
 
 export function getDistricts(province: string, city: string) {
-	return addressData[province][city]
+	return addressData && addressData[province] && addressData[province][city]
+		? addressData[province][city]
+		: null
 }

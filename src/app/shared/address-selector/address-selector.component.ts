@@ -60,16 +60,14 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
 					this.city.disable({ emitEvent: false })
 				}
 
-				if (province && city) {
-					this.districts = getDistricts(province, city)
-					if (this.districts) {
-						this.district.enable({ emitEvent: false })
-					} else {
-						// Change province or first emit
-						this.district.disable({ emitEvent: false })
-						this.city.setValue('', { emitEvent: false })
-						this.district.setValue('', { emitEvent: false })
-					}
+				this.districts = getDistricts(province, city)
+				if (this.districts) {
+					this.district.enable({ emitEvent: false })
+				} else {
+					// Province changed or first emit
+					this.district.disable({ emitEvent: false })
+					this.city.setValue('', { emitEvent: false })
+					this.district.setValue('', { emitEvent: false })
 				}
 
 				this.propageteChangeAsync([
