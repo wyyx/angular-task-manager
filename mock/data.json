@@ -120,19 +120,19 @@
     {
       "name": "待办",
       "projectId": "Hya1moGb-",
-      "order": 1,
+      "order": 3,
       "id": "BylTyXiM-b"
     },
     {
       "name": "进行中",
       "projectId": "Hya1moGb-",
-      "order": 2,
+      "order": 1,
       "id": "BkWpk7jGZb"
     },
     {
       "name": "已完成",
       "projectId": "Hya1moGb-",
-      "order": 3,
+      "order": 2,
       "id": "H1fTyXjMWW"
     }
   ],

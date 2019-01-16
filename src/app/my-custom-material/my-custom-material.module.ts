@@ -12,45 +12,44 @@ import { MatGridListModule } from '@angular/material/grid-list'
 import { MatDialogModule } from '@angular/material/dialog'
 import { MatChipsModule } from '@angular/material/chips'
 import {
-	MatAutocompleteModule,
-	MatMenuModule,
-	MatCheckboxModule,
-	MatTooltipModule,
-	MatDatepickerModule,
-	MatRadioModule,
-	MatNativeDateModule,
-	MatSelectModule,
-	MatButtonToggleModule,
-	MatTabsModule
+  MatAutocompleteModule,
+  MatMenuModule,
+  MatCheckboxModule,
+  MatTooltipModule,
+  MatDatepickerModule,
+  MatRadioModule,
+  MatNativeDateModule,
+  MatSelectModule,
+  MatButtonToggleModule,
+  MatTabsModule
 } from '@angular/material'
 
 @NgModule({
-	exports: [
-		BrowserAnimationsModule,
-		MatSidenavModule,
-		MatToolbarModule,
-		MatButtonModule,
-		MatIconModule,
-		MatCardModule,
-		MatInputModule,
-		MatListModule,
-		MatSlideToggleModule,
-		MatGridListModule,
-		MatDialogModule,
-		MatAutocompleteModule,
-		MatMenuModule,
-		MatListModule,
-		MatListModule,
-		MatCheckboxModule,
-		MatTooltipModule,
-		MatDatepickerModule,
-		MatRadioModule,
-		MatNativeDateModule,
-		MatSelectModule,
-		MatDatepickerModule,
-		MatButtonToggleModule,
-		MatChipsModule,
-		MatTabsModule
-	]
+  exports: [
+    MatSidenavModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatCardModule,
+    MatInputModule,
+    MatListModule,
+    MatSlideToggleModule,
+    MatGridListModule,
+    MatDialogModule,
+    MatAutocompleteModule,
+    MatMenuModule,
+    MatListModule,
+    MatListModule,
+    MatCheckboxModule,
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatRadioModule,
+    MatNativeDateModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatButtonToggleModule,
+    MatChipsModule,
+    MatTabsModule
+  ]
 })
 export class MyCustomMaterialModule {}

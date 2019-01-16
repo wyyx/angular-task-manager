@@ -14,25 +14,25 @@ import { QuickTaskComponent } from './quick-task/quick-task.component'
 import { MoveTaskComponent } from './move-task/move-task.component'
 
 @NgModule({
-	imports: [ CommonModule, TaskRoutingModule, SharedModule ],
-	declarations: [
-		TaskHomeComponent,
-		TaskListComponent,
-		TaskItemComponent,
-		TaskHeaderComponent,
-		NewTaskComponent,
-		MoveTaskComponent,
-		ModifyTaskListNameComponent,
-		EditTaskComponent,
-		NewTaskListComponent,
-		QuickTaskComponent
-	],
-	entryComponents: [
-		NewTaskComponent,
-		MoveTaskComponent,
-		ModifyTaskListNameComponent,
-		EditTaskComponent,
-		NewTaskListComponent
-	]
+  imports: [CommonModule, TaskRoutingModule, SharedModule],
+  declarations: [
+    TaskHomeComponent,
+    TaskListComponent,
+    TaskItemComponent,
+    TaskHeaderComponent,
+    NewTaskComponent,
+    MoveTaskComponent,
+    ModifyTaskListNameComponent,
+    EditTaskComponent,
+    NewTaskListComponent,
+    QuickTaskComponent
+  ],
+  entryComponents: [
+    NewTaskComponent,
+    MoveTaskComponent,
+    ModifyTaskListNameComponent,
+    EditTaskComponent,
+    NewTaskListComponent
+  ]
 })
 export class TaskModule {}

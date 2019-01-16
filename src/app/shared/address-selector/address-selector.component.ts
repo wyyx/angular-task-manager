@@ -1,19 +1,8 @@
 import { Component, OnInit, OnDestroy, forwardRef } from '@angular/core'
 import { FormGroup, FormControl, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms'
-import { Subject, Observable, from, of, combineLatest } from 'rxjs'
+import { Subject, of, combineLatest } from 'rxjs'
 import { getProvinces, getCities, getDistricts } from 'src/app/utils/address.util'
-import {
-	filter,
-	takeUntil,
-	mergeMap,
-	tap,
-	startWith,
-	switchMap,
-	map,
-	take,
-	distinct,
-	mapTo
-} from 'rxjs/operators'
+import { takeUntil, tap, startWith, switchMap, distinct } from 'rxjs/operators'
 
 @Component({
 	selector: 'app-address-selector',
@@ -92,9 +81,9 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
 						this.district.disable()
 					}
 
-					const address: [any, any, any] = [ provinceTemp, cityTemp, this.district.value ]
+					const address: any[] = [ provinceTemp, cityTemp, this.district.value ]
 					console.log(address)
-					this.propageteChangeAsync(address)
+					this.propageteChangeAsync(address[0], address[1], address[2])
 
 					return of(null)
 				}),
@@ -108,7 +97,7 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
 		this.kill$.complete()
 	}
 
-	propageteChangeAsync([ province, city, district ]) {
+	propageteChangeAsync(province, city, district) {
 		setTimeout(() => {
 			this.propagateChange([ province, city, district ])
 		}, 0)
