@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core'
 import { RouterModule, Routes } from '@angular/router'
 import { CommonModule } from '@angular/common'
 import { ProjectListComponent } from './project-list/project-list.component'
-import { TaskModule } from '../task/task.module'
+import { AuthGuard } from '../auth/guards/auth.guard'
 
 const routes: Routes = [
   {
@@ -16,7 +16,8 @@ const routes: Routes = [
         path: ':projectId',
         loadChildren: './../task/task.module#TaskModule'
       }
-    ]
+    ],
+    canActivate: [AuthGuard]
   }
 ]
 

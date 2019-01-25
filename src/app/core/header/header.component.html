@@ -1,10 +1,23 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button (click)="onToggleSidenav()">
+  <button mat-icon-button
+          (click)="onToggleSidenav()">
     <mat-icon aria-label="toggle sidebar">menu</mat-icon>
   </button>
   <span>企业协作平台</span>
   <div class="filler"></div>
-  <mat-slide-toggle (change)="onToggleTheme($event.checked)">
-    暗色主题
-  </mat-slide-toggle>
+
+  <button mat-icon-button
+          class="account"
+          *ngIf="loggedIn$ | async">
+    <mat-icon aria-label="toggle sidebar"
+              [matMenuTriggerFor]="menu">account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item
+            (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>注销</span>
+    </button>
+  </mat-menu>
+  <mat-slide-toggle (change)="onToggleTheme($event.checked)"> 暗色主题 </mat-slide-toggle>
 </mat-toolbar>
