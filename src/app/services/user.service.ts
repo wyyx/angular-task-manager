@@ -9,6 +9,7 @@ import { Task } from '../domain/task.model'
 import { User } from '../auth/models/user.model'
 import { ProjectService } from './project.service'
 import { uniq } from 'lodash'
+import { Update } from '@ngrx/entity'
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +57,19 @@ export class UserService {
       url,
       JSON.stringify({
         projectIds: uniq([...projectIds, project.id])
+      }),
+      { headers: this.headers }
+    )
+  }
+
+  // Update user
+  update(user: Update<User>) {
+    const url = `${this.baseUrl}/${this.path}/${user.id}`
+
+    return this.http.patch<User>(
+      url,
+      JSON.stringify({
+        ...user.changes
       }),
       { headers: this.headers }
     )

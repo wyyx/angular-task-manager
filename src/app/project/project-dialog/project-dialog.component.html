@@ -30,8 +30,9 @@
   <div mat-dialog-actions>
     <button mat-raised-button
             color="primary"
-            type="submit"
-            [disabled]="!form.valid">保存</button>
+            type="button"
+            [disabled]="!form.valid"
+            (click)="save()">保存</button>
     <button mat-button
             (click)="closeDialog()"
             type="button">关闭</button>

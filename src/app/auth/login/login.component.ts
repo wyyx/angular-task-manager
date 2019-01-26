@@ -24,7 +24,15 @@ export class LoginComponent implements OnInit, OnDestroy {
     })
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store
+      .pipe(
+        select(getLoggedIn),
+        tap(loggedIn => loggedIn && this.router.navigateByUrl('/projects')),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
+  }
 
   ngOnDestroy(): void {
     this.kill$.next()

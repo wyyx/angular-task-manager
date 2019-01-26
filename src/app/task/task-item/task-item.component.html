@@ -4,7 +4,7 @@
   'priority-important': task.priority === 2,
   'priority-emergency': task.priority === 1}"
                (click)="onEditTaskClick()"
-               [@item]="itemState"
+               [@itemAnim]="itemState"
                [appDraggable]="true"
                [dragClass]="'drag-start'"
                [dragTag]="'task-item'"

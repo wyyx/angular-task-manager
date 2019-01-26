@@ -2,7 +2,10 @@
   <h1 mat-dialog-title>邀请组员</h1>
   <div mat-dialog-content>
     <app-chip-selector [placeholder]="'输入 email 搜索成员'"
-                       [formControl]="membersControl">
+                       [existChips]="existChips"
+                       [chips]="searchedMemberChips"
+                       [formControl]="members"
+                       (filterChange)="onFilterChange($event)">
     </app-chip-selector>
   </div>
   <div mat-dialog-actions>
@@ -11,7 +14,7 @@
             (click)="save()"
             type="button">保存</button>
     <button mat-button
-            (click)="closeDialog()"
+            (click)="close()"
             type="button">关闭</button>
   </div>
 </form>

@@ -19,11 +19,10 @@
       "name": "张三",
       "avatar": "avatars:svg-1",
       "email": "zhangsan@163.com",
-      "id": "37489e0c-df34-c261-71c4-ce75357e3035",
+      "id": "ce75357e3035",
       "projectIds": [
         "Sk2HaTagb",
-        "Hya1moGb-",
-        "E0ykNj9"
+        "Hya1moGb-"
       ],
       "roleIds": [
         0,
@@ -37,9 +36,7 @@
       "avatar": "avatars:svg-2",
       "email": "lisi@163.com",
       "id": "BkkDvwee-",
-      "projectIds": [
-        "E0ykNj9"
-      ],
+      "projectIds": [],
       "roleIds": [
         1
       ]
@@ -50,9 +47,7 @@
       "avatar": "avatars:svg-3",
       "email": "liming@163.com",
       "id": "fgasergase-",
-      "projectIds": [
-        "E0ykNj9"
-      ],
+      "projectIds": [],
       "roleIds": [
         1
       ]
@@ -65,8 +60,7 @@
       "desc": "用于 Bug 的内部跟踪和管理",
       "coverImg": "/assets/img/covers/0.jpg",
       "members": [
-        "1",
-        "2"
+        "ce75357e3035"
       ]
     },
     {
@@ -74,7 +68,7 @@
       "desc": "为某某公司开发的定制化 ERP 系统",
       "coverImg": "/assets/img/covers/1.jpg",
       "members": [
-        "1"
+        "ce75357e3035"
       ],
       "id": "Hya1moGb-",
       "taskLists": [
@@ -82,26 +76,6 @@
         "BkWpk7jGZb",
         "H1fTyXjMWW"
       ]
-    },
-    {
-      "name": "AAAaaa",
-      "desc": "bbbbbbbbbbbbb",
-      "coverImg": "/assets/img/covers/16.jpg",
-      "id": "E0ykNj9",
-      "members": [
-        "1",
-        "BkkDvwee-",
-        "fgasergase-"
-      ]
-    },
-    {
-      "name": "rrrrrrrr",
-      "desc": "ttttt",
-      "coverImg": "/assets/img/covers/23.jpg",
-      "members": [
-        "1"
-      ],
-      "id": "6Cs0xtt"
     }
   ],
   "taskLists": [

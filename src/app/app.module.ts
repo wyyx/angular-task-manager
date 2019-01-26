@@ -17,6 +17,8 @@ import { EffectsModule } from '@ngrx/effects'
 import { environment } from 'src/environments/environment'
 import { CustomSerializer } from './store/custom-route-serializer'
 import { StoreRouterConnectingModule } from '@ngrx/router-store'
+import { effects } from './store/effects'
+import { UserEffects } from './store/effects/user.effects'
 
 @NgModule({
   declarations: [AppComponent, PageNotFoundComponent],
@@ -31,7 +33,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store'
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot({ stateKey: 'router', serializer: CustomSerializer }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([UserEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]

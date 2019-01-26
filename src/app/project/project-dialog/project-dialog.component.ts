@@ -1,14 +1,21 @@
-import { Component, OnInit, Inject } from '@angular/core'
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core'
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material'
 import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Project } from 'src/app/domain/project.model'
+import { Store, select } from '@ngrx/store'
+import { AppState } from 'src/app/store'
+import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
+import { tap, takeUntil } from 'rxjs/operators'
+import { Subject } from 'rxjs'
 
 @Component({
   selector: 'app-project-dialog',
   templateUrl: './project-dialog.component.html',
   styleUrls: ['./project-dialog.component.scss']
 })
-export class ProjectDialogComponent implements OnInit {
+export class ProjectDialogComponent implements OnInit, OnDestroy {
+  kill$: Subject<any> = new Subject()
+
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     desc: new FormControl('', Validators.required),
@@ -22,7 +29,8 @@ export class ProjectDialogComponent implements OnInit {
 
   constructor(
     private dialogRef: MatDialogRef<ProjectDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: { project: Project }
+    @Inject(MAT_DIALOG_DATA) private data: { project: Project },
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
@@ -39,6 +47,11 @@ export class ProjectDialogComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.kill$.next()
+    this.kill$.complete()
+  }
+
   toSmallSizeUrl(url: string) {
     return url.replace('.jpg', '_tn.jpg')
   }
@@ -51,9 +64,7 @@ export class ProjectDialogComponent implements OnInit {
     this.dialogRef.close()
   }
 
-  save(event: Event) {
-    event.preventDefault()
-
+  save() {
     if (this.form.valid) {
       let newProject = {
         ...this.project,
@@ -61,11 +72,20 @@ export class ProjectDialogComponent implements OnInit {
         coverImg: this.toLargeSizeUrl(this.form.value.coverImg)
       }
 
-      if (!this.project) {
-        newProject = { ...newProject, members: ['1'] }
-      }
+      this.store
+        .pipe(
+          select(getUser),
+          tap(user => {
+            // Add new project
+            if (!this.project) {
+              newProject = { ...newProject, members: [user.id] }
+            }
 
-      this.dialogRef.close(newProject)
+            this.dialogRef.close(newProject)
+          }),
+          takeUntil(this.kill$)
+        )
+        .subscribe()
     }
   }
 

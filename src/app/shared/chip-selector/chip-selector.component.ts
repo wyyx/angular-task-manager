@@ -1,25 +1,17 @@
-import { Component, OnInit, ViewChild, forwardRef, Input, OnDestroy } from '@angular/core'
 import {
-  FormBuilder,
-  FormGroup,
-  AbstractControl,
-  Validators,
-  ControlValueAccessor,
-  NG_VALUE_ACCESSOR,
-  FormControl
-} from '@angular/forms'
-import {
-  mergeMap,
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  takeUntil,
-  tap,
-  switchMap
-} from 'rxjs/operators'
-import { UserService } from 'src/app/services/user.service'
-import { Observable, Subject } from 'rxjs'
-import { User } from 'src/app/auth/models/user.model'
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  OnChanges
+} from '@angular/core'
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms'
+import { Subject } from 'rxjs'
+import { debounceTime, distinctUntilChanged, filter, takeUntil, tap } from 'rxjs/operators'
+import { Chip } from '../models/chip.model'
 
 @Component({
   selector: 'app-chip-selector',
@@ -33,31 +25,53 @@ import { User } from 'src/app/auth/models/user.model'
     }
   ]
 })
-export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAccessor {
-  memberControl: FormControl = new FormControl('')
-  members: User[] = []
-  @Input() placeholder: string
-  filteredMembers$: Observable<User[]>
-  subManager$: Subject<any> = new Subject()
+export class ChipSelectorComponent implements OnInit, OnDestroy, OnChanges, ControlValueAccessor {
+  kill$: Subject<any> = new Subject()
+
+  @Input()
+  placeholder: string = '输入搜索'
+
+  @Input()
+  chips: Chip[] = []
+
+  @Output()
+  filterChange: EventEmitter<string> = new EventEmitter()
+
+  @Input()
+  existChips: Chip[] = []
+
+  selectedChips: Chip[] = []
+
+  filter: FormControl = new FormControl('')
 
   propagateChange
   propagateTouch
 
-  constructor(private userService: UserService) {}
+  constructor() {}
 
   ngOnInit() {
-    this.filteredMembers$ = this.memberControl.valueChanges.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      filter((str: string) => str && str.length > 1),
-      switchMap(filterStr => this.userService.searchUsers(filterStr.trim())),
-      takeUntil(this.subManager$)
-    )
+    this.filter.valueChanges
+      .pipe(
+        debounceTime(200),
+        distinctUntilChanged(),
+        filter((str: string) => str && str.length > 0),
+        tap(filter => this.filterChange.emit(filter)),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
+  }
+
+  ngOnChanges() {
+    // Update selectedChips when input existChips changes, note: slice()
+    setTimeout(() => {
+      this.selectedChips = this.existChips.slice()
+      this.propagateChange(this.selectedChips)
+    }, 0)
   }
 
   ngOnDestroy(): void {
-    this.subManager$.next()
-    this.subManager$.complete()
+    this.kill$.next()
+    this.kill$.complete()
   }
 
   onFocusOut(event) {
@@ -65,7 +79,7 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAcc
   }
 
   writeValue(obj: any): void {
-    this.members = obj
+    this.selectedChips = obj
   }
 
   registerOnChange(fn: any): void {
@@ -76,21 +90,17 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAcc
     this.propagateTouch = fn
   }
 
-  onAutocompleteClick(member: User) {
-    const index = this.members.findIndex(m => m.id == member.id)
+  onAutocompleteClick(chip: Chip) {
+    this.selectedChips.push(chip)
+    this.propagateChange(this.selectedChips)
 
-    // If not added
-    if (index < 0) {
-      this.members.push(member)
-      this.propagateChange(this.members)
-    }
-
-    this.memberControl.setValue(null)
+    // Clear filter input
+    this.filter.setValue(null)
   }
 
-  onCancelClick(member: User) {
-    const index = this.members.findIndex(m => m.id == member.id)
-    this.members.splice(index, 1)
-    this.propagateChange(this.members)
+  onRemoveChipClick(chip: Chip) {
+    const index = this.selectedChips.findIndex(c => c.value === chip.value)
+    this.selectedChips.splice(index, 1)
+    this.propagateChange(this.selectedChips)
   }
 }

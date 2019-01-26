@@ -6,78 +6,71 @@ import { Observable, from } from 'rxjs'
 import { mergeMap, count, switchMap, map } from 'rxjs/operators'
 import { TaskList } from '../domain/task-list.model'
 import { Task } from '../domain/task.model'
+import { Update } from '@ngrx/entity'
 
 @Injectable({
-	providedIn: 'root'
+  providedIn: 'root'
 })
 export class ProjectService {
-	private readonly path = 'projects'
-	private headers = new HttpHeaders({
-		'Content-Type': 'application/json'
-	})
+  private readonly path = 'projects'
+  private headers = new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
 
-	constructor(@Inject(BASE_URL) private baseUrl: string, private http: HttpClient) {}
+  constructor(@Inject(BASE_URL) private baseUrl: string, private http: HttpClient) {}
 
-	// POST
-	add(project: Project): Observable<Project> {
-		project.id = null
-		const url = `${this.baseUrl}/${this.path}`
+  // POST
+  add(project: Project): Observable<Project> {
+    const url = `${this.baseUrl}/${this.path}`
 
-		return this.http.post<Project>(url, JSON.stringify(project), {
-			headers: this.headers
-		})
-	}
+    return this.http.post<Project>(url, JSON.stringify(project), {
+      headers: this.headers
+    })
+  }
 
-	// UPDATE
-	update(project: Project): Observable<Project> {
-		const url = `${this.baseUrl}/${this.path}/${project.id}`
-		const partProject = {
-			...project
-		}
-		delete partProject.id
-		console.log('xxx', project)
+  // UPDATE
+  update(project: Update<Project>): Observable<Project> {
+    const url = `${this.baseUrl}/${this.path}/${project.id}`
 
-		return this.http.patch<Project>(url, JSON.stringify(partProject), {
-			headers: this.headers
-		})
-	}
+    return this.http.patch<Project>(url, JSON.stringify({ ...project.changes }), {
+      headers: this.headers
+    })
+  }
 
-	// DELETE
-	delete(project: Project): Observable<Project> {
-		const url = `${this.baseUrl}/${this.path}/${project.id}`
+  // DELETE
+  delete(project: Project): Observable<Project> {
+    const url = `${this.baseUrl}/${this.path}/${project.id}`
 
-		return from(project.taskLists || []).pipe(
-			mergeMap(tasklistId =>
-				this.http.delete<TaskList>(`${this.baseUrl}/taskList/${tasklistId}`)
-			),
-			count(),
-			switchMap(count => this.http.delete<Project>(url)),
-			map(_ => project)
-		)
-	}
+    return from(project.taskLists || []).pipe(
+      mergeMap(tasklistId => this.http.delete<TaskList>(`${this.baseUrl}/taskList/${tasklistId}`)),
+      count(),
+      switchMap(count => this.http.delete<Project>(url)),
+      map(_ => project)
+    )
+  }
 
-	// GET
-	get(userId: string): Observable<Project[]> {
-		const url = `${this.baseUrl}/${this.path}`
+  // GET
+  getProjectsByUserId(userId: string): Observable<Project[]> {
+    const url = `${this.baseUrl}/${this.path}`
 
-		return this.http.get<Project[]>(url, {
-			headers: this.headers,
-			params: {
-				members_like: userId
-			}
-		})
-	}
+    return this.http.get<Project[]>(url, {
+      headers: this.headers,
+      params: {
+        members_like: userId
+      }
+    })
+  }
 
-	getProjectById(id: string) {
-		const url = `${this.baseUrl}/${this.path}`
+  getProjectById(id: string) {
+    const url = `${this.baseUrl}/${this.path}`
 
-		return this.http
-			.get<Project[]>(url, {
-				headers: this.headers,
-				params: {
-					id
-				}
-			})
-			.pipe(map(projects => projects && projects[0]))
-	}
+    return this.http
+      .get<Project[]>(url, {
+        headers: this.headers,
+        params: {
+          id
+        }
+      })
+      .pipe(map(projects => projects && projects[0]))
+  }
 }

@@ -28,6 +28,7 @@ export class AuthEffects implements OnInitEffects {
           localStorage.setItem('token', token)
           localStorage.setItem('user', JSON.stringify(user))
 
+          // Navigate to projects page
           this.router.navigateByUrl('/projects')
 
           return new LoginSuccessAction({ token, user })
@@ -59,6 +60,7 @@ export class AuthEffects implements OnInitEffects {
     const token = localStorage.getItem('token')
 
     if (user && token) {
+      this.router.navigateByUrl('/projects')
       return new LoginSuccessAction({ user: JSON.parse(user), token })
     } else {
       this.router.navigateByUrl('/login')

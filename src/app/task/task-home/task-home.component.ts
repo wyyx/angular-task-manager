@@ -5,7 +5,7 @@ import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-di
 import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
 import { EditTaskComponent } from '../edit-task/edit-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
-import { slideToRight } from 'src/app/animations/route.anim'
+import { slideToRightAnim } from 'src/app/animations/route.anim'
 import { DragData } from 'src/app/directive/drag-drop.service'
 import { TaskListService } from 'src/app/services/task-list.service'
 import { TaskList } from 'src/app/domain/task-list.model'
@@ -19,14 +19,14 @@ import { MoveTaskComponent } from '../move-task/move-task.component'
   selector: 'app-task-home',
   templateUrl: './task-home.component.html',
   styleUrls: ['./task-home.component.scss'],
-  animations: [slideToRight]
+  animations: [slideToRightAnim]
 })
 export class TaskHomeComponent implements OnInit, OnDestroy {
   taskLists = []
   kill$: Subject<any> = new Subject()
   test$: Observable<any>
 
-  @HostBinding('@routeAnim') state
+  @HostBinding('@slideToRightAnim') state
   constructor(
     public dialog: MatDialog,
     private taskListService: TaskListService,
@@ -37,18 +37,18 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.activatedRoute.paramMap
       .pipe(
-        switchMap((p) => {
+        switchMap(p => {
           console.log(p.get('projectId'))
 
           return this.taskListService.get(p.get('projectId'))
         }),
-        mergeMap((taskLists) => from(taskLists)),
-        mergeMap((taskList) =>
-          this.taskService.get(taskList.id).pipe(map((tasks) => ({ ...taskList, tasks })))
+        mergeMap(taskLists => from(taskLists)),
+        mergeMap(taskList =>
+          this.taskService.get(taskList.id).pipe(map(tasks => ({ ...taskList, tasks })))
         ),
         takeUntil(this.kill$)
       )
-      .subscribe((taskList) => this.taskLists.push(taskList))
+      .subscribe(taskList => this.taskLists.push(taskList))
   }
 
   ngOnDestroy(): void {
@@ -62,20 +62,20 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
 
   openMoveAllDialog(currentList) {
     const dialogRef = this.dialog.open(MoveTaskComponent, {
-      data: { lists: this.taskLists.filter((list) => list.id != currentList.id) }
+      data: { lists: this.taskLists.filter(list => list.id != currentList.id) }
     })
 
     dialogRef
       .afterClosed()
       .pipe(
-        mergeMap((targetListId) => {
+        mergeMap(targetListId => {
           if (targetListId) {
             // Update view
-            this.taskLists.forEach((list) => {
+            this.taskLists.forEach(list => {
               if (list.id == targetListId) {
                 list.tasks = list.tasks.concat(currentList.tasks)
                 // Update task.taskListId to targetListId
-                list.tasks.forEach((task) => (task.taskListId = targetListId))
+                list.tasks.forEach(task => (task.taskListId = targetListId))
                 currentList.tasks = []
               }
             })
@@ -98,7 +98,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       }
     })
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(result => {
       console.log('deleteList:', result)
     })
   }
@@ -137,9 +137,9 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
         targetList.tasks.push(taskItem)
 
         // Remove taskItem from sourceList
-        const sourceListIndex = this.taskLists.findIndex((list) => list.id == taskItem.taskListId)
+        const sourceListIndex = this.taskLists.findIndex(list => list.id == taskItem.taskListId)
         const sourceItemIndex = this.taskLists[sourceListIndex].tasks.findIndex(
-          (task) => task.id == taskItem.id
+          task => task.id == taskItem.id
         )
         this.taskLists[sourceListIndex].tasks.splice(sourceItemIndex, 1)
 
@@ -172,7 +172,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     const sourceOrder = sourceList.order
     const targetOrder = targetList.order
 
-    this.taskLists.forEach((list) => {
+    this.taskLists.forEach(list => {
       list.id == sourceList.id ? (list.order = targetOrder) : null
       list.id == targetList.id ? (targetList.order = sourceOrder) : null
     })

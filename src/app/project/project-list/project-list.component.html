@@ -1,6 +1,6 @@
 <div class="container"
-     [@list]="projects.length">
-  <app-project-item *ngFor="let project of projects"
+     [@listAnim]="(projects$ | async)?.length">
+  <app-project-item *ngFor="let project of (projects$ | async)"
                     [item]="project"
                     class="card"
                     (invite)="openInviteDialog(project)"

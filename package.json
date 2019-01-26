@@ -10,7 +10,8 @@
     "e2e": "ng e2e",
     "ng-server": "ng serve",
     "server": "json-server ./mock/data.json --watch",
-    "dev": "concurrently \"npm run ng-server\" \"npm run server\""
+    "dev": "concurrently \"npm run ng-server\" \"npm run server\"",
+    "validate-ts": "tsc -w --noEmit"
   },
   "private": true,
   "dependencies": {

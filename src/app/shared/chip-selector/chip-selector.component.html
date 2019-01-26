@@ -1,12 +1,12 @@
 <div class="container">
   <mat-form-field class="full-width"
-                  *ngIf="members.length">
+                  *ngIf="selectedChips.length">
     <mat-chip-list>
       <mat-chip color="primary"
                 selected
-                *ngFor="let member of members">{{member.name}}
+                *ngFor="let chip of selectedChips">{{chip.label}}
         <mat-icon matChipRemove
-                  (click)="onCancelClick(member)">cancel
+                  (click)="onRemoveChipClick(chip)">cancel
         </mat-icon>
       </mat-chip>
     </mat-chip-list>
@@ -15,14 +15,14 @@
     <input type="text"
            [placeholder]="placeholder"
            matInput
-           [formControl]="memberControl"
+           [formControl]="filter"
            [matAutocomplete]="auto"
            (focusout)="onFocusOut($event)">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let filteredMember of filteredMembers$ | async"
-                  [value]="filteredMember"
-                  (click)="onAutocompleteClick(filteredMember)">
-        {{filteredMember.name}}
+      <mat-option *ngFor="let chip of chips"
+                  [value]="chip"
+                  (click)="onAutocompleteClick(chip)">
+        {{chip.label}}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>
