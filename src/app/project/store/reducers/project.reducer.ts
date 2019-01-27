@@ -1,6 +1,6 @@
 import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity'
 import { Project } from 'src/app/domain/project.model'
-import { ProjectActions, ProjectActionTypes } from '../actions/projects.actions'
+import { ProjectActions, ProjectActionTypes } from '../actions/project.actions'
 
 export interface ProjectsState extends EntityState<Project> {
   loading: boolean

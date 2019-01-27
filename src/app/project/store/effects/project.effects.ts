@@ -21,7 +21,7 @@ import {
   UpdateProjectSuccessAction,
   DeleteProjectFailAction,
   UpdateProjectFailAction
-} from '../actions/projects.actions'
+} from '../actions/project.actions'
 import { getAllProjectsIsLoaded } from '../selectors/projects.selectors'
 
 @Injectable()

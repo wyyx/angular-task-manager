@@ -12,7 +12,7 @@ import { UserService } from 'src/app/services/user.service'
 import { Chip } from 'src/app/shared/models/chip.model'
 import { AppState } from 'src/app/store'
 import { UpdateUserAction } from 'src/app/store/actions/user.actions'
-import { UpdateProjectAction } from '../store/actions/projects.actions'
+import { UpdateProjectAction } from '../store/actions/project.actions'
 
 @Component({
   selector: 'app-invite',

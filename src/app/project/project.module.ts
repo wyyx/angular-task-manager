@@ -7,9 +7,9 @@ import { ProjectRoutingModule } from './project-routing.module'
 import { SharedModule } from '../shared/shared.module'
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component'
 import { StoreModule } from '@ngrx/store'
-import { projectFeatureReducers } from './store/reducers'
+import { projectFeatureReducers } from './store'
 import { EffectsModule } from '@ngrx/effects'
-import { ProjectEffects } from './store/effects/projects.effects'
+import { ProjectEffects } from './store/effects/project.effects'
 
 @NgModule({
   imports: [

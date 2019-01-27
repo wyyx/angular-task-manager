@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
-import { adapter, ProjectsState } from '../reducers/projects.reducer'
-import { ProjectFeatureState } from '../reducers'
+import { adapter, ProjectsState } from '../reducers/project.reducer'
+import { ProjectFeatureState } from '..'
 import { AppState } from 'src/app/store'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = adapter.getSelectors()

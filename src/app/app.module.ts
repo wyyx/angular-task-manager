@@ -12,13 +12,11 @@ import { Router } from '@angular/router'
 import { AuthModule } from './auth/auth.module'
 import { StoreModule } from '@ngrx/store'
 import { StoreDevtoolsModule } from '@ngrx/store-devtools'
-import { reducers, metaReducers } from './store'
+import { appReducers, appMetaReducers, appEffects } from './store'
 import { EffectsModule } from '@ngrx/effects'
 import { environment } from 'src/environments/environment'
 import { CustomSerializer } from './store/custom-route-serializer'
 import { StoreRouterConnectingModule } from '@ngrx/router-store'
-import { effects } from './store/effects'
-import { UserEffects } from './store/effects/user.effects'
 
 @NgModule({
   declarations: [AppComponent, PageNotFoundComponent],
@@ -30,10 +28,10 @@ import { UserEffects } from './store/effects/user.effects'
     AuthModule,
     AppRoutingModule,
     ProjectModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(appReducers, { metaReducers: appMetaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot({ stateKey: 'router', serializer: CustomSerializer }),
-    EffectsModule.forRoot([UserEffects])
+    EffectsModule.forRoot(appEffects)
   ],
   providers: [],
   bootstrap: [AppComponent]

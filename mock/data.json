@@ -36,7 +36,9 @@
       "avatar": "avatars:svg-2",
       "email": "lisi@163.com",
       "id": "BkkDvwee-",
-      "projectIds": [],
+      "projectIds": [
+        "Hya1moGb-"
+      ],
       "roleIds": [
         1
       ]
@@ -47,7 +49,9 @@
       "avatar": "avatars:svg-3",
       "email": "liming@163.com",
       "id": "fgasergase-",
-      "projectIds": [],
+      "projectIds": [
+        "5z0Kw8c"
+      ],
       "roleIds": [
         1
       ]
@@ -68,7 +72,8 @@
       "desc": "为某某公司开发的定制化 ERP 系统",
       "coverImg": "/assets/img/covers/1.jpg",
       "members": [
-        "ce75357e3035"
+        "ce75357e3035",
+        "BkkDvwee-"
       ],
       "id": "Hya1moGb-",
       "taskLists": [
@@ -76,6 +81,15 @@
         "BkWpk7jGZb",
         "H1fTyXjMWW"
       ]
+    },
+    {
+      "name": "wwwwwww",
+      "desc": "eeeeeeeee",
+      "coverImg": "/assets/img/covers/4.jpg",
+      "members": [
+        "fgasergase-"
+      ],
+      "id": "5z0Kw8c"
     }
   ],
   "taskLists": [

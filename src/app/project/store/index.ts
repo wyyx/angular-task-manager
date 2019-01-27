@@ -1,4 +1,4 @@
-import { ProjectsState, projectsReducer } from './projects.reducer'
+import { ProjectsState, projectsReducer } from './reducers/project.reducer'
 import { ActionReducerMap } from '@ngrx/store'
 
 export interface ProjectFeatureState {

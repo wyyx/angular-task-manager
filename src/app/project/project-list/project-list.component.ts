@@ -16,7 +16,7 @@ import {
   DeleteProjectAction,
   NeedAllProjectsAction,
   UpdateProjectAction
-} from '../store/actions/projects.actions'
+} from '../store/actions/project.actions'
 import { getAllProjects } from '../store/selectors/projects.selectors'
 
 @Component({
