@@ -7,7 +7,7 @@ import { ProjectRoutingModule } from './project-routing.module'
 import { SharedModule } from '../shared/shared.module'
 import { ProjectDialogComponent } from './project-dialog/project-dialog.component'
 import { StoreModule } from '@ngrx/store'
-import { projectFeatureReducers } from './store'
+import { projectFeatureReducers, projectFeatureEffects } from './store'
 import { EffectsModule } from '@ngrx/effects'
 import { ProjectEffects } from './store/effects/project.effects'
 
@@ -17,7 +17,7 @@ import { ProjectEffects } from './store/effects/project.effects'
     SharedModule,
     ProjectRoutingModule,
     StoreModule.forFeature('project', projectFeatureReducers),
-    EffectsModule.forFeature([ProjectEffects])
+    EffectsModule.forFeature(projectFeatureEffects)
   ],
   declarations: [
     ProjectListComponent,

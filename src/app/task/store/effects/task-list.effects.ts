@@ -15,6 +15,7 @@ import {
 } from '../actions/task-list.actions'
 import { LoadTasksAction } from '../actions/task.actions'
 import { getTaskListsIsLoaded } from '../selectors/task-list.selectors'
+import { TaskService } from 'src/app/services/task.service'
 
 @Injectable()
 export class TaskListEffects {
@@ -31,7 +32,7 @@ export class TaskListEffects {
   )
 
   @Effect() loadTaskLists$: Observable<TaskListActions> = this.actions$.pipe(
-    ofType<NeedTaskListsAction>(TaskListActionTypes.LOAD_TASK_LISTS),
+    ofType<LoadTaskListsAction>(TaskListActionTypes.LOAD_TASK_LISTS),
     map(action => action.payload.projectId),
     mergeMap(projectId =>
       this.taskListService.get(projectId).pipe(
@@ -49,6 +50,7 @@ export class TaskListEffects {
   constructor(
     private actions$: Actions,
     private taskListService: TaskListService,
+    private taskService: TaskService,
     private store: Store<AppState>
   ) {}
 }

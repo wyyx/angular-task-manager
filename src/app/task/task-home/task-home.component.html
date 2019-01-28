@@ -1,5 +1,5 @@
 <div class="task-lists">
-  <app-task-list *ngFor="let list of taskLists"
+  <app-task-list *ngFor="let list of taskListViews$ | async"
                  class="list-container p-10"
                  appDroppable
                  [dragEnterClass]="'drag-enter'"

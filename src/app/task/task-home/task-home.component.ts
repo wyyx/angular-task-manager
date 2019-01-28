@@ -1,19 +1,25 @@
-import { Component, OnInit, HostBinding, OnDestroy } from '@angular/core'
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
-import { NewTaskComponent } from '../new-task/new-task.component'
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component'
-import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
-import { EditTaskComponent } from '../edit-task/edit-task.component'
-import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
-import { slideToRightAnim } from 'src/app/animations/route.anim'
-import { DragData } from 'src/app/directive/drag-drop.service'
-import { TaskListService } from 'src/app/services/task-list.service'
-import { TaskList } from 'src/app/domain/task-list.model'
 import { ActivatedRoute } from '@angular/router'
-import { switchMap, mergeMap, map, take, takeUntil } from 'rxjs/operators'
+import { Store, select } from '@ngrx/store'
+import { never, Observable, Subject } from 'rxjs'
+import { mergeMap, takeUntil, filter, map, tap } from 'rxjs/operators'
+import { slideToRightAnim } from 'src/app/animations/route.anim'
+import { TaskListService } from 'src/app/services/task-list.service'
 import { TaskService } from 'src/app/services/task.service'
-import { from, Subscription, never, Subject, interval, Observable } from 'rxjs'
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component'
+import { AppState } from 'src/app/store'
+import { EditTaskComponent } from '../edit-task/edit-task.component'
+import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
 import { MoveTaskComponent } from '../move-task/move-task.component'
+import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
+import { NewTaskComponent } from '../new-task/new-task.component'
+import { NeedTaskListsAction } from '../store/actions/task-list.actions'
+import { TaskListView } from 'src/app/domain/task-list-view.model'
+import { getTaskListViews } from '../store/selectors/task-list.selectors'
+import { DragData } from 'src/app/directive/drag-drop.service'
+import { TaskList } from 'src/app/domain/task-list.model'
+import { MoveTasksAction } from '../store/actions/task.actions'
 
 @Component({
   selector: 'app-task-home',
@@ -22,33 +28,23 @@ import { MoveTaskComponent } from '../move-task/move-task.component'
   animations: [slideToRightAnim]
 })
 export class TaskHomeComponent implements OnInit, OnDestroy {
-  taskLists = []
+  taskListViews$: Observable<TaskListView[]>
   kill$: Subject<any> = new Subject()
-  test$: Observable<any>
+  projectId: string
 
   @HostBinding('@slideToRightAnim') state
   constructor(
     public dialog: MatDialog,
     private taskListService: TaskListService,
     private taskService: TaskService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
   ) {}
 
   ngOnInit() {
-    this.activatedRoute.paramMap
-      .pipe(
-        switchMap(p => {
-          console.log(p.get('projectId'))
-
-          return this.taskListService.get(p.get('projectId'))
-        }),
-        mergeMap(taskLists => from(taskLists)),
-        mergeMap(taskList =>
-          this.taskService.get(taskList.id).pipe(map(tasks => ({ ...taskList, tasks })))
-        ),
-        takeUntil(this.kill$)
-      )
-      .subscribe(taskList => this.taskLists.push(taskList))
+    this.projectId = this.activatedRoute.snapshot.paramMap.get('projectId')
+    this.store.dispatch(new NeedTaskListsAction({ projectId: this.projectId }))
+    this.taskListViews$ = this.store.pipe(select(getTaskListViews(this.projectId)))
   }
 
   ngOnDestroy(): void {
@@ -60,32 +56,29 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.dialog.open(NewTaskComponent)
   }
 
-  openMoveAllDialog(currentList) {
+  openMoveAllDialog(currentList: TaskListView) {
     const dialogRef = this.dialog.open(MoveTaskComponent, {
-      data: { lists: this.taskLists.filter(list => list.id != currentList.id) }
+      data: {
+        lists: this.taskListViews$.pipe(
+          // Don't need to move tasks to self taskList
+          map(lists => lists.filter(list => list.id !== currentList.id))
+        )
+      }
     })
 
     dialogRef
       .afterClosed()
       .pipe(
-        mergeMap(targetListId => {
-          if (targetListId) {
-            // Update view
-            this.taskLists.forEach(list => {
-              if (list.id == targetListId) {
-                list.tasks = list.tasks.concat(currentList.tasks)
-                // Update task.taskListId to targetListId
-                list.tasks.forEach(task => (task.taskListId = targetListId))
-                currentList.tasks = []
-              }
-            })
-
-            // Update server
-            return this.taskService.moveAll(currentList.id, targetListId)
-          } else {
-            return never()
-          }
-        }),
+        tap(
+          targetListId =>
+            targetListId &&
+            this.store.dispatch(
+              new MoveTasksAction({
+                sourceTaskListId: currentList.id,
+                targetTaskListId: targetListId
+              })
+            )
+        ),
         takeUntil(this.kill$)
       )
       .subscribe()
@@ -122,46 +115,42 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   }
 
   onDropped(dragData: DragData, targetList) {
-    if (dragData.tag == 'task-list' && dragData.data.id == targetList.id) {
-      // If draged to itself
-      return
-    }
-
-    console.log('onDropped()', dragData)
-    switch (dragData.tag) {
-      case 'task-item':
-        console.log('handling task-item')
-        // Update view
-        // Add taskItem to targetList
-        const taskItem = dragData.data
-        targetList.tasks.push(taskItem)
-
-        // Remove taskItem from sourceList
-        const sourceListIndex = this.taskLists.findIndex(list => list.id == taskItem.taskListId)
-        const sourceItemIndex = this.taskLists[sourceListIndex].tasks.findIndex(
-          task => task.id == taskItem.id
-        )
-        this.taskLists[sourceListIndex].tasks.splice(sourceItemIndex, 1)
-
-        // Update taskItem's taskListId in client
-        taskItem.taskListId = targetList.id
-
-        // Update server
-        this.taskService
-          .move(taskItem.id, targetList.id)
-          .pipe(takeUntil(this.kill$))
-          .subscribe()
-        break
-      case 'task-list':
-        console.log('handling task-list')
-        const sourceList = dragData.data
-        this.taskListService
-          .switchOrder(sourceList, targetList)
-          .pipe(takeUntil(this.kill$))
-          .subscribe()
-        this.switchOrder(sourceList, targetList)
-        break
-    }
+    // if (dragData.tag == 'task-list' && dragData.data.id == targetList.id) {
+    //   // If draged to itself
+    //   return
+    // }
+    // console.log('onDropped()', dragData)
+    // switch (dragData.tag) {
+    //   case 'task-item':
+    //     console.log('handling task-item')
+    //     // Update view
+    //     // Add taskItem to targetList
+    //     const taskItem = dragData.data
+    //     targetList.tasks.push(taskItem)
+    //     // Remove taskItem from sourceList
+    //     const sourceListIndex = this.taskLists.findIndex(list => list.id == taskItem.taskListId)
+    //     const sourceItemIndex = this.taskLists[sourceListIndex].tasks.findIndex(
+    //       task => task.id == taskItem.id
+    //     )
+    //     this.taskLists[sourceListIndex].tasks.splice(sourceItemIndex, 1)
+    //     // Update taskItem's taskListId in client
+    //     taskItem.taskListId = targetList.id
+    //     // Update server
+    //     this.taskService
+    //       .move(taskItem.id, targetList.id)
+    //       .pipe(takeUntil(this.kill$))
+    //       .subscribe()
+    //     break
+    //   case 'task-list':
+    //     console.log('handling task-list')
+    //     const sourceList = dragData.data
+    //     this.taskListService
+    //       .switchOrder(sourceList, targetList)
+    //       .pipe(takeUntil(this.kill$))
+    //       .subscribe()
+    //     this.switchOrder(sourceList, targetList)
+    //     break
+    // }
   }
 
   onQuickTask(desc: string) {
@@ -169,12 +158,11 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   }
 
   switchOrder(sourceList: TaskList, targetList: TaskList) {
-    const sourceOrder = sourceList.order
-    const targetOrder = targetList.order
-
-    this.taskLists.forEach(list => {
-      list.id == sourceList.id ? (list.order = targetOrder) : null
-      list.id == targetList.id ? (targetList.order = sourceOrder) : null
-    })
+    // const sourceOrder = sourceList.order
+    // const targetOrder = targetList.order
+    // this.taskLists.forEach(list => {
+    //   list.id == sourceList.id ? (list.order = targetOrder) : null
+    //   list.id == targetList.id ? (targetList.order = sourceOrder) : null
+    // })
   }
 }

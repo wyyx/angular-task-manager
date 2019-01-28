@@ -13,17 +13,18 @@ import { NewTaskListComponent } from './new-task-list/new-task-list.component'
 import { QuickTaskComponent } from './quick-task/quick-task.component'
 import { MoveTaskComponent } from './move-task/move-task.component'
 import { StoreModule } from '@ngrx/store'
-import { taskFeatureReducers } from './store'
-import { TaskSelectorService } from './store/selectors/task-selector.service'
+import { taskFeatureReducers, taskFeatureEffects } from './store'
+import { EffectsModule } from '@ngrx/effects'
 
 @NgModule({
   imports: [
     CommonModule,
     TaskRoutingModule,
     SharedModule,
-    StoreModule.forFeature('task', taskFeatureReducers)
+    StoreModule.forFeature('task', taskFeatureReducers),
+    EffectsModule.forFeature(taskFeatureEffects)
   ],
-  providers: [TaskSelectorService],
+  providers: [],
   declarations: [
     TaskHomeComponent,
     TaskListComponent,

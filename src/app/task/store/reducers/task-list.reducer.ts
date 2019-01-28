@@ -13,7 +13,7 @@ export function taskListReducer(
 ): TaskListState {
   switch (action.type) {
     case TaskListActionTypes.LOAD_TASK_LISTS_SUCCESS:
-      return taskListAdapter.addMany(action.payload, state)
+      return taskListAdapter.upsertMany(action.payload, state)
     case TaskListActionTypes.LOAD_TASK_LISTS_FAIL:
       return state
     default:

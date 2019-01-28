@@ -10,7 +10,7 @@ const initialTaskState = taskAdapter.getInitialState()
 export function taskReducer(state = initialTaskState, action: TaskActions): TaskState {
   switch (action.type) {
     case TaskActionTypes.LOAD_TASKS_SUCCESS:
-      return taskAdapter.addAll(action.payload, state)
+      return taskAdapter.upsertMany(action.payload, state)
     case TaskActionTypes.LOAD_TASKS_FAIL:
       return state
     default:
