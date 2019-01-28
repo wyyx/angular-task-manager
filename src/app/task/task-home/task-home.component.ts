@@ -9,7 +9,6 @@ import { TaskListService } from 'src/app/services/task-list.service'
 import { TaskService } from 'src/app/services/task.service'
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component'
 import { AppState } from 'src/app/store'
-import { EditTaskComponent } from '../edit-task/edit-task.component'
 import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
 import { MoveTaskComponent } from '../move-task/move-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
@@ -19,7 +18,8 @@ import { TaskListView } from 'src/app/domain/task-list-view.model'
 import { getTaskListViews } from '../store/selectors/task-list.selectors'
 import { DragData } from 'src/app/directive/drag-drop.service'
 import { TaskList } from 'src/app/domain/task-list.model'
-import { MoveTasksAction } from '../store/actions/task.actions'
+import { MoveTasksAction, AddTaskAction, UpdateTaskAction } from '../store/actions/task.actions'
+import { Task } from 'src/app/domain/task.model'
 
 @Component({
   selector: 'app-task-home',
@@ -52,8 +52,36 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.kill$.complete()
   }
 
-  openNewTaskDialog() {
-    this.dialog.open(NewTaskComponent)
+  openNewTaskDialog(list: TaskList) {
+    const dialogRef = this.dialog.open(NewTaskComponent, {
+      data: { list, title: '新建任务' }
+    })
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(task => !!task),
+        tap((newTask: Task) => this.store.dispatch(new AddTaskAction(newTask))),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
+  }
+
+  openEditTaskDialog(list: TaskList, task: Task) {
+    const dialogRef = this.dialog.open(NewTaskComponent, {
+      data: { list, task, title: '编辑任务' }
+    })
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(task => !!task),
+        tap((newTask: Task) =>
+          this.store.dispatch(new UpdateTaskAction({ id: newTask.id, changes: newTask }))
+        ),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
   }
 
   openMoveAllDialog(currentList: TaskListView) {
@@ -101,12 +129,6 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       data: {
         name: name
       }
-    })
-  }
-
-  openEditTaskDialog(task) {
-    this.dialog.open(EditTaskComponent, {
-      data: { task: task }
     })
   }
 

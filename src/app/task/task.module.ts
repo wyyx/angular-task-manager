@@ -8,7 +8,6 @@ import { TaskRoutingModule } from './task-routing.module'
 import { NewTaskComponent } from './new-task/new-task.component'
 import { SharedModule } from '../shared/shared.module'
 import { ModifyTaskListNameComponent } from './modify-task-list-name/modify-task-list-name.component'
-import { EditTaskComponent } from './edit-task/edit-task.component'
 import { NewTaskListComponent } from './new-task-list/new-task-list.component'
 import { QuickTaskComponent } from './quick-task/quick-task.component'
 import { MoveTaskComponent } from './move-task/move-task.component'
@@ -33,7 +32,6 @@ import { EffectsModule } from '@ngrx/effects'
     NewTaskComponent,
     MoveTaskComponent,
     ModifyTaskListNameComponent,
-    EditTaskComponent,
     NewTaskListComponent,
     QuickTaskComponent
   ],
@@ -41,7 +39,6 @@ import { EffectsModule } from '@ngrx/effects'
     NewTaskComponent,
     MoveTaskComponent,
     ModifyTaskListNameComponent,
-    EditTaskComponent,
     NewTaskListComponent
   ]
 })

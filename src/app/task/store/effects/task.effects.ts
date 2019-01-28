@@ -13,12 +13,19 @@ import {
   TaskActionTypes,
   MoveTasksAction,
   MoveTasksFailAction,
-  MoveTasksSuccessAction
+  MoveTasksSuccessAction,
+  AddTaskAction,
+  AddTaskSuccessAction,
+  AddTaskFailAction,
+  UpdateTaskSuccessAction,
+  UpdateTaskFailAction,
+  UpdateTaskAction
 } from '../actions/task.actions'
 import { LoadTaskListsAction } from '../actions/task-list.actions'
 
 @Injectable()
 export class TaskEffects {
+  // Load all tasks of a taskList
   @Effect()
   loadTasks$: Observable<TaskActions> = this.actions$.pipe(
     ofType<LoadTasksAction>(TaskActionTypes.LOAD_TASKS),
@@ -31,6 +38,7 @@ export class TaskEffects {
     )
   )
 
+  // Move all tasks in one taskList to another taskList
   @Effect() moveTasks$: Observable<TaskActions> = this.actions$.pipe(
     ofType<MoveTasksAction>(TaskActionTypes.MOVE_TASKS),
     map(action => action.payload),
@@ -44,6 +52,30 @@ export class TaskEffects {
           )
         ),
         catchError(() => of(new MoveTasksFailAction()))
+      )
+    )
+  )
+
+  // Add one task
+  @Effect() addTask$: Observable<TaskActions> = this.actions$.pipe(
+    ofType<AddTaskAction>(TaskActionTypes.ADD_TASK),
+    map(action => action.payload),
+    mergeMap(task =>
+      this.taskService.add(task).pipe(
+        map(resTask => new AddTaskSuccessAction(resTask)),
+        catchError(() => of(new AddTaskFailAction()))
+      )
+    )
+  )
+
+  // Add one task
+  @Effect() updateTask$: Observable<TaskActions> = this.actions$.pipe(
+    ofType<UpdateTaskAction>(TaskActionTypes.UPDATE_TASK),
+    map(action => action.payload),
+    mergeMap(task =>
+      this.taskService.update(task).pipe(
+        map(resTask => new UpdateTaskSuccessAction({ id: resTask.id, changes: resTask })),
+        catchError(() => of(new UpdateTaskFailAction()))
       )
     )
   )

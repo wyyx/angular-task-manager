@@ -1,30 +1,47 @@
-<form>
-  <h1 mat-dialog-title>新建任务</h1>
+<form [formGroup]="form">
+  <h1 mat-dialog-title>{{data.title}}</h1>
   <div mat-dialog-content>
     <mat-form-field class="full-width">
-      <input matInput placeholder="任务内容">
+      <input matInput
+             placeholder="任务内容"
+             formControlName="desc">
     </mat-form-field>
-    <mat-radio-group>
-      <mat-radio-button class="mr-20" *ngFor="let priority of priorities" [value]="priority.value">{{priority.label}}
+    <mat-radio-group formControlName="priority">
+      <mat-radio-button class="mr-20"
+                        *ngFor="let priority of priorities"
+                        [value]="priority.value">{{priority.label}}
       </mat-radio-button>
     </mat-radio-group>
     <div>
       <mat-form-field>
-        <input matInput [matDatepicker]="deadlinePicker" placeholder="任务截止日期">
-        <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
+        <input matInput
+               [matDatepicker]="deadlinePicker"
+               placeholder="任务截止日期"
+               formControlName="dueDate">
+        <mat-datepicker-toggle matSuffix
+                               [for]="deadlinePicker"></mat-datepicker-toggle>
         <mat-datepicker #deadlinePicker></mat-datepicker>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field>
-        <input matInput [matDatepicker]="reminderPicker" placeholder="任务提醒日期">
-        <mat-datepicker-toggle matSuffix [for]="reminderPicker"></mat-datepicker-toggle>
+        <input matInput
+               [matDatepicker]="reminderPicker"
+               placeholder="任务提醒日期"
+               formControlName="reminder">
+        <mat-datepicker-toggle matSuffix
+                               [for]="reminderPicker"></mat-datepicker-toggle>
         <mat-datepicker #reminderPicker></mat-datepicker>
       </mat-form-field>
     </div>
   </div>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="save()" type="button">保存</button>
-    <button mat-button (click)="closeDialog()" type="button">关闭</button>
+    <button mat-raised-button
+            color="primary"
+            (click)="save()"
+            type="button">保存</button>
+    <button mat-button
+            (click)="close()"
+            type="button">关闭</button>
   </div>
 </form>
