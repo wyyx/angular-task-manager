@@ -64,7 +64,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   save() {
     let { list, task } = this.data
-    // If new task, task equals {}, for compatibility with destructuring syntax
+    // For compatibility with destructuring syntax
     task = task ? task : ({} as Task)
 
     if (this.form.valid) {

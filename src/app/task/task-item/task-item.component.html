@@ -3,7 +3,6 @@
   'priority-normal': task.priority === 3,
   'priority-important': task.priority === 2,
   'priority-emergency': task.priority === 1}"
-               (click)="onEditTaskClick()"
                [@itemAnim]="itemState"
                [appDraggable]="true"
                [dragClass]="'drag-start'"
@@ -12,8 +11,10 @@
                appDroppable
                [dropTags]="['task-item','task-list']">
   <mat-checkbox [checked]="task.completed"
+                #checkbox
                 class="status"
-                (click)="onStatusClick($event)">
+                (click)="onClick($event)"
+                (change)="onCheckBoxChange($event)">
   </mat-checkbox>
   <div matLine
        class="content"
@@ -26,10 +27,10 @@
           *ngIf="task.dueDate">
       {{task.dueDate | date:'yy-MM-dd'}}
     </span>
-    <mat-icon *ngIf="task.reminderDate"
+    <mat-icon *ngIf="task.reminder"
               class="alarm">alarm</mat-icon>
   </div>
-  <mat-icon *ngIf="task.owner"
+  <mat-icon *ngIf="task.ownerId"
             matListAvatar
             [svgIcon]="avatar"
             class="avatar">account_circle</mat-icon>

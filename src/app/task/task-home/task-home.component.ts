@@ -1,5 +1,5 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
-import { MatDialog } from '@angular/material'
+import { MatDialog, MatMenu } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
 import { Store, select } from '@ngrx/store'
 import { never, Observable, Subject } from 'rxjs'
@@ -12,7 +12,7 @@ import { AppState } from 'src/app/store'
 import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
 import { MoveTaskComponent } from '../move-task/move-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
-import { NewTaskComponent } from '../new-task/new-task.component'
+import { NewTaskComponent, Priorities } from '../new-task/new-task.component'
 import { NeedTaskListsAction } from '../store/actions/task-list.actions'
 import { TaskListView } from 'src/app/domain/task-list-view.model'
 import { getTaskListViews } from '../store/selectors/task-list.selectors'
@@ -20,6 +20,7 @@ import { DragData } from 'src/app/directive/drag-drop.service'
 import { TaskList } from 'src/app/domain/task-list.model'
 import { MoveTasksAction, AddTaskAction, UpdateTaskAction } from '../store/actions/task.actions'
 import { Task } from 'src/app/domain/task.model'
+import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 
 @Component({
   selector: 'app-task-home',
@@ -31,6 +32,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   taskListViews$: Observable<TaskListView[]>
   kill$: Subject<any> = new Subject()
   projectId: string
+  showMenu: boolean = false
 
   @HostBinding('@slideToRightAnim') state
   constructor(
@@ -52,6 +54,11 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.kill$.complete()
   }
 
+  onContextMenu(event: Event) {
+    event.preventDefault()
+    console.log(event)
+  }
+
   openNewTaskDialog(list: TaskList) {
     const dialogRef = this.dialog.open(NewTaskComponent, {
       data: { list, title: '新建任务' }
@@ -67,7 +74,8 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       .subscribe()
   }
 
-  openEditTaskDialog(list: TaskList, task: Task) {
+  openEditTaskDialog(task: Task, list: TaskList) {
+    // console.log('task', task)
     const dialogRef = this.dialog.open(NewTaskComponent, {
       data: { list, task, title: '编辑任务' }
     })
@@ -175,8 +183,29 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     // }
   }
 
-  onQuickTask(desc: string) {
-    console.log('desc', desc)
+  onQuickTask(desc: string, taskList: TaskList) {
+    if (desc) {
+      this.store
+        .pipe(
+          select(getUser),
+          tap(user =>
+            this.store.dispatch(
+              new AddTaskAction({
+                taskListId: taskList.id,
+                desc,
+                dueDate: new Date(),
+                reminder: new Date(),
+                completed: false,
+                participantIds: [],
+                ownerId: user.id,
+                priority: Priorities.Normal
+              })
+            )
+          ),
+          takeUntil(this.kill$)
+        )
+        .subscribe()
+    }
   }
 
   switchOrder(sourceList: TaskList, targetList: TaskList) {

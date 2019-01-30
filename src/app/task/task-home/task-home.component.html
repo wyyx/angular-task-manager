@@ -15,10 +15,11 @@
                      (moveAll)="openMoveAllDialog(list)"
                      (deleteList)="openConfirmDialog()"
                      (modifyListName)="openModifyListNameDialog(list.name)"></app-task-header>
-    <app-quick-task (quickTask)="onQuickTask($event)"></app-quick-task>
+    <app-quick-task (quickTask)="onQuickTask($event, list)"></app-quick-task>
     <app-task-item *ngFor="let item of list.tasks; let i=index"
                    [task]="item"
-                   (editTask)="openEditTaskDialog(list, item)"></app-task-item>
+                   (click)="openEditTaskDialog(item, list)"
+                   (contextmenu)="onContextMenu($event)"></app-task-item>
   </app-task-list>
 </div>
 
