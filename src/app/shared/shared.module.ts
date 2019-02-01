@@ -10,37 +10,49 @@ import { ImageSelectorComponent } from './image-selector/image-selector.componen
 import { ChipSelectorComponent } from './chip-selector/chip-selector.component'
 import { CertificateSelectorComponent } from './certificate-selector/certificate-selector.component'
 import { AddressSelectorComponent } from './address-selector/address-selector.component'
+import { ContextMenuComponent } from './context-menu/context-menu.component'
+import { ContextMenuItemComponent } from './context-menu-item/context-menu-item.component'
+import { ContextMenuTriggerDirective } from './context-menu-trigger.directive'
+import { ContextMenuBackdropDirective } from './context-menu-backdrop.directive'
 
 @NgModule({
-	imports: [
-		CommonModule,
-		MyCustomMaterialModule,
-		RouterModule,
-		DirectiveModule,
-		FormsModule,
-		ReactiveFormsModule
-	],
-	declarations: [
-		ConfirmDialogComponent,
-		ImageSelectorComponent,
-		AgeInputComponent,
-		ChipSelectorComponent,
-		CertificateSelectorComponent,
-		AddressSelectorComponent
-	],
-	exports: [
-		CommonModule,
-		MyCustomMaterialModule,
-		RouterModule,
-		DirectiveModule,
-		FormsModule,
-		ReactiveFormsModule,
-		ImageSelectorComponent,
-		AgeInputComponent,
-		ChipSelectorComponent,
-		CertificateSelectorComponent,
-		AddressSelectorComponent
-	],
-	entryComponents: [ ConfirmDialogComponent ]
+  imports: [
+    CommonModule,
+    MyCustomMaterialModule,
+    RouterModule,
+    DirectiveModule,
+    FormsModule,
+    ReactiveFormsModule
+  ],
+  declarations: [
+    ConfirmDialogComponent,
+    ImageSelectorComponent,
+    AgeInputComponent,
+    ChipSelectorComponent,
+    CertificateSelectorComponent,
+    AddressSelectorComponent,
+    ContextMenuComponent,
+    ContextMenuItemComponent,
+    ContextMenuTriggerDirective,
+    ContextMenuBackdropDirective
+  ],
+  exports: [
+    CommonModule,
+    MyCustomMaterialModule,
+    RouterModule,
+    DirectiveModule,
+    FormsModule,
+    ReactiveFormsModule,
+    ImageSelectorComponent,
+    AgeInputComponent,
+    ChipSelectorComponent,
+    CertificateSelectorComponent,
+    AddressSelectorComponent,
+    ContextMenuComponent,
+    ContextMenuItemComponent,
+    ContextMenuTriggerDirective,
+    ContextMenuBackdropDirective
+  ],
+  entryComponents: [ConfirmDialogComponent]
 })
 export class SharedModule {}

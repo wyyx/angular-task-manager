@@ -21,6 +21,11 @@ import { TaskList } from 'src/app/domain/task-list.model'
 import { MoveTasksAction, AddTaskAction, UpdateTaskAction } from '../store/actions/task.actions'
 import { Task } from 'src/app/domain/task.model'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
+import { ContextMenuComponent } from 'src/app/shared/context-menu/context-menu.component'
+
+enum ContextMenus {
+  Delete = 0
+}
 
 @Component({
   selector: 'app-task-home',
@@ -33,6 +38,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
   projectId: string
   showMenu: boolean = false
+  menus: { label: string; value: any }[] = [{ label: '删除任务', value: ContextMenus.Delete }]
 
   @HostBinding('@slideToRightAnim') state
   constructor(
@@ -54,9 +60,12 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.kill$.complete()
   }
 
-  onContextMenu(event: Event) {
+  onContextMenu(event: MouseEvent, menu: ContextMenuComponent) {
     event.preventDefault()
-    console.log(event)
+
+    menu.show = true
+    menu.x = event.clientX
+    menu.y = event.clientY
   }
 
   openNewTaskDialog(list: TaskList) {

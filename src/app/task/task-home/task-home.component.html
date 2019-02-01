@@ -1,26 +1,74 @@
 <div class="task-lists">
-  <app-task-list *ngFor="let list of taskListViews$ | async"
+  <app-task-list *ngFor="let list of (taskListViews$ | async)"
                  class="list-container p-10"
                  appDroppable
                  [dragEnterClass]="'drag-enter'"
-                 [dropTags]="['task-item','task-list']"
+                 [dropTags]="['task-item', 'task-list']"
                  (dropped)="onDropped($event, list)"
                  [appDraggable]="true"
                  [dragClass]="'drag-start'"
                  [dragTag]="'task-list'"
                  [dragData]="list"
-                 [ngStyle]="{'order': list.order}">
+                 [ngStyle]="{ order: list.order }">
     <app-task-header [listType]="list.name"
                      (newTask)="openNewTaskDialog(list)"
                      (moveAll)="openMoveAllDialog(list)"
                      (deleteList)="openConfirmDialog()"
                      (modifyListName)="openModifyListNameDialog(list.name)"></app-task-header>
     <app-quick-task (quickTask)="onQuickTask($event, list)"></app-quick-task>
-    <app-task-item *ngFor="let item of list.tasks; let i=index"
+    <app-task-item *ngFor="let item of list.tasks; let i = index"
                    [task]="item"
                    (click)="openEditTaskDialog(item, list)"
-                   (contextmenu)="onContextMenu($event)"></app-task-item>
+                   (contextmenu)="onContextMenu($event, menu)"></app-task-item>
   </app-task-list>
+  <!-- Level 1 menu -->
+  <div appContextMenuBackdrop
+       [rootMenu]="menu">
+  </div>
+
+  <app-context-menu #menu>
+    <mat-list role="list">
+      <app-context-menu-item>
+        <mat-list-item role="listitem">
+          <mat-icon mat-list-icon>delete</mat-icon>
+          <span>
+            删除
+          </span>
+        </mat-list-item>
+      </app-context-menu-item>
+      <app-context-menu-item [appContextMenuTriggerFor]="folderMenu">
+        <mat-list-item role="listitem">
+          <mat-icon mat-list-icon>compare_arrows</mat-icon>
+          <span>
+            移动到
+          </span>
+        </mat-list-item>
+      </app-context-menu-item>
+    </mat-list>
+  </app-context-menu>
+
+  <!-- Level 2 menu -->
+  <app-context-menu #folderMenu>
+    <mat-list role="list">
+      <app-context-menu-item>
+        <mat-list-item role="listitem">
+          <mat-icon mat-list-icon>view_list</mat-icon>
+          <span>
+            待办
+          </span>
+        </mat-list-item>
+      </app-context-menu-item>
+      <app-context-menu-item>
+        <mat-list-item role="listitem">
+          <mat-icon mat-list-icon>view_list</mat-icon>
+          <span>
+            已完成
+          </span>
+        </mat-list-item>
+      </app-context-menu-item>
+    </mat-list>
+  </app-context-menu>
+
 </div>
 
 <button mat-fab
