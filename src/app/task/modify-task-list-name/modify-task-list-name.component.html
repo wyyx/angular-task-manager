@@ -2,11 +2,18 @@
   <h1 mat-dialog-title>修改任务列表名称</h1>
   <div mat-dialog-content>
     <mat-form-field class="full-width">
-      <input matInput placeholder="列表名称" [value]="name">
+      <input matInput
+             placeholder="列表名称"
+             [formControl]="listName">
     </mat-form-field>
   </div>
   <div mat-dialog-actions>
-    <button mat-raised-button color="primary" (click)="save()" type="button">保存</button>
-    <button mat-button (click)="closeDialog()" type="button">关闭</button>
+    <button mat-raised-button
+            color="primary"
+            (click)="save()"
+            type="button">保存</button>
+    <button mat-button
+            (click)="closeDialog()"
+            type="button">关闭</button>
   </div>
 </form>

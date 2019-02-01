@@ -11,7 +11,16 @@ import {
   LoadTaskListsSuccessAction,
   NeedTaskListsAction,
   TaskListActions,
-  TaskListActionTypes
+  TaskListActionTypes,
+  AddTaskListAction,
+  AddTaskListFailAction,
+  AddTaskListSuccessAction,
+  DeleteTaskListAction,
+  DeleteTaskListFailAction,
+  DeleteTaskListSuccessAction,
+  UpdateTaskListAction,
+  UpdateTaskListSuccessAction,
+  UpdateTaskListFailAction
 } from '../actions/task-list.actions'
 import { LoadTasksAction } from '../actions/task.actions'
 import { getTaskListsIsLoaded } from '../selectors/task-list.selectors'
@@ -43,6 +52,43 @@ export class TaskListEffects {
         ),
         map(taskLists => new LoadTaskListsSuccessAction(taskLists)),
         catchError(() => of(new LoadTaskListsFailAction()))
+      )
+    )
+  )
+
+  @Effect() addTaskList$: Observable<TaskListActions> = this.actions$.pipe(
+    ofType<AddTaskListAction>(TaskListActionTypes.ADD_TASK_LIST),
+    map(action => action.payload),
+    mergeMap(taskList =>
+      this.taskListService.add(taskList).pipe(
+        map(taskList => new AddTaskListSuccessAction(taskList)),
+        catchError(() => of(new AddTaskListFailAction()))
+      )
+    )
+  )
+
+  @Effect() deleteTaskList$: Observable<TaskListActions> = this.actions$.pipe(
+    ofType<DeleteTaskListAction>(TaskListActionTypes.DELETE_TASK_LIST),
+    map(action => action.payload.taskListId),
+    mergeMap(taskListId =>
+      this.taskListService.delete(taskListId).pipe(
+        map(taskListId => new DeleteTaskListSuccessAction({ taskListId })),
+        catchError(() => of(new DeleteTaskListFailAction()))
+      )
+    )
+  )
+
+  @Effect() updateTaskList$: Observable<TaskListActions> = this.actions$.pipe(
+    ofType<UpdateTaskListAction>(TaskListActionTypes.UPDATE_TASK_LIST),
+    map(action => action.payload),
+    mergeMap(taskList =>
+      this.taskListService.update(taskList).pipe(
+        tap(v => console.log('[debug]', 'resTaskList', v)),
+        map(
+          resTaskList =>
+            new UpdateTaskListSuccessAction({ id: resTaskList.id, changes: resTaskList })
+        ),
+        catchError(() => of(new UpdateTaskListFailAction()))
       )
     )
   )

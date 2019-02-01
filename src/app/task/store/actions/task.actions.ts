@@ -17,7 +17,11 @@ export enum TaskActionTypes {
   // Update task
   UPDATE_TASK = '[Task] update task',
   UPDATE_TASK_SUCCESS = '[Task] update task success',
-  UPDATE_TASK_FAIL = '[Task] update task fail'
+  UPDATE_TASK_FAIL = '[Task] update task fail',
+  // Delete task
+  DELETE_TASK = '[Task] delete task',
+  DELETE_TASK_SUCCESS = '[Task] delete task success',
+  DELETE_TASK_FAIL = '[Task] delete task fail'
 }
 
 // Load tasks
@@ -85,6 +89,23 @@ export class UpdateTaskFailAction implements Action {
   readonly type = TaskActionTypes.UPDATE_TASK_FAIL
 }
 
+// Delete task
+export class DeleteTaskAction implements Action {
+  readonly type = TaskActionTypes.DELETE_TASK
+
+  constructor(public payload: { taskId: string }) {}
+}
+
+export class DeleteTaskSuccessAction implements Action {
+  readonly type = TaskActionTypes.DELETE_TASK_SUCCESS
+
+  constructor(public payload: { taskId: string }) {}
+}
+
+export class DeleteTaskFailAction implements Action {
+  readonly type = TaskActionTypes.DELETE_TASK_FAIL
+}
+
 export type TaskActions =
   | LoadTasksAction
   | LoadTasksSuccessAction
@@ -98,3 +119,6 @@ export type TaskActions =
   | UpdateTaskAction
   | UpdateTaskSuccessAction
   | UpdateTaskFailAction
+  | DeleteTaskAction
+  | DeleteTaskSuccessAction
+  | DeleteTaskFailAction

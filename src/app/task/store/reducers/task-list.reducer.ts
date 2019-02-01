@@ -16,6 +16,12 @@ export function taskListReducer(
       return taskListAdapter.upsertMany(action.payload, state)
     case TaskListActionTypes.LOAD_TASK_LISTS_FAIL:
       return state
+    case TaskListActionTypes.ADD_TASK_LIST_SUCCESS:
+      return taskListAdapter.addOne(action.payload, state)
+    case TaskListActionTypes.DELETE_TASK_LIST_SUCCESS:
+      return taskListAdapter.removeOne(action.payload.taskListId, state)
+    case TaskListActionTypes.UPDATE_TASK_LIST_SUCCESS:
+      return taskListAdapter.updateOne(action.payload, state)
     default:
       return state
   }

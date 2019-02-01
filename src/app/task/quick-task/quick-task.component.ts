@@ -1,25 +1,39 @@
-import { Component, OnInit, Output, EventEmitter, HostListener } from '@angular/core'
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  HostListener,
+  ViewChild,
+  ElementRef
+} from '@angular/core'
 
 @Component({
-	selector: 'app-quick-task',
-	templateUrl: './quick-task.component.html',
-	styleUrls: [ './quick-task.component.scss' ]
+  selector: 'app-quick-task',
+  templateUrl: './quick-task.component.html',
+  styleUrls: ['./quick-task.component.scss']
 })
 export class QuickTaskComponent implements OnInit {
-	desc: string
-	@Output() quickTask = new EventEmitter<string>()
+  desc: string
+  @Output() quickTask = new EventEmitter<string>()
 
-	constructor() {}
+  @ViewChild('descInput') descInput: ElementRef
 
-	ngOnInit() {}
+  constructor() {}
 
-	@HostListener('keyup.enter')
-	onCreateQuickTaskClick() {
-		if (!this.desc || !this.desc.trim()) {
-			return
-		}
+  ngOnInit() {}
 
-		this.quickTask.emit(this.desc)
-		this.desc = ''
-	}
+  @HostListener('keyup.enter')
+  onCreateQuickTaskClick() {
+    if (!this.desc || !this.desc.trim()) {
+      return
+    }
+
+    this.quickTask.emit(this.desc)
+    this.desc = ''
+
+    console.log('descInput', this.descInput)
+    const nDescInput = this.descInput.nativeElement
+    nDescInput.focus()
+  }
 }

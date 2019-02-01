@@ -24,6 +24,10 @@ export function taskReducer(state = initialTaskState, action: TaskActions): Task
       return taskAdapter.updateOne(action.payload, state)
     case TaskActionTypes.UPDATE_TASK_FAIL:
       return state
+    case TaskActionTypes.DELETE_TASK_SUCCESS:
+      return taskAdapter.removeOne(action.payload.taskId, state)
+    case TaskActionTypes.UPDATE_TASK_FAIL:
+      return state
     default:
       return state
   }

@@ -1,3 +1,7 @@
+<div class="backdrop"
+     *ngIf="isRoot && show"
+     (click)="onBackdropClick()">
+</div>
 <div *ngIf="show"
      class="container mat-elevation-z4"
      [ngStyle]="{'top': y+'px', 'left': x+'px'}">

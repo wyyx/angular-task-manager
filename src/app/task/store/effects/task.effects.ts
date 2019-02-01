@@ -19,7 +19,10 @@ import {
   AddTaskFailAction,
   UpdateTaskSuccessAction,
   UpdateTaskFailAction,
-  UpdateTaskAction
+  UpdateTaskAction,
+  DeleteTaskAction,
+  DeleteTaskSuccessAction,
+  DeleteTaskFailAction
 } from '../actions/task.actions'
 import { LoadTaskListsAction } from '../actions/task-list.actions'
 
@@ -76,6 +79,18 @@ export class TaskEffects {
       this.taskService.update(task).pipe(
         map(resTask => new UpdateTaskSuccessAction({ id: resTask.id, changes: resTask })),
         catchError(() => of(new UpdateTaskFailAction()))
+      )
+    )
+  )
+
+  // Delete one task
+  @Effect() deleteTask$: Observable<TaskActions> = this.actions$.pipe(
+    ofType<DeleteTaskAction>(TaskActionTypes.DELETE_TASK),
+    map(action => action.payload.taskId),
+    mergeMap(taskId =>
+      this.taskService.delete(taskId).pipe(
+        map(resTaskId => new DeleteTaskSuccessAction({ taskId })),
+        catchError(() => of(new DeleteTaskFailAction()))
       )
     )
   )

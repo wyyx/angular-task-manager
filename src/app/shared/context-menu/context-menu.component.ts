@@ -10,8 +10,9 @@ export class ContextMenuComponent implements OnInit {
   showSubject = new Subject<boolean>()
   showValueChanges: Observable<boolean> = this.showSubject.asObservable()
   show: boolean = false
-  @Input() x: number = 0
-  @Input() y: number = 0
+  _data: any
+  x: number = 0
+  y: number = 0
   parent: ContextMenuComponent
   children: ContextMenuComponent[] = []
 
@@ -44,5 +45,35 @@ export class ContextMenuComponent implements OnInit {
     }
 
     root.closeMenu()
+  }
+
+  setPosition(x: number, y: number) {
+    this.x = x
+    this.y = y
+  }
+
+  get root() {
+    let root: ContextMenuComponent = this
+    while (root.parent) {
+      root = root.parent
+    }
+
+    return root
+  }
+
+  get isRoot() {
+    return this === this.root
+  }
+
+  set data(value) {
+    this.root._data = value
+  }
+
+  get data() {
+    return this.root._data
+  }
+
+  onBackdropClick() {
+    this.closeAllMenu()
   }
 }

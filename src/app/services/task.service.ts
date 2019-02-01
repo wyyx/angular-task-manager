@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core'
 import { HttpClient, HttpHeaders } from '@angular/common/http'
 import { BASE_URL } from '../core/core.module'
 import { Observable, from } from 'rxjs'
-import { mapTo, mergeMap, toArray } from 'rxjs/operators'
+import { mapTo, mergeMap, toArray, map } from 'rxjs/operators'
 import { Task } from '../domain/task.model'
 import { Update } from '@ngrx/entity'
 
@@ -57,14 +57,14 @@ export class TaskService {
   }
 
   // DELETE
-  delete(task: Task): Observable<Task> {
-    const url = `${this.baseUrl}/${this.path}/${task.id}`
+  delete(taskId: string): Observable<string> {
+    const url = `${this.baseUrl}/${this.path}/${taskId}`
 
     return this.http
       .delete(url, {
         headers: this.headers
       })
-      .pipe(mapTo(task))
+      .pipe(mapTo(taskId))
   }
 
   // GET
@@ -76,18 +76,6 @@ export class TaskService {
       params: {
         taskListId: taskListId
       }
-    })
-  }
-
-  // Set complete
-  setComplete(task: Task): Observable<Task> {
-    const url = `${this.baseUrl}/${this.path}/${task.id}`
-    const partTask = {
-      completed: task.completed
-    }
-
-    return this.http.patch<Task>(url, JSON.stringify(partTask), {
-      headers: this.headers
     })
   }
 }

@@ -13,7 +13,6 @@ import { AddressSelectorComponent } from './address-selector/address-selector.co
 import { ContextMenuComponent } from './context-menu/context-menu.component'
 import { ContextMenuItemComponent } from './context-menu-item/context-menu-item.component'
 import { ContextMenuTriggerDirective } from './context-menu-trigger.directive'
-import { ContextMenuBackdropDirective } from './context-menu-backdrop.directive'
 
 @NgModule({
   imports: [
@@ -33,8 +32,7 @@ import { ContextMenuBackdropDirective } from './context-menu-backdrop.directive'
     AddressSelectorComponent,
     ContextMenuComponent,
     ContextMenuItemComponent,
-    ContextMenuTriggerDirective,
-    ContextMenuBackdropDirective
+    ContextMenuTriggerDirective
   ],
   exports: [
     CommonModule,
@@ -50,8 +48,7 @@ import { ContextMenuBackdropDirective } from './context-menu-backdrop.directive'
     AddressSelectorComponent,
     ContextMenuComponent,
     ContextMenuItemComponent,
-    ContextMenuTriggerDirective,
-    ContextMenuBackdropDirective
+    ContextMenuTriggerDirective
   ],
   entryComponents: [ConfirmDialogComponent]
 })

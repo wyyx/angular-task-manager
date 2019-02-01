@@ -1,12 +1,4 @@
-import {
-  Directive,
-  Input,
-  ElementRef,
-  HostListener,
-  OnInit,
-  ViewChild,
-  Renderer2
-} from '@angular/core'
+import { Directive, HostListener, Input, OnInit } from '@angular/core'
 import { ContextMenuItemComponent } from './context-menu-item/context-menu-item.component'
 import { ContextMenuComponent } from './context-menu/context-menu.component'
 

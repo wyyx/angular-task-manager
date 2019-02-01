@@ -13,12 +13,22 @@ import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-tas
 import { MoveTaskComponent } from '../move-task/move-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
 import { NewTaskComponent, Priorities } from '../new-task/new-task.component'
-import { NeedTaskListsAction } from '../store/actions/task-list.actions'
+import {
+  NeedTaskListsAction,
+  AddTaskListAction,
+  DeleteTaskListAction,
+  UpdateTaskListAction
+} from '../store/actions/task-list.actions'
 import { TaskListView } from 'src/app/domain/task-list-view.model'
 import { getTaskListViews } from '../store/selectors/task-list.selectors'
 import { DragData } from 'src/app/directive/drag-drop.service'
 import { TaskList } from 'src/app/domain/task-list.model'
-import { MoveTasksAction, AddTaskAction, UpdateTaskAction } from '../store/actions/task.actions'
+import {
+  MoveTasksAction,
+  AddTaskAction,
+  UpdateTaskAction,
+  DeleteTaskAction
+} from '../store/actions/task.actions'
 import { Task } from 'src/app/domain/task.model'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { ContextMenuComponent } from 'src/app/shared/context-menu/context-menu.component'
@@ -60,12 +70,16 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.kill$.complete()
   }
 
-  onContextMenu(event: MouseEvent, menu: ContextMenuComponent) {
+  onContextMenu(event: MouseEvent, menu: ContextMenuComponent, task: Task) {
     event.preventDefault()
 
-    menu.show = true
-    menu.x = event.clientX
-    menu.y = event.clientY
+    menu.showMenu()
+    menu.data = task
+    menu.setPosition(event.clientX, event.clientY)
+  }
+
+  deleteTask(task: Task) {
+    this.store.dispatch(new DeleteTaskAction({ taskId: task.id }))
   }
 
   openNewTaskDialog(list: TaskList) {
@@ -129,28 +143,61 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       .subscribe()
   }
 
-  openConfirmDialog() {
+  openDeleteTaskListDialog(list: TaskList) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: {
         title: '删除列表'
       }
     })
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('deleteList:', result)
-    })
+    dialogRef
+      .afterClosed()
+      .pipe(
+        takeUntil(this.kill$),
+        tap(ok => ok && this.store.dispatch(new DeleteTaskListAction({ taskListId: list.id })))
+      )
+      .subscribe()
   }
 
-  openModifyListNameDialog(name: string) {
-    this.dialog.open(ModifyTaskListNameComponent, {
+  openModifyListNameDialog(list: TaskList) {
+    const dialogRef = this.dialog.open(ModifyTaskListNameComponent, {
       data: {
-        name: name
+        name: list.name
       }
     })
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        tap(v => console.log('>>>', 'name', v)),
+        tap(
+          newListName =>
+            newListName &&
+            this.store.dispatch(
+              new UpdateTaskListAction({ id: list.id, changes: { ...list, name: newListName } })
+            )
+        ),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
   }
 
   openNewTaskListDialog() {
-    this.dialog.open(NewTaskListComponent)
+    const dialogRef = this.dialog.open(NewTaskListComponent)
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        tap(
+          taskList =>
+            taskList &&
+            this.store.dispatch(
+              new AddTaskListAction({ ...taskList, projectId: this.projectId, order: 0 })
+            )
+        ),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
   }
 
   onDropped(dragData: DragData, targetList) {

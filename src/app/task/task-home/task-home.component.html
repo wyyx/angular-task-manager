@@ -13,30 +13,27 @@
     <app-task-header [listType]="list.name"
                      (newTask)="openNewTaskDialog(list)"
                      (moveAll)="openMoveAllDialog(list)"
-                     (deleteList)="openConfirmDialog()"
-                     (modifyListName)="openModifyListNameDialog(list.name)"></app-task-header>
+                     (deleteList)="openDeleteTaskListDialog(list)"
+                     (modifyListName)="openModifyListNameDialog(list)"></app-task-header>
     <app-quick-task (quickTask)="onQuickTask($event, list)"></app-quick-task>
     <app-task-item *ngFor="let item of list.tasks; let i = index"
                    [task]="item"
                    (click)="openEditTaskDialog(item, list)"
-                   (contextmenu)="onContextMenu($event, menu)"></app-task-item>
+                   (contextmenu)="onContextMenu($event, menu, item)"></app-task-item>
   </app-task-list>
-  <!-- Level 1 menu -->
-  <div appContextMenuBackdrop
-       [rootMenu]="menu">
-  </div>
 
   <app-context-menu #menu>
     <mat-list role="list">
       <app-context-menu-item>
-        <mat-list-item role="listitem">
+        <mat-list-item role="listitem"
+                       (click)="deleteTask(menu.data)">
           <mat-icon mat-list-icon>delete</mat-icon>
           <span>
             删除
           </span>
         </mat-list-item>
       </app-context-menu-item>
-      <app-context-menu-item [appContextMenuTriggerFor]="folderMenu">
+      <app-context-menu-item [appContextMenuTriggerFor]="moveToLists">
         <mat-list-item role="listitem">
           <mat-icon mat-list-icon>compare_arrows</mat-icon>
           <span>
@@ -48,7 +45,7 @@
   </app-context-menu>
 
   <!-- Level 2 menu -->
-  <app-context-menu #folderMenu>
+  <app-context-menu #moveToLists>
     <mat-list role="list">
       <app-context-menu-item>
         <mat-list-item role="listitem">
