@@ -50,8 +50,8 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     this.form = this.fb.group({
       desc: [task ? task.desc : '', Validators.required],
       priority: [task ? task.priority : Priorities.Normal, Validators.required],
-      dueDate: [task ? task.dueDate : '', Validators.required],
-      reminder: [task ? task.reminder : '', Validators.required]
+      dueDate: [task ? task.dueDate : ''],
+      reminder: [task ? task.reminder : '']
     })
   }
 
@@ -66,6 +66,8 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     let { list, task } = this.data
     // For compatibility with destructuring syntax
     task = task ? task : ({} as Task)
+
+    this.markFormGroupTouched(this.form)
 
     if (this.form.valid) {
       let newTask: Task = { ...task, ...this.form.value, taskListId: list.id }
@@ -83,5 +85,11 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   close() {
     this.dialog.close()
+  }
+
+  markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched()
+    })
   }
 }

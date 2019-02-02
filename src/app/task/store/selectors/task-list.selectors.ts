@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { TaskListView } from 'src/app/domain/task-list-view.model'
 import { TaskFeatureState } from '..'
 import { taskListAdapter } from '../reducers/task-list.reducer'
-import { getAllTasks } from './task.selectors'
+import { getAllTasks, getTasksIsLoading } from './task.selectors'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = taskListAdapter.getSelectors()
 
@@ -38,5 +38,16 @@ export const getTaskListViews = (projectId: string): MemoizedSelector<object, Ta
 export const getTaskListsIsLoaded = (projectId: string) =>
   createSelector(
     getTaskListsByProjectId(projectId),
-    taskListViews => !!taskListViews && taskListViews.length > 0
+    taskLists => !!taskLists && taskLists.length > 0
   )
+
+export const getTaskListsIsLoading = createSelector(
+  getTaskFeatureState,
+  state => state.taskLists.isLoading
+)
+
+export const getTaskListViewsIsLoading = createSelector(
+  getTaskListsIsLoading,
+  getTasksIsLoading,
+  (listLoading, taskLoading) => (listLoading || taskLoading ? true : false)
+)

@@ -5,6 +5,9 @@
       <input matInput
              placeholder="任务内容"
              formControlName="desc">
+      <mat-error>
+        <div>任务内容不能为空</div>
+      </mat-error>
     </mat-form-field>
     <mat-radio-group formControlName="priority">
       <mat-radio-button class="mr-20"

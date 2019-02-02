@@ -18,7 +18,7 @@ export class ProjectDialogComponent implements OnInit, OnDestroy {
 
   form = new FormGroup({
     name: new FormControl('', Validators.required),
-    desc: new FormControl('', Validators.required),
+    desc: new FormControl(''),
     coverImg: new FormControl('', Validators.required)
   })
 

@@ -1,3 +1,12 @@
+<div class="spinner-container"
+     *ngIf="isLoading$ | async">
+  <mat-spinner></mat-spinner>
+</div>
+
+<!-- <div class="spinner-container">
+  <mat-spinner></mat-spinner>
+</div> -->
+
 <div class="task-lists">
   <app-task-list *ngFor="let list of (taskListViews$ | async)"
                  class="list-container p-10"
@@ -19,21 +28,22 @@
     <app-task-item *ngFor="let item of list.tasks; let i = index"
                    [task]="item"
                    (click)="openEditTaskDialog(item, list)"
-                   (contextmenu)="onContextMenu($event, menu, item)"></app-task-item>
+                   (contextmenu)="onContextMenu($event, rootMenu, item, list)"></app-task-item>
   </app-task-list>
 
-  <app-context-menu #menu>
+  <app-context-menu #rootMenu>
     <mat-list role="list">
       <app-context-menu-item>
         <mat-list-item role="listitem"
-                       (click)="deleteTask(menu.data)">
+                       (click)="deleteTask(rootMenu.data.currentItem)">
           <mat-icon mat-list-icon>delete</mat-icon>
           <span>
             删除
           </span>
         </mat-list-item>
       </app-context-menu-item>
-      <app-context-menu-item [appContextMenuTriggerFor]="moveToLists">
+      <app-context-menu-item [appContextMenuTriggerFor]="moveToLists"
+                             *ngIf="rootMenu.data.otherLists">
         <mat-list-item role="listitem">
           <mat-icon mat-list-icon>compare_arrows</mat-icon>
           <span>
@@ -47,25 +57,17 @@
   <!-- Level 2 menu -->
   <app-context-menu #moveToLists>
     <mat-list role="list">
-      <app-context-menu-item>
-        <mat-list-item role="listitem">
+      <app-context-menu-item *ngFor="let list of rootMenu.data.otherLists || []">
+        <mat-list-item role="listitem"
+                       (click)="moveTo(rootMenu.data.currentItem, list)">
           <mat-icon mat-list-icon>view_list</mat-icon>
           <span>
-            待办
-          </span>
-        </mat-list-item>
-      </app-context-menu-item>
-      <app-context-menu-item>
-        <mat-list-item role="listitem">
-          <mat-icon mat-list-icon>view_list</mat-icon>
-          <span>
-            已完成
+            {{ list.name }}
           </span>
         </mat-list-item>
       </app-context-menu-item>
     </mat-list>
   </app-context-menu>
-
 </div>
 
 <button mat-fab

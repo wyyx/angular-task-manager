@@ -3,6 +3,7 @@
      (click)="onBackdropClick()">
 </div>
 <div *ngIf="show"
+     #menuContainer
      class="container mat-elevation-z4"
      [ngStyle]="{'top': y+'px', 'left': x+'px'}">
   <ng-content></ng-content>

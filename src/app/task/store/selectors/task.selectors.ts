@@ -22,3 +22,8 @@ export const getTasksByTaskListId = (taskListId: string) =>
     getAllTasks,
     tasks => tasks.filter(task => task.taskListId === taskListId)
   )
+
+export const getTasksIsLoading = createSelector(
+  getTaskFeatureState,
+  state => state.tasks.isLoading
+)

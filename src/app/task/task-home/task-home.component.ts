@@ -1,41 +1,39 @@
 import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
-import { MatDialog, MatMenu } from '@angular/material'
+import { MatDialog } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
-import { Store, select } from '@ngrx/store'
-import { never, Observable, Subject } from 'rxjs'
-import { mergeMap, takeUntil, filter, map, tap } from 'rxjs/operators'
+import { select, Store } from '@ngrx/store'
+import { Observable, Subject } from 'rxjs'
+import { filter, map, take, takeUntil, tap } from 'rxjs/operators'
 import { slideToRightAnim } from 'src/app/animations/route.anim'
-import { TaskListService } from 'src/app/services/task-list.service'
-import { TaskService } from 'src/app/services/task.service'
+import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
+import { DragData } from 'src/app/directive/drag-drop.service'
+import { TaskListView } from 'src/app/domain/task-list-view.model'
+import { TaskList } from 'src/app/domain/task-list.model'
+import { Task } from 'src/app/domain/task.model'
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component'
+import { ContextMenuComponent } from 'src/app/shared/context-menu/context-menu.component'
 import { AppState } from 'src/app/store'
 import { ModifyTaskListNameComponent } from '../modify-task-list-name/modify-task-list-name.component'
 import { MoveTaskComponent } from '../move-task/move-task.component'
 import { NewTaskListComponent } from '../new-task-list/new-task-list.component'
 import { NewTaskComponent, Priorities } from '../new-task/new-task.component'
 import {
-  NeedTaskListsAction,
   AddTaskListAction,
   DeleteTaskListAction,
+  NeedTaskListsAction,
   UpdateTaskListAction
 } from '../store/actions/task-list.actions'
-import { TaskListView } from 'src/app/domain/task-list-view.model'
-import { getTaskListViews } from '../store/selectors/task-list.selectors'
-import { DragData } from 'src/app/directive/drag-drop.service'
-import { TaskList } from 'src/app/domain/task-list.model'
 import {
-  MoveTasksAction,
   AddTaskAction,
-  UpdateTaskAction,
-  DeleteTaskAction
+  DeleteTaskAction,
+  MoveTasksAction,
+  UpdateTaskAction
 } from '../store/actions/task.actions'
-import { Task } from 'src/app/domain/task.model'
-import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
-import { ContextMenuComponent } from 'src/app/shared/context-menu/context-menu.component'
-
-enum ContextMenus {
-  Delete = 0
-}
+import {
+  getTaskListViews,
+  getTaskListsIsLoaded,
+  getTaskListViewsIsLoading
+} from '../store/selectors/task-list.selectors'
 
 @Component({
   selector: 'app-task-home',
@@ -48,19 +46,18 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
   projectId: string
   showMenu: boolean = false
-  menus: { label: string; value: any }[] = [{ label: '删除任务', value: ContextMenus.Delete }]
+  isLoading$: Observable<boolean>
 
   @HostBinding('@slideToRightAnim') state
   constructor(
     public dialog: MatDialog,
-    private taskListService: TaskListService,
-    private taskService: TaskService,
     private activatedRoute: ActivatedRoute,
     private store: Store<AppState>
   ) {}
 
   ngOnInit() {
     this.projectId = this.activatedRoute.snapshot.paramMap.get('projectId')
+    this.isLoading$ = this.store.pipe(select(getTaskListViewsIsLoading))
     this.store.dispatch(new NeedTaskListsAction({ projectId: this.projectId }))
     this.taskListViews$ = this.store.pipe(select(getTaskListViews(this.projectId)))
   }
@@ -70,16 +67,36 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.kill$.complete()
   }
 
-  onContextMenu(event: MouseEvent, menu: ContextMenuComponent, task: Task) {
+  onContextMenu(
+    event: MouseEvent,
+    rootMenu: ContextMenuComponent,
+    currentItem: Task,
+    currentList: TaskList
+  ) {
     event.preventDefault()
 
-    menu.showMenu()
-    menu.data = task
-    menu.setPosition(event.clientX, event.clientY)
+    rootMenu.showMenu()
+    rootMenu.setPosition(event.clientX, event.clientY)
+
+    // Set rootMenu data
+    this.taskListViews$
+      .pipe(
+        map(lists => lists.filter(list => list.id !== currentList.id)),
+        filter(lists => lists.length > 0),
+        tap(lists => (rootMenu.data = { currentItem, otherLists: lists })),
+        take(1)
+      )
+      .subscribe()
   }
 
   deleteTask(task: Task) {
     this.store.dispatch(new DeleteTaskAction({ taskId: task.id }))
+  }
+
+  moveTo(task: Task, list: TaskList) {
+    this.store.dispatch(
+      new UpdateTaskAction({ id: task.id, changes: { ...task, taskListId: list.id } })
+    )
   }
 
   openNewTaskDialog(list: TaskList) {
@@ -210,6 +227,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       case 'task-item':
         console.log('handling task-item')
         const task: Task = dragData.data
+
         this.store.dispatch(
           new UpdateTaskAction({ id: task.id, changes: { ...task, taskListId: targetList.id } })
         )
