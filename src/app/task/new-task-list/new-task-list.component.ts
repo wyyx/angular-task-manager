@@ -15,6 +15,7 @@ export class NewTaskListComponent implements OnInit {
   ngOnInit() {}
 
   save() {
+    this.taskListName.setValue(this.taskListName.value.trim())
     if (this.taskListName.valid) {
       this.dialog.close({ name: this.taskListName.value } as TaskList)
     }

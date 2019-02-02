@@ -9,7 +9,7 @@
                [dragTag]="'task-item'"
                [dragData]="task"
                appDroppable
-               [dropTags]="['task-item','task-list']">
+               [acceptedTags]="['task-item','task-list']">
   <mat-checkbox [checked]="task.completed"
                 #checkbox
                 class="status"

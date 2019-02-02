@@ -83,7 +83,6 @@ export class TaskListEffects {
     map(action => action.payload),
     mergeMap(taskList =>
       this.taskListService.update(taskList).pipe(
-        tap(v => console.log('[debug]', 'resTaskList', v)),
         map(
           resTaskList =>
             new UpdateTaskListSuccessAction({ id: resTaskList.id, changes: resTaskList })

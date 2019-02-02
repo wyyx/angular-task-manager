@@ -32,7 +32,6 @@ export class QuickTaskComponent implements OnInit {
     this.quickTask.emit(this.desc)
     this.desc = ''
 
-    console.log('descInput', this.descInput)
     const nDescInput = this.descInput.nativeElement
     nDescInput.focus()
   }

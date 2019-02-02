@@ -71,7 +71,7 @@ export class TaskEffects {
     )
   )
 
-  // Add one task
+  // Update one task
   @Effect() updateTask$: Observable<TaskActions> = this.actions$.pipe(
     ofType<UpdateTaskAction>(TaskActionTypes.UPDATE_TASK),
     map(action => action.payload),

@@ -3,7 +3,7 @@
                  class="list-container p-10"
                  appDroppable
                  [dragEnterClass]="'drag-enter'"
-                 [dropTags]="['task-item', 'task-list']"
+                 [acceptedTags]="['task-item', 'task-list']"
                  (dropped)="onDropped($event, list)"
                  [appDraggable]="true"
                  [dragClass]="'drag-start'"

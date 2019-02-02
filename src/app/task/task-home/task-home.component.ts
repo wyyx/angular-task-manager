@@ -200,43 +200,41 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       .subscribe()
   }
 
-  onDropped(dragData: DragData, targetList) {
-    // if (dragData.tag == 'task-list' && dragData.data.id == targetList.id) {
-    //   // If draged to itself
-    //   return
-    // }
-    // console.log('onDropped()', dragData)
-    // switch (dragData.tag) {
-    //   case 'task-item':
-    //     console.log('handling task-item')
-    //     // Update view
-    //     // Add taskItem to targetList
-    //     const taskItem = dragData.data
-    //     targetList.tasks.push(taskItem)
-    //     // Remove taskItem from sourceList
-    //     const sourceListIndex = this.taskLists.findIndex(list => list.id == taskItem.taskListId)
-    //     const sourceItemIndex = this.taskLists[sourceListIndex].tasks.findIndex(
-    //       task => task.id == taskItem.id
-    //     )
-    //     this.taskLists[sourceListIndex].tasks.splice(sourceItemIndex, 1)
-    //     // Update taskItem's taskListId in client
-    //     taskItem.taskListId = targetList.id
-    //     // Update server
-    //     this.taskService
-    //       .move(taskItem.id, targetList.id)
-    //       .pipe(takeUntil(this.kill$))
-    //       .subscribe()
-    //     break
-    //   case 'task-list':
-    //     console.log('handling task-list')
-    //     const sourceList = dragData.data
-    //     this.taskListService
-    //       .switchOrder(sourceList, targetList)
-    //       .pipe(takeUntil(this.kill$))
-    //       .subscribe()
-    //     this.switchOrder(sourceList, targetList)
-    //     break
-    // }
+  onDropped(dragData: DragData, targetList: TaskList) {
+    if (dragData.tag === 'task-list' && dragData.data.id == targetList.id) {
+      // If draged list drops to itself
+      return
+    }
+
+    switch (dragData.tag) {
+      case 'task-item':
+        console.log('handling task-item')
+        const task: Task = dragData.data
+        this.store.dispatch(
+          new UpdateTaskAction({ id: task.id, changes: { ...task, taskListId: targetList.id } })
+        )
+        break
+      case 'task-list':
+        console.log('handling task-list')
+        const sourceList: TaskList = dragData.data
+
+        // Update sourceList
+        this.store.dispatch(
+          new UpdateTaskListAction({
+            id: sourceList.id,
+            changes: { ...sourceList, order: targetList.order }
+          })
+        )
+
+        // Update targetList
+        this.store.dispatch(
+          new UpdateTaskListAction({
+            id: targetList.id,
+            changes: { ...targetList, order: sourceList.order }
+          })
+        )
+        break
+    }
   }
 
   onQuickTask(desc: string, taskList: TaskList) {
@@ -262,14 +260,5 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
         )
         .subscribe()
     }
-  }
-
-  switchOrder(sourceList: TaskList, targetList: TaskList) {
-    // const sourceOrder = sourceList.order
-    // const targetOrder = targetList.order
-    // this.taskLists.forEach(list => {
-    //   list.id == sourceList.id ? (list.order = targetOrder) : null
-    //   list.id == targetList.id ? (targetList.order = sourceOrder) : null
-    // })
   }
 }
