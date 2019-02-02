@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { TaskFeatureState } from '..'
 import { taskAdapter } from '../reducers/task.reducer'
-import { getTaskListsByProjectId } from './task-list.selectors'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = taskAdapter.getSelectors()
 

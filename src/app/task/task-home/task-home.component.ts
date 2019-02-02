@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
 import { select, Store } from '@ngrx/store'
 import { Observable, Subject } from 'rxjs'
-import { filter, map, take, takeUntil, tap } from 'rxjs/operators'
+import { filter, map, take, takeUntil, tap, mergeMap, mergeMapTo } from 'rxjs/operators'
 import { slideToRightAnim } from 'src/app/animations/route.anim'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { DragData } from 'src/app/directive/drag-drop.service'
@@ -31,8 +31,8 @@ import {
 } from '../store/actions/task.actions'
 import {
   getTaskListViews,
-  getTaskListsIsLoaded,
-  getTaskListViewsIsLoading
+  getTaskListViewsIsLoading,
+  getNextOrderByProjectId
 } from '../store/selectors/task-list.selectors'
 
 @Component({
@@ -205,14 +205,20 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     dialogRef
       .afterClosed()
       .pipe(
-        tap(
-          taskList =>
-            taskList &&
-            this.store.dispatch(
-              new AddTaskListAction({ ...taskList, projectId: this.projectId, order: 0 })
-            )
-        ),
-        takeUntil(this.kill$)
+        filter(taskList => !!taskList),
+        mergeMap(taskList =>
+          this.store.pipe(
+            select(getNextOrderByProjectId(this.projectId)),
+            take(1),
+            tap(v => console.log('[debug]', 'order', v)),
+            tap(order =>
+              this.store.dispatch(
+                new AddTaskListAction({ ...taskList, projectId: this.projectId, order })
+              )
+            ),
+            takeUntil(this.kill$)
+          )
+        )
       )
       .subscribe()
   }

@@ -3,6 +3,7 @@ import { TaskListView } from 'src/app/domain/task-list-view.model'
 import { TaskFeatureState } from '..'
 import { taskListAdapter } from '../reducers/task-list.reducer'
 import { getAllTasks, getTasksIsLoading } from './task.selectors'
+import { max } from 'lodash'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = taskListAdapter.getSelectors()
 
@@ -51,3 +52,9 @@ export const getTaskListViewsIsLoading = createSelector(
   getTasksIsLoading,
   (listLoading, taskLoading) => (listLoading || taskLoading ? true : false)
 )
+
+export const getNextOrderByProjectId = (projectId: string) =>
+  createSelector(
+    getTaskListsByProjectId(projectId),
+    taskLists => max(taskLists.map(list => list.order)) + 1
+  )
