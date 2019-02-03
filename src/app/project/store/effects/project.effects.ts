@@ -1,26 +1,27 @@
 import { Injectable } from '@angular/core'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { select, Store } from '@ngrx/store'
-import { Observable, of, combineLatest } from 'rxjs'
-import { catchError, filter, map, mergeMap, mergeMapTo, tap } from 'rxjs/operators'
+import { Observable, of } from 'rxjs'
+import { catchError, filter, map, mergeMap, mergeMapTo, withLatestFrom } from 'rxjs/operators'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { ProjectService } from 'src/app/services/project.service'
 import { AppState } from 'src/app/store'
 import {
+  AddProjectAction,
+  AddProjectFailAction,
+  AddProjectSuccessAction,
+  DeleteProjectAction,
+  DeleteProjectFailAction,
+  DeleteProjectSuccessAction,
   LoadAllProjectsAction,
   LoadAllProjectsFailAction,
   LoadAllProjectsSuccessAction,
+  NeedAllProjectsAction,
   ProjectActions,
   ProjectActionTypes,
-  AddProjectSuccessAction,
-  AddProjectFailAction,
-  DeleteProjectAction,
-  DeleteProjectSuccessAction,
-  AddProjectAction,
   UpdateProjectAction,
-  UpdateProjectSuccessAction,
-  DeleteProjectFailAction,
-  UpdateProjectFailAction
+  UpdateProjectFailAction,
+  UpdateProjectSuccessAction
 } from '../actions/project.actions'
 import { getAllProjectsIsLoaded } from '../selectors/projects.selectors'
 
@@ -28,14 +29,13 @@ import { getAllProjectsIsLoaded } from '../selectors/projects.selectors'
 export class ProjectEffects {
   @Effect()
   needAllProjects$: Observable<ProjectActions> = this.actions$.pipe(
-    ofType(ProjectActionTypes.NEED_ALL_PROJECTS),
+    ofType<NeedAllProjectsAction>(ProjectActionTypes.NEED_ALL_PROJECTS),
     mergeMapTo(
-      combineLatest(
-        this.store.pipe(select(getUser)),
-        this.store.pipe(select(getAllProjectsIsLoaded))
-      ).pipe(
+      this.store.pipe(
+        select(getUser),
+        withLatestFrom(this.store.pipe(select(getAllProjectsIsLoaded))),
         filter(([user, loaded]) => !!user && !loaded),
-        map(([{ id }]) => new LoadAllProjectsAction({ userId: id }))
+        map(([user, loaded]) => new LoadAllProjectsAction({ userId: user.id }))
       )
     )
   )
@@ -58,7 +58,6 @@ export class ProjectEffects {
     map(action => action.payload.project),
     mergeMap(project =>
       this.projectService.add(project).pipe(
-        tap(v => console.log('>>>', 'project', v)),
         map(project => new AddProjectSuccessAction({ project })),
         catchError(() => of(new AddProjectFailAction()))
       )
@@ -83,7 +82,6 @@ export class ProjectEffects {
     map(action => action.payload),
     mergeMap(project =>
       this.projectService.update(project).pipe(
-        tap(v => console.log('>>>', 'project', v)),
         map(
           projectUpdated =>
             new UpdateProjectSuccessAction({ id: projectUpdated.id, changes: projectUpdated })

@@ -93,7 +93,7 @@
     },
     {
       "name": "tttttttttttttttt",
-      "desc": "",
+      "desc": "xdfbsxzd",
       "coverImg": "/assets/img/covers/3.jpg",
       "members": [
         "ce75357e3035"
@@ -275,7 +275,7 @@
         {
           "taskListId": "ORoDf7W",
           "desc": "sethsxrt",
-          "dueDate": "2019-02-02T12:22:30.324Z",
+          "dueDate": "2019-02-19T16:00:00.000Z",
           "reminder": "2019-02-02T12:22:30.324Z",
           "completed": true,
           "participantIds": [],
@@ -321,19 +321,8 @@
           "completed": false,
           "participantIds": [],
           "ownerId": "ce75357e3035",
-          "priority": 3,
+          "priority": 1,
           "id": 20
-        },
-        {
-          "taskListId": "DIPa2tP",
-          "desc": "k",
-          "dueDate": "2019-02-02T12:51:27.188Z",
-          "reminder": "2019-02-02T12:51:27.188Z",
-          "completed": false,
-          "participantIds": [],
-          "ownerId": "ce75357e3035",
-          "priority": 3,
-          "id": 21
         },
         {
           "taskListId": "DIPa2tP",
@@ -354,7 +343,7 @@
           "completed": false,
           "participantIds": [],
           "ownerId": "ce75357e3035",
-          "priority": 3,
+          "priority": 2,
           "id": 24
         },
         {
@@ -409,6 +398,17 @@
       "order": 3,
       "id": "qtqltw~",
       "tasks": [
+        {
+          "taskListId": "qtqltw~",
+          "desc": "k",
+          "dueDate": "2019-02-02T12:51:27.188Z",
+          "reminder": "2019-02-02T12:51:27.188Z",
+          "completed": false,
+          "participantIds": [],
+          "ownerId": "ce75357e3035",
+          "priority": 1,
+          "id": 21
+        },
         {
           "taskListId": "qtqltw~",
           "desc": "k",
@@ -539,7 +539,7 @@
       "priority": 1,
       "dueDate": "2019-03-14T16:00:00.000Z",
       "reminder": "2019-01-30T16:00:00.000Z",
-      "taskListId": "BkWpk7jGZb",
+      "taskListId": "BylTyXiM-b",
       "completed": false,
       "ownerId": "ce75357e3035",
       "id": 11
@@ -588,9 +588,9 @@
       "id": 15
     },
     {
-      "taskListId": "ORoDf7W",
+      "taskListId": "qtqltw~",
       "desc": "sethsxrt",
-      "dueDate": "2019-02-02T12:22:30.324Z",
+      "dueDate": "2019-02-19T16:00:00.000Z",
       "reminder": "2019-02-02T12:22:30.324Z",
       "completed": true,
       "participantIds": [],
@@ -632,7 +632,7 @@
       "id": 20
     },
     {
-      "taskListId": "DIPa2tP",
+      "taskListId": "qtqltw~",
       "desc": "k",
       "dueDate": "2019-02-02T12:51:27.188Z",
       "reminder": "2019-02-02T12:51:27.188Z",

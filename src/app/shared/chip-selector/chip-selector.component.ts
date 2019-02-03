@@ -32,7 +32,7 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, OnChanges, Cont
   placeholder: string = '输入搜索'
 
   @Input()
-  chips: Chip[] = []
+  candidateChips: Chip[] = []
 
   @Output()
   filterChange: EventEmitter<string> = new EventEmitter()

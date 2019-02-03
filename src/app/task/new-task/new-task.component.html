@@ -9,34 +9,34 @@
         <div>任务内容不能为空</div>
       </mat-error>
     </mat-form-field>
-    <mat-radio-group formControlName="priority">
-      <mat-radio-button class="mr-20"
-                        *ngFor="let priority of priorities"
-                        [value]="priority.value">{{priority.label}}
-      </mat-radio-button>
-    </mat-radio-group>
-    <div>
-      <mat-form-field>
-        <input matInput
-               [matDatepicker]="deadlinePicker"
-               placeholder="任务截止日期"
-               formControlName="dueDate">
-        <mat-datepicker-toggle matSuffix
-                               [for]="deadlinePicker"></mat-datepicker-toggle>
-        <mat-datepicker #deadlinePicker></mat-datepicker>
-      </mat-form-field>
+    <div class="pb-10">
+      <mat-radio-group formControlName="priority">
+        <mat-radio-button class="mr-20"
+                          *ngFor="let priority of priorities"
+                          [value]="priority.value">{{priority.label}}
+        </mat-radio-button>
+      </mat-radio-group>
     </div>
-    <div>
-      <mat-form-field>
-        <input matInput
-               [matDatepicker]="reminderPicker"
-               placeholder="任务提醒日期"
-               formControlName="reminder">
-        <mat-datepicker-toggle matSuffix
-                               [for]="reminderPicker"></mat-datepicker-toggle>
-        <mat-datepicker #reminderPicker></mat-datepicker>
-      </mat-form-field>
-    </div>
+    <mat-form-field>
+      <input matInput
+             [matDatepicker]="deadlinePicker"
+             placeholder="任务截止日期"
+             formControlName="dueDate"
+             (click)="deadlinePicker.open()">
+      <mat-datepicker-toggle matSuffix
+                             [for]="deadlinePicker"></mat-datepicker-toggle>
+      <mat-datepicker #deadlinePicker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput
+             [matDatepicker]="reminderPicker"
+             placeholder="任务提醒日期"
+             formControlName="reminder"
+             (click)="reminderPicker.open()">
+      <mat-datepicker-toggle matSuffix
+                             [for]="reminderPicker"></mat-datepicker-toggle>
+      <mat-datepicker #reminderPicker></mat-datepicker>
+    </mat-form-field>
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button

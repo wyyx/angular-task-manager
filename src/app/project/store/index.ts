@@ -1,13 +1,13 @@
-import { ProjectsState, projectsReducer } from './reducers/project.reducer'
+import { ProjectState, projectReducer } from './reducers/project.reducer'
 import { ActionReducerMap } from '@ngrx/store'
 import { ProjectEffects } from './effects/project.effects'
 
 export interface ProjectFeatureState {
-  projects: ProjectsState
+  projects: ProjectState
 }
 
 export const projectFeatureReducers: ActionReducerMap<ProjectFeatureState> = {
-  projects: projectsReducer
+  projects: projectReducer
 }
 
 export const projectFeatureEffects = [ProjectEffects]

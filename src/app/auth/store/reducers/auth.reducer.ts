@@ -4,24 +4,19 @@ import { User } from 'src/app/auth/models/user.model'
 export interface AuthState {
   token: string
   user: User
-  isLoggingIn: boolean
 }
 
 const initialAuthState: AuthState = {
   token: '',
-  user: null,
-  isLoggingIn: false
+  user: null
 }
 
 export function authReducer(state = initialAuthState, action: AuthActions): AuthState {
   switch (action.type) {
-    case AuthActionTypes.LOGIN:
-      return { ...state, isLoggingIn: true }
     case AuthActionTypes.LOGIN_SUCCESS:
-      const { token, user } = { ...action.payload }
-      return { ...state, token, user, isLoggingIn: false }
+      return { ...state, ...action.payload }
     case AuthActionTypes.LOGIN_FAIL:
-      return { ...state, isLoggingIn: false }
+      return state
     case AuthActionTypes.LOGOUT:
       return { ...state, token: '', user: null }
     default:

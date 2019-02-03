@@ -2,29 +2,30 @@ import { Injectable } from '@angular/core'
 import { Actions, Effect, ofType } from '@ngrx/effects'
 import { select, Store } from '@ngrx/store'
 import { Observable, of } from 'rxjs'
-import { catchError, filter, map, mapTo, mergeMap, tap } from 'rxjs/operators'
+import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators'
+import { getLoggedIn } from 'src/app/auth/store/selectors/auth.selectors'
 import { TaskListService } from 'src/app/services/task-list.service'
+import { TaskService } from 'src/app/services/task.service'
 import { AppState } from 'src/app/store'
 import {
-  LoadTaskListsAction,
-  LoadTaskListsFailAction,
-  LoadTaskListsSuccessAction,
-  NeedTaskListsAction,
-  TaskListActions,
-  TaskListActionTypes,
   AddTaskListAction,
   AddTaskListFailAction,
   AddTaskListSuccessAction,
   DeleteTaskListAction,
   DeleteTaskListFailAction,
   DeleteTaskListSuccessAction,
+  LoadTaskListsAction,
+  LoadTaskListsFailAction,
+  LoadTaskListsSuccessAction,
+  NeedTaskListsAction,
+  TaskListActions,
+  TaskListActionTypes,
   UpdateTaskListAction,
-  UpdateTaskListSuccessAction,
-  UpdateTaskListFailAction
+  UpdateTaskListFailAction,
+  UpdateTaskListSuccessAction
 } from '../actions/task-list.actions'
 import { LoadTasksAction } from '../actions/task.actions'
 import { getTaskListsIsLoaded } from '../selectors/task-list.selectors'
-import { TaskService } from 'src/app/services/task.service'
 
 @Injectable()
 export class TaskListEffects {
@@ -34,7 +35,8 @@ export class TaskListEffects {
     mergeMap(projectId =>
       this.store.pipe(
         select(getTaskListsIsLoaded(projectId)),
-        filter(loaded => !loaded),
+        withLatestFrom(this.store.pipe(select(getLoggedIn))),
+        filter(([loaded, loggedIn]) => loggedIn && !loaded),
         mapTo(new LoadTaskListsAction({ projectId }))
       )
     )

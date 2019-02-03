@@ -11,8 +11,8 @@ import { ProjectService } from 'src/app/services/project.service'
 import { UserService } from 'src/app/services/user.service'
 import { Chip } from 'src/app/shared/models/chip.model'
 import { AppState } from 'src/app/store'
-import { UpdateUserAction } from 'src/app/store/actions/user.actions'
 import { UpdateProjectAction } from '../store/actions/project.actions'
+import { UpdateUserAction } from 'src/app/auth/store/actions/user.actions'
 
 @Component({
   selector: 'app-invite',
@@ -51,15 +51,15 @@ export class InviteComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    const newMembers: User[] = this.members.value.map((chip: Chip) => chip.value)
-    const addedMembers: User[] = newMembers.filter(
+    const members: User[] = this.members.value.map((chip: Chip) => chip.value)
+    const addedMembers: User[] = members.filter(
       m => !this.existChips.map(c => c.value.id).includes(m.id)
     )
     const deletedMembers: User[] = this.existChips
-      .filter(c => !newMembers.map(m => m.id).includes(c.value.id))
+      .filter(c => !members.map(m => m.id).includes(c.value.id))
       .map(c => c.value)
 
-    // Update addedMembers, add projectRef to it
+    // Update addedMembers, add projectRef
     addedMembers.forEach(member =>
       this.store.dispatch(
         new UpdateUserAction({
@@ -69,7 +69,7 @@ export class InviteComponent implements OnInit, OnDestroy {
       )
     )
 
-    // Update deletedMembers, remove projectRef from it
+    // Update deletedMembers, remove projectRef
     deletedMembers.forEach(member =>
       this.store.dispatch(
         new UpdateUserAction({
@@ -83,11 +83,11 @@ export class InviteComponent implements OnInit, OnDestroy {
       )
     )
 
-    // Update memberRefs for project
+    // Update project
     this.store.dispatch(
       new UpdateProjectAction({
         id: this.project.id,
-        changes: { members: uniq([...newMembers.map(m => m.id)]) }
+        changes: { members: uniq([...members.map(m => m.id)]) }
       })
     )
 
