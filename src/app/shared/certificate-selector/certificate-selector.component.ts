@@ -73,6 +73,7 @@ export class CertificateSelectorComponent implements OnInit, OnDestroy, ControlV
           setTimeout(() => {
             this.propagateChange({ certificateType: type, certificateNumber: number })
           }, 0)
+
           this.certificateNumberControl.setErrors(null)
         } else {
           this.certificateNumberControl.setErrors({ certificateNumberValidation: true })

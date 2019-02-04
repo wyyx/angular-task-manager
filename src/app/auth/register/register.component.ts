@@ -36,7 +36,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     certificate: ['', Validators.required],
     age: ['1990-01-01'],
     address: ['', validateAddress],
-    avatar: ['', Validators.required]
+    avatar: ['']
   })
 
   items: string[] = []
@@ -68,15 +68,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     addressSelector.markAsTouched()
     certificateSelector.markAsTouched()
 
+    console.log(this.registerForm)
+
     if (this.registerForm.valid) {
-      console.log('this.registerForm.valid', this.registerForm.value)
+      console.log('this.registerForm.value', this.registerForm.value)
     }
   }
 }
 
 function validateAddress(control: AbstractControl) {
   const value = control.value
-  if (value instanceof Array && value[0] && value[1] && value[2]) {
+  if (value.province && value.city) {
     return null
   } else {
     return {
