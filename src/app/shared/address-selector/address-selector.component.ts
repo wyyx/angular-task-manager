@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy, forwardRef } from '@angular/core'
+import { Component, forwardRef, OnDestroy, OnInit } from '@angular/core'
 import {
-  FormGroup,
-  FormControl,
   ControlValueAccessor,
+  FormControl,
+  FormGroup,
   NG_VALUE_ACCESSOR,
   Validators
 } from '@angular/forms'
-import { Subject, of, combineLatest } from 'rxjs'
-import { getProvinces, getCities, getDistricts } from 'src/app/utils/address.util'
-import { takeUntil, tap, startWith, switchMap, distinct } from 'rxjs/operators'
+import { Subject } from 'rxjs'
+import { distinct, startWith, switchMapTo, takeUntil, tap } from 'rxjs/operators'
+import { getCities, getDistricts, getProvinces } from 'src/app/utils/address.util'
 import { markFormGroupAsTouched } from 'src/app/utils/form.util'
 
 @Component({
@@ -43,7 +43,7 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
   ngOnInit() {
     this.province = new FormControl('', Validators.required)
     this.city = new FormControl('', Validators.required)
-    this.district = new FormControl('', Validators.required)
+    this.district = new FormControl('')
     this.form = new FormGroup({
       province: this.province,
       city: this.city,
@@ -51,55 +51,51 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
     })
 
     this.provinces = getProvinces()
-    let provinceTemp
-    let cityTemp
 
     const province$ = this.province.valueChanges.pipe(
       startWith(''),
       distinct(),
       tap(_ => {
-        // Clear city and district when coming new province
+        // Clear city and district when new province comes
         this.city.setValue('')
         this.district.setValue('')
       })
     )
     const city$ = this.city.valueChanges.pipe(
       startWith(''),
-      distinct()
+      distinct(),
+      tap(_ => {
+        // Clear district when new city comes
+        this.district.setValue('')
+      })
     )
     const district$ = this.district.valueChanges.pipe(
       startWith(''),
       distinct()
     )
 
-    combineLatest(province$, city$, district$)
+    province$
       .pipe(
-        switchMap(_ => of(this.province.value)),
-        switchMap(province => {
-          provinceTemp = province
+        tap(province => {
           if (province) {
             this.cities = getCities(province)
             this.city.enable()
           } else {
             this.city.disable()
           }
-
-          return of(this.city.value)
         }),
-        switchMap(city => {
-          cityTemp = city
+        switchMapTo(city$),
+        tap(city => {
           if (city) {
             this.districts = getDistricts(this.province.value, city)
             this.district.enable()
           } else {
             this.district.disable()
           }
-
-          const address: any[] = [provinceTemp, cityTemp, this.district.value]
-          console.log(address)
-          this.propageteChangeAsync(address[0], address[1], address[2])
-
-          return of(null)
+        }),
+        switchMapTo(district$),
+        tap(() => {
+          this.propageteChangeAsync(this.province.value, this.city.value, this.district.value)
         }),
         takeUntil(this.kill$)
       )
@@ -116,8 +112,9 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
   }
 
   propageteChangeAsync(province, city, district) {
+    console.log('address', { province, city, district })
     setTimeout(() => {
-      this.propagateChange([province, city, district])
+      this.propagateChange({ province, city, district })
     }, 0)
   }
 
