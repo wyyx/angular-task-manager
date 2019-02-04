@@ -8,6 +8,7 @@ import { AppState } from 'src/app/store'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { tap, takeUntil } from 'rxjs/operators'
 import { Subject } from 'rxjs'
+import { markFormGroupAsTouched } from 'src/app/utils/form.util'
 
 export enum Priorities {
   Emergency = 1,
@@ -67,7 +68,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
     // For compatibility with destructuring syntax
     task = task ? task : ({} as Task)
 
-    this.markFormGroupTouched(this.form)
+    markFormGroupAsTouched(this.form)
 
     if (this.form.valid) {
       let newTask: Task = { ...task, ...this.form.value, taskListId: list.id }
@@ -85,11 +86,5 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   close() {
     this.dialog.close()
-  }
-
-  markFormGroupTouched(formGroup: FormGroup) {
-    Object.values(formGroup.controls).forEach(control => {
-      control.markAsTouched()
-    })
   }
 }

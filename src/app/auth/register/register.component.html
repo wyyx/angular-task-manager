@@ -1,4 +1,8 @@
 <div class="form-wrapper">
+  <!-- <div>
+    registerForm.controls['email'].invalid{{registerForm.controls['email'].invalid}} <br>
+    registerForm.controls['email'].touched {{registerForm.controls['email'].touched}}
+  </div> -->
   <form class="form"
         [formGroup]="registerForm">
     <mat-card>
@@ -11,8 +15,8 @@
                      placeholder="邮箱"
                      formControlName="email">
               <mat-error *ngIf="registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
-                <div [hidden]="!registerForm.controls['email'].errors.required">Email is required.</div>
-                <div [hidden]="!registerForm.controls['email'].errors.email">Email is invalid.</div>
+                <div *ngIf="registerForm.controls['email'].errors.required">请输入邮箱</div>
+                <div *ngIf="registerForm.controls['email'].errors.email">邮箱地址不合法</div>
               </mat-error>
             </mat-form-field>
             <ng-container formGroupName="passwordGroup">
@@ -21,7 +25,7 @@
                        type="password"
                        placeholder="密码"
                        formControlName="password">
-                <mat-error *ngIf="registerForm.get('passwordGroup.password').errors && registerForm.get('passwordGroup.password').touched">
+                <mat-error *ngIf="registerForm.get('passwordGroup.password').invalid && registerForm.get('passwordGroup.password').touched">
                   <div [hidden]="!registerForm.get('passwordGroup.password').errors.required">
                     密码不能为空
                   </div>
@@ -33,9 +37,9 @@
                        placeholder="再次输入密码"
                        formControlName="repassword"
                        [errorStateMatcher]="repasswordMatcher">
-                <mat-error *ngIf="registerForm.get('passwordGroup').errors || registerForm.get('passwordGroup.repassword').errors && registerForm.get('passwordGroup.repassword').touched">
-                  <div *ngIf="registerForm.get('passwordGroup.repassword').errors?.required">必须再次输入密码确认</div>
-                  <div *ngIf="!registerForm.get('passwordGroup.repassword').errors?.required &&registerForm.get('passwordGroup').errors.repassword">两次密码不一致</div>
+                <mat-error *ngIf="registerForm.get('passwordGroup').invalid || registerForm.get('passwordGroup.repassword').invalid && registerForm.get('passwordGroup.repassword').touched">
+                  <div *ngIf="registerForm.get('passwordGroup.repassword').invalid">请再次输入密码确认</div>
+                  <div *ngIf="registerForm.get('passwordGroup').invalid">两次密码不一致</div>
                 </mat-error>
               </mat-form-field>
             </ng-container>
@@ -58,14 +62,16 @@
         </mat-tab>
         <mat-tab label="个人信息">
           <mat-card-content class="pt-10">
-            <app-certificate-selector formControlName="certificate"></app-certificate-selector>
+            <app-certificate-selector #certificateSelector
+                                      formControlName="certificate"></app-certificate-selector>
             <app-age-input formControlName="age"></app-age-input>
-            <app-address-selector formControlName="address"></app-address-selector>
+            <app-address-selector #addressSelector
+                                  formControlName="address"></app-address-selector>
           </mat-card-content>
           <div class="text-center pb-20">
             <button mat-raised-button
                     type="button"
-                    (click)="onRegisterClick()">注册
+                    (click)="onRegisterClick(certificateSelector, addressSelector)">注册
             </button>
           </div>
           <mat-card-actions class="text-center">

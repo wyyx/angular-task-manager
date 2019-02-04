@@ -8,6 +8,9 @@
         {{province}}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="province.invalid">
+      <div>请输入省份</div>
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="请输入城市"
@@ -17,6 +20,9 @@
         {{city}}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="city.invalid">
+      <div>请输入城市</div>
+    </mat-error>
   </mat-form-field>
   <mat-form-field>
     <mat-select placeholder="请输入区县"
@@ -26,5 +32,8 @@
         {{district}}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="district.invalid">
+      <div>请输入区县</div>
+    </mat-error>
   </mat-form-field>
 </form>

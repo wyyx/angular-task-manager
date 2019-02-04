@@ -12,6 +12,7 @@ import { CertificateType } from 'src/app/auth/models/user.model'
 import { Observable, combineLatest, Subject } from 'rxjs'
 import { startWith, filter, takeUntil, debounceTime } from 'rxjs/operators'
 import { validateCertificate } from './validators'
+import { markFormGroupAsTouched } from 'src/app/utils/form.util'
 
 @Component({
   selector: 'app-certificate-selector',
@@ -86,6 +87,10 @@ export class CertificateSelectorComponent implements OnInit, OnDestroy, ControlV
 
   onFocusOut(event) {
     this.propagateTouched()
+  }
+
+  markAsTouched() {
+    markFormGroupAsTouched(this.form)
   }
 
   writeValue(obj: any): void {

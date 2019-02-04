@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from "@angular/core"
+import { Component, OnInit, OnDestroy } from '@angular/core'
 import {
   FormGroup,
   FormBuilder,
@@ -9,36 +9,39 @@ import {
   FormControl,
   FormGroupDirective,
   NgForm
-} from "@angular/forms"
-import { Subject } from "rxjs"
-import { takeUntil } from "rxjs/operators"
-import { ErrorStateMatcher } from "@angular/material"
+} from '@angular/forms'
+import { Subject } from 'rxjs'
+import { takeUntil } from 'rxjs/operators'
+import { ErrorStateMatcher } from '@angular/material'
+import { markFormGroupAsTouched } from 'src/app/utils/form.util'
+import { CertificateSelectorComponent } from 'src/app/shared/certificate-selector/certificate-selector.component'
+import { AddressSelectorComponent } from 'src/app/shared/address-selector/address-selector.component'
 
 @Component({
-  selector: "app-register",
-  templateUrl: "./register.component.html",
-  styleUrls: ["./register.component.scss"]
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
   registerForm = this.fb.group({
-    email: ["", Validators.compose([Validators.required, Validators.email])],
+    email: ['', Validators.compose([Validators.required, Validators.email])],
     passwordGroup: this.fb.group(
       {
-        password: ["", Validators.compose([Validators.required])],
-        repassword: ["", Validators.compose([Validators.required])]
+        password: ['', Validators.required],
+        repassword: ['', Validators.required]
       },
-      { validator: validateRepassword }
+      { validator: validatePasswordGroup }
     ),
-    certificate: ["", Validators.required],
-    age: ["1990-01-01"],
-    address: ["", validateAddress],
-    avatar: ["", Validators.compose([Validators.required])]
+    certificate: ['', Validators.required],
+    age: ['1990-01-01'],
+    address: ['', validateAddress],
+    avatar: ['', Validators.required]
   })
 
   items: string[] = []
   selected: string
-  repasswordMatcher = new RepasswordMatcher(this.registerForm.get("passwordGroup"))
+  repasswordMatcher = new RepasswordMatcher(this.registerForm.get('passwordGroup'))
 
   constructor(private fb: FormBuilder) {}
 
@@ -57,11 +60,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  onRegisterClick() {
-    // if (this.registerForm.valid) {
-    console.log("registerForm", this.registerForm.value)
-    console.log("registerForm.passwordGroup.valid", this.registerForm.get("passwordGroup").valid)
-    // }
+  onRegisterClick(
+    certificateSelector: CertificateSelectorComponent,
+    addressSelector: AddressSelectorComponent
+  ) {
+    markFormGroupAsTouched(this.registerForm)
+    addressSelector.markAsTouched()
+    certificateSelector.markAsTouched()
+
+    if (this.registerForm.valid) {
+      console.log('this.registerForm.valid', this.registerForm.value)
+    }
   }
 }
 
@@ -76,23 +85,24 @@ function validateAddress(control: AbstractControl) {
   }
 }
 
-function validateRepassword(group: FormGroup): ValidationErrors {
-  const password = group.get("password").value
-  const repassword = group.get("repassword").value
+function validatePasswordGroup(group: FormGroup): ValidationErrors {
+  const password = group.get('password').value
+  const repassword = group.get('repassword').value
 
   return password === repassword
     ? null
     : {
-        repassword: true
+        passwordsInconsistent: true
       }
 }
 
+// To show error when passwordGroup is invalid
 export class RepasswordMatcher implements ErrorStateMatcher {
   constructor(private group: AbstractControl) {}
 
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     return (control && control.touched && control.invalid) ||
-      (control && control.touched && this.group && this.group.invalid)
+      (control && control.touched && this.group.invalid)
       ? true
       : false
   }
