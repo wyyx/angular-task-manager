@@ -1,28 +1,40 @@
 <div class="form-wrapper">
-  <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+  <form class="form"
+        [formGroup]="loginForm">
     <mat-card>
       <mat-card-header>
-        <mat-card-title><h3>登陆</h3></mat-card-title>
+        <mat-card-title>
+          <h3>登陆</h3>
+        </mat-card-title>
       </mat-card-header>
       <mat-card-content>
         <mat-form-field class="full-width">
-          <input matInput type="text" placeholder="邮箱" formControlName="email">
-          <mat-error *ngIf="loginForm.controls['email'].errors && !loginForm.controls['email'].pristine"
-          class="error-msg">
-          <div [hidden]="!loginForm.controls['email'].errors.required">Email is required.</div>
-          <div [hidden]="!loginForm.controls['email'].errors.email">Email is invalid.</div>
-        </mat-error>
+          <input matInput
+                 type="text"
+                 placeholder="邮箱"
+                 formControlName="email">
+          <mat-error *ngIf="loginForm.controls['email'].errors && !loginForm.controls['email'].touched"
+                     class="error-msg">
+            <div [hidden]="!loginForm.controls['email'].errors.required">Email is required.</div>
+            <div [hidden]="!loginForm.controls['email'].errors.email">Email is invalid.</div>
+          </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput type="password" placeholder="密码" formControlName="password">
-          <mat-error *ngIf="loginForm.controls['password'].errors && !loginForm.controls['password'].pristine"
-          class="error-msg">
-          <div [hidden]="!loginForm.controls['password'].errors.required">Password is required.</div>
-        </mat-error>
+          <input matInput
+                 type="password"
+                 placeholder="密码"
+                 formControlName="password">
+          <mat-error *ngIf="loginForm.controls['password'].errors && !loginForm.controls['password'].touched"
+                     class="error-msg">
+            <div [hidden]="!loginForm.controls['password'].errors.required">Password is required.</div>
+          </mat-error>
         </mat-form-field>
-       
+
         <div class="text-center">
-          <button mat-raised-button type="submit" [disabled]="!loginForm.valid">登陆</button>
+          <button color="accent"
+                  mat-raised-button
+                  type="submit"
+                  (click)="onSubmit()">登陆</button>
         </div>
       </mat-card-content>
       <mat-card-actions class="text-center">

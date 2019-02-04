@@ -5,8 +5,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
-  Output,
-  OnChanges
+  Output
 } from '@angular/core'
 import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR } from '@angular/forms'
 import { Subject } from 'rxjs'
@@ -25,7 +24,7 @@ import { Chip } from '../models/chip.model'
     }
   ]
 })
-export class ChipSelectorComponent implements OnInit, OnDestroy, OnChanges, ControlValueAccessor {
+export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAccessor {
   kill$: Subject<any> = new Subject()
 
   @Input()
@@ -36,9 +35,6 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, OnChanges, Cont
 
   @Output()
   filterChange: EventEmitter<string> = new EventEmitter()
-
-  @Input()
-  existChips: Chip[] = []
 
   selectedChips: Chip[] = []
 
@@ -59,14 +55,6 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, OnChanges, Cont
         takeUntil(this.kill$)
       )
       .subscribe()
-  }
-
-  ngOnChanges() {
-    // Update selectedChips when input existChips changes, note: slice()
-    setTimeout(() => {
-      this.selectedChips = this.existChips.slice()
-      this.propagateChange(this.selectedChips)
-    }, 0)
   }
 
   ngOnDestroy(): void {

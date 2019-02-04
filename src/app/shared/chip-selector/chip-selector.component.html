@@ -19,7 +19,7 @@
            [matAutocomplete]="auto"
            (focusout)="onFocusOut($event)">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let chip of chips"
+      <mat-option *ngFor="let chip of candidateChips"
                   [value]="chip"
                   (click)="onAutocompleteClick(chip)">
         {{chip.label}}

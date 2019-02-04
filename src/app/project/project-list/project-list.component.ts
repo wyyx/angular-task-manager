@@ -15,9 +15,11 @@ import {
   AddProjectAction,
   DeleteProjectAction,
   NeedAllProjectsAction,
-  UpdateProjectAction
+  UpdateProjectAction,
+  AddOrRemoveMembersAction
 } from '../store/actions/project.actions'
 import { getAllProjects } from '../store/selectors/projects.selectors'
+import { User } from 'src/app/auth/models/user.model'
 
 @Component({
   selector: 'app-project-list',
@@ -47,7 +49,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
     this.router.navigate(['/projects', project.id])
   }
 
-  openInviteDialog(project) {
+  openInviteDialog(project: Project) {
     const dialogRef = this.dialog.open(InviteComponent, {
       data: {
         project

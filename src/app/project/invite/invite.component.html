@@ -2,8 +2,7 @@
   <h1 mat-dialog-title>邀请组员</h1>
   <div mat-dialog-content>
     <app-chip-selector [placeholder]="'输入 email 搜索成员'"
-                       [existChips]="existChips"
-                       [candidateChips]="searchedMemberChips"
+                       [candidateChips]="searchedChips"
                        [formControl]="members"
                        (filterChange)="onFilterChange($event)">
     </app-chip-selector>

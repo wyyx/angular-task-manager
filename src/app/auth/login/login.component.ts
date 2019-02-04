@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.loginForm.valid) {
       const value = this.loginForm.value
       const { email, password } = value
-      console.log(value)
       this.store.dispatch(new LoginAction({ email, password }))
     } else {
       return
