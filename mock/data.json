@@ -51,8 +51,7 @@
       "email": "liming@163.com",
       "id": "fgasergase-",
       "projectIds": [
-        "5z0Kw8c",
-        "Hya1moGb-"
+        "5z0Kw8c"
       ],
       "roleIds": [
         1
@@ -74,9 +73,8 @@
       "desc": "为某某公司开发的定制化 ERP 系统",
       "coverImg": "/assets/img/covers/1.jpg",
       "members": [
-        "ce75357e3035",
         "BkkDvwee-",
-        "fgasergase-"
+        "ce75357e3035"
       ],
       "id": "Hya1moGb-",
       "taskLists": [
