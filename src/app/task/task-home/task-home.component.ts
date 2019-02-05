@@ -34,6 +34,7 @@ import {
   getTaskListViewsIsLoading,
   getNextOrderByProjectId
 } from '../store/selectors/task-list.selectors'
+import { Update } from '@ngrx/entity'
 
 @Component({
   selector: 'app-task-home',
@@ -176,22 +177,24 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
       .subscribe()
   }
 
-  openModifyListNameDialog(list: TaskList) {
+  openModifyListNameDialog({ tasks, ...taskList }: TaskListView) {
     const dialogRef = this.dialog.open(ModifyTaskListNameComponent, {
       data: {
-        name: list.name
+        name: taskList.name
       }
     })
 
     dialogRef
       .afterClosed()
       .pipe(
-        tap(v => console.log('>>>', 'name', v)),
         tap(
           newListName =>
             newListName &&
             this.store.dispatch(
-              new UpdateTaskListAction({ id: list.id, changes: { ...list, name: newListName } })
+              new UpdateTaskListAction({
+                id: taskList.id,
+                changes: { ...taskList, name: newListName }
+              })
             )
         ),
         takeUntil(this.kill$)

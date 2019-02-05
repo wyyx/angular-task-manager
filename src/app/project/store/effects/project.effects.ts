@@ -117,6 +117,9 @@ export class ProjectEffects {
         pm => !currentMembers.map(cm => cm.id).includes(pm.id)
       )
 
+      console.log('addedNewMembers', addedNewMembers)
+      console.log('removedOldMembers', removedOldMembers)
+
       // Add projectId to newMembers
       addedNewMembers.forEach(m =>
         this.store.dispatch(

@@ -1,23 +1,36 @@
 .form {
-	min-width: 150px;
-	max-width: 500px;
+  min-width: 150px;
+  max-width: 500px;
 }
 
 .form-wrapper {
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .mat-icon {
-	overflow: hidden;
-	width: 48px;
-	height: 48px;
-	border-radius: 50%;
+  overflow: hidden;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
 }
 
 mat-card-actions {
-	margin-bottom: 0px;
+  margin-bottom: 0px;
+}
+
+.register-btn-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
 }

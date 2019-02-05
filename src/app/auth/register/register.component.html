@@ -10,6 +10,12 @@
         <mat-tab label="账号信息">
           <mat-card-content class="pt-10">
             <mat-form-field class="full-width">
+              <input type="text"
+                     matInput
+                     placeholder="昵称"
+                     formControlName="name">
+            </mat-form-field>
+            <mat-form-field class="full-width">
               <input matInput
                      type="text"
                      placeholder="邮箱"
@@ -68,10 +74,17 @@
             <app-address-selector #addressSelector
                                   formControlName="address"></app-address-selector>
           </mat-card-content>
-          <div class="text-center pb-20">
-            <button mat-raised-button
+          <div class="text-center pb-20 register-btn-container">
+            <button class="register-btn"
+                    mat-raised-button
                     type="button"
-                    (click)="onRegisterClick(certificateSelector, addressSelector)">注册
+                    (click)="onRegisterClick(certificateSelector, addressSelector)">
+              <ng-container *ngIf="isRegistering$ | async; else elseTemplate">
+                <mat-spinner [diameter]="24"></mat-spinner>
+              </ng-container>
+              <ng-template #elseTemplate>
+                注册
+              </ng-template>
             </button>
           </div>
           <mat-card-actions class="text-center">

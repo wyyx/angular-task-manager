@@ -10,12 +10,17 @@ import {
   FormGroupDirective,
   NgForm
 } from '@angular/forms'
-import { Subject } from 'rxjs'
+import { Subject, Observable } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
 import { ErrorStateMatcher } from '@angular/material'
 import { markFormGroupAsTouched } from 'src/app/utils/form.util'
 import { CertificateSelectorComponent } from 'src/app/shared/certificate-selector/certificate-selector.component'
 import { AddressSelectorComponent } from 'src/app/shared/address-selector/address-selector.component'
+import { Store, select } from '@ngrx/store'
+import { AppState } from 'src/app/store'
+import { getIsRegistering } from '../store/selectors/auth.selectors'
+import { RegisterAction } from '../store/actions/auth.actions'
+import { User } from '../models/user.model'
 
 @Component({
   selector: 'app-register',
@@ -24,7 +29,9 @@ import { AddressSelectorComponent } from 'src/app/shared/address-selector/addres
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
+  isRegistering$: Observable<boolean>
   registerForm = this.fb.group({
+    name: [''],
     email: ['', Validators.compose([Validators.required, Validators.email])],
     passwordGroup: this.fb.group(
       {
@@ -43,10 +50,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
   selected: string
   repasswordMatcher = new RepasswordMatcher(this.registerForm.get('passwordGroup'))
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private store: Store<AppState>) {}
 
   ngOnInit() {
     this.getAvatars()
+    this.isRegistering$ = this.store.pipe(select(getIsRegistering))
   }
 
   ngOnDestroy(): void {
@@ -68,10 +76,20 @@ export class RegisterComponent implements OnInit, OnDestroy {
     addressSelector.markAsTouched()
     certificateSelector.markAsTouched()
 
-    console.log(this.registerForm)
-
     if (this.registerForm.valid) {
       console.log('this.registerForm.value', this.registerForm.value)
+      const formValue = this.registerForm.value
+
+      this.store.dispatch(
+        new RegisterAction({
+          name: formValue.name,
+          email: formValue.email,
+          password: formValue.passwordGroup.password,
+          address: formValue.address,
+          avatar: formValue.avatar,
+          certificate: formValue.certificate
+        } as User)
+      )
     }
   }
 }

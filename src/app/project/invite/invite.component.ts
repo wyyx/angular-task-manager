@@ -64,6 +64,9 @@ export class InviteComponent implements OnInit, OnDestroy {
   save() {
     this.currentMembers = this.members.value.map((chip: Chip) => chip.value)
 
+    console.log('this.previousMembers', this.previousMembers)
+    console.log('this.currentMembers', this.currentMembers)
+
     this.store
       .pipe(
         select(getUser),

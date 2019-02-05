@@ -1,64 +1,64 @@
 mat-icon.avatar {
-	overflow: hidden;
-	width: 32px;
-	height: 32px;
-	border-radius: 50%;
+  overflow: hidden;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
 }
 
 .selected-container mat-icon {
-	overflow: hidden;
-	border-radius: 50%;
-	width: 48px;
-	height: 48px;
+  overflow: hidden;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
 }
 
 .scroll-container {
-	overflow-y: scroll;
-	height: 200px;
+  overflow-y: scroll;
+  height: 200px;
 }
 
 .image-container {
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .dimmer-container {
-	position: absolute;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: 100%;
-	height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
 }
 
 .dimmer {
-	display: none;
-	flex: 0 0 auto;
-	justify-content: center;
-	align-items: center;
-	width: 32px;
-	height: 32px;
-	background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .image-container:hover .dimmer {
-	display: flex;
-	background-color: rgba(0, 0, 0, 0.2);
-	cursor: pointer;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.15);
+  cursor: pointer;
 }
 
 .image-container.selected .dimmer {
-	display: flex;
+  display: flex;
 }
 
 .dimmer mat-icon {
-	color: white;
+  color: white;
 }
 
 .preview {
-	width: 150px;
+  width: 150px;
 }
