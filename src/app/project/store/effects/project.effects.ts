@@ -30,10 +30,7 @@ import {
   ProjectActionTypes,
   UpdateProjectAction,
   UpdateProjectFailAction,
-  UpdateProjectSuccessAction,
-  AddOrRemoveMembersAction,
-  AddOrRemoveMembersSuccessAction,
-  AddOrRemoveMembersFailAction
+  UpdateProjectSuccessAction
 } from '../actions/project.actions'
 import { getAllProjectsIsLoaded } from '../selectors/projects.selectors'
 import { UpdateUserAction } from 'src/app/auth/store/actions/user.actions'
@@ -103,53 +100,6 @@ export class ProjectEffects {
         catchError(() => of(new UpdateProjectFailAction()))
       )
     )
-  )
-
-  @Effect({ dispatch: false })
-  addOrRemoveMembers$ = this.actions$.pipe(
-    ofType<AddOrRemoveMembersAction>(ProjectActionTypes.ADD_OR_REMOVE_MEMBERS),
-    map(action => action.payload),
-    tap(({ projectId, previousMembers, currentMembers }) => {
-      const addedNewMembers = currentMembers.filter(
-        cm => !previousMembers.map(pm => pm.id).includes(cm.id)
-      )
-      const removedOldMembers = previousMembers.filter(
-        pm => !currentMembers.map(cm => cm.id).includes(pm.id)
-      )
-
-      console.log('addedNewMembers', addedNewMembers)
-      console.log('removedOldMembers', removedOldMembers)
-
-      // Add projectId to newMembers
-      addedNewMembers.forEach(m =>
-        this.store.dispatch(
-          new UpdateUserAction({
-            id: m.id,
-            changes: { projectIds: uniq([...m.projectIds, projectId]) }
-          })
-        )
-      )
-
-      // Remove projectId from oldMembers
-      removedOldMembers.forEach(m =>
-        this.store.dispatch(
-          new UpdateUserAction({
-            id: m.id,
-            changes: { projectIds: uniq(m.projectIds.filter(id => id !== projectId)) }
-          })
-        )
-      )
-
-      // Update project's members
-      this.store.dispatch(
-        new UpdateProjectAction({
-          id: projectId,
-          changes: { members: uniq(currentMembers.map(m => m.id)) }
-        })
-      )
-    }),
-    mapTo(new AddOrRemoveMembersSuccessAction()),
-    catchError(() => of(new AddOrRemoveMembersFailAction()))
   )
 
   constructor(

@@ -30,11 +30,13 @@
     <mat-icon *ngIf="task.reminder"
               class="alarm">alarm</mat-icon>
   </div>
-  <mat-icon *ngIf="task.ownerId"
-            matListAvatar
-            [svgIcon]="avatar"
-            class="avatar">account_circle</mat-icon>
-  <mat-icon *ngIf="!task.owner"
-            matListAvatar
-            class="avatar-no">account_circle</mat-icon>
+  <ng-container *ngIf="task.avatar; else elseTemplate">
+    <mat-icon matListAvatar
+              [svgIcon]="task.avatar"
+              class="avatar">account_circle</mat-icon>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <mat-icon matListAvatar
+              class="avatar-no">account_circle</mat-icon>
+  </ng-template>
 </mat-list-item>

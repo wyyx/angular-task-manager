@@ -10,6 +10,10 @@ const initialUserState: EntityState<User> = userAdapter.getInitialState()
 
 export function userReducer(state = initialUserState, action: UserActions): UserState {
   switch (action.type) {
+    case UserActionTypes.LOAD_USERS_SUCCESS:
+      return userAdapter.addMany(action.payload, state)
+    case UserActionTypes.LOAD_USERS_FAIL:
+      return state
     case UserActionTypes.UPDATE_USER_SUCCESS:
       return userAdapter.updateOne(action.payload, state)
     case UserActionTypes.UPDATE_USER_FAIL:

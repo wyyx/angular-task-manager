@@ -2,9 +2,11 @@ import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 import { ActivatedRoute } from '@angular/router'
 import { select, Store } from '@ngrx/store'
+import { uniq } from 'lodash'
 import { Observable, Subject } from 'rxjs'
-import { filter, map, take, takeUntil, tap, mergeMap, mergeMapTo } from 'rxjs/operators'
+import { filter, map, mergeMap, take, takeUntil, tap } from 'rxjs/operators'
 import { slideToRightAnim } from 'src/app/animations/route.anim'
+import { NeedUsersAction } from 'src/app/auth/store/actions/user.actions'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { DragData } from 'src/app/directive/drag-drop.service'
 import { TaskListView } from 'src/app/domain/task-list-view.model'
@@ -30,11 +32,10 @@ import {
   UpdateTaskAction
 } from '../store/actions/task.actions'
 import {
+  getNextOrderByProjectId,
   getTaskListViews,
-  getTaskListViewsIsLoading,
-  getNextOrderByProjectId
+  getTaskListViewsIsLoading
 } from '../store/selectors/task-list.selectors'
-import { Update } from '@ngrx/entity'
 
 @Component({
   selector: 'app-task-home',
@@ -60,7 +61,18 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
     this.projectId = this.activatedRoute.snapshot.paramMap.get('projectId')
     this.isLoading$ = this.store.pipe(select(getTaskListViewsIsLoading))
     this.store.dispatch(new NeedTaskListsAction({ projectId: this.projectId }))
-    this.taskListViews$ = this.store.pipe(select(getTaskListViews(this.projectId)))
+    this.taskListViews$ = this.store.pipe(
+      select(getTaskListViews(this.projectId)),
+      tap(taskListViews => {
+        let userIds: string[] = []
+        // Get all userIds in all tasks
+        taskListViews.forEach(taskListView => {
+          taskListView.tasks.forEach(task => userIds.push(task.ownerId))
+        })
+        // For avatars
+        this.store.dispatch(new NeedUsersAction({ userIds: uniq(userIds) }))
+      })
+    )
   }
 
   ngOnDestroy(): void {

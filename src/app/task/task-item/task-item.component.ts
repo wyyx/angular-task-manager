@@ -1,8 +1,9 @@
-import { Component, OnInit, Input, EventEmitter, Output, HostListener } from '@angular/core'
-import { itemAnim } from 'src/app/animations/item.anim'
-import { Task } from 'src/app/domain/task.model'
-import { MatCheckbox, MatCheckboxChange } from '@angular/material'
+import { Component, HostListener, Input, OnInit } from '@angular/core'
+import { MatCheckboxChange } from '@angular/material'
 import { Store } from '@ngrx/store'
+import { itemAnim } from 'src/app/animations/item.anim'
+import { TaskView } from 'src/app/domain/task-view.model'
+import { Task } from 'src/app/domain/task.model'
 import { AppState } from 'src/app/store'
 import { UpdateTaskAction } from '../store/actions/task.actions'
 
@@ -13,8 +14,7 @@ import { UpdateTaskAction } from '../store/actions/task.actions'
   animations: [itemAnim]
 })
 export class TaskItemComponent implements OnInit {
-  @Input() task: Task
-  avatar: string
+  @Input() task: TaskView
 
   itemState = 'out'
   @HostListener('mouseleave')

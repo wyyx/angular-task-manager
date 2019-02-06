@@ -15,8 +15,7 @@ import {
   AddProjectAction,
   DeleteProjectAction,
   NeedAllProjectsAction,
-  UpdateProjectAction,
-  AddOrRemoveMembersAction
+  UpdateProjectAction
 } from '../store/actions/project.actions'
 import { getAllProjects } from '../store/selectors/projects.selectors'
 import { User } from 'src/app/auth/models/user.model'
@@ -55,6 +54,22 @@ export class ProjectListComponent implements OnInit, OnDestroy {
         project
       }
     })
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        filter(members => members),
+        tap((members: User[]) =>
+          this.store.dispatch(
+            new UpdateProjectAction({
+              id: project.id,
+              changes: { ...project, members: members.map(m => m.id) }
+            })
+          )
+        ),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
   }
 
   openNewProjectDialog(): void {

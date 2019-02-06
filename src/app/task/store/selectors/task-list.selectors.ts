@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { TaskListView } from 'src/app/domain/task-list-view.model'
 import { TaskFeatureState } from '..'
 import { taskListAdapter } from '../reducers/task-list.reducer'
-import { getAllTasks, getTasksIsLoading } from './task.selectors'
+import { getAllTasks, getTasksIsLoading, getAllTaskViews } from './task.selectors'
 import { max } from 'lodash'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = taskListAdapter.getSelectors()
@@ -28,7 +28,7 @@ export const getTaskListsByProjectId = (projectId: string) =>
 export const getTaskListViews = (projectId: string): MemoizedSelector<object, TaskListView[]> =>
   createSelector(
     getTaskListsByProjectId(projectId),
-    getAllTasks,
+    getAllTaskViews,
     (taskLists, tasks) =>
       taskLists.map(taskList => ({
         ...taskList,
@@ -56,5 +56,10 @@ export const getTaskListViewsIsLoading = createSelector(
 export const getNextOrderByProjectId = (projectId: string) =>
   createSelector(
     getTaskListsByProjectId(projectId),
-    taskLists => max(taskLists.map(list => list.order)) + 1
+    taskLists => {
+      let maxOrder = max(taskLists.map(list => list.order))
+      maxOrder = maxOrder ? maxOrder : 0
+
+      return maxOrder + 1
+    }
   )

@@ -1,4 +1,4 @@
-import { Task } from './task.model'
+import { TaskView } from './task-view.model'
 
 export interface TaskListView {
   id?: string
@@ -6,5 +6,5 @@ export interface TaskListView {
   projectId: string
   order: number
   taskIds?: string[]
-  tasks: Task[]
+  tasks: TaskView[]
 }

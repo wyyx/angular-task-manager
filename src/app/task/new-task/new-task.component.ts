@@ -65,19 +65,21 @@ export class NewTaskComponent implements OnInit, OnDestroy {
 
   save() {
     let { list, task } = this.data
-    // For compatibility with destructuring syntax
-    task = task ? task : ({} as Task)
 
     markFormGroupAsTouched(this.form)
 
     if (this.form.valid) {
-      let newTask: Task = { ...task, ...this.form.value, taskListId: list.id }
-
       this.store
         .pipe(
           select(getUser),
-          tap(user => (newTask.ownerId = user.id)),
-          tap(() => this.dialog.close(newTask)),
+          tap(user =>
+            this.dialog.close({
+              ...task,
+              ...this.form.value,
+              taskListId: list.id,
+              ownerId: user.id
+            } as Task)
+          ),
           takeUntil(this.kill$)
         )
         .subscribe()

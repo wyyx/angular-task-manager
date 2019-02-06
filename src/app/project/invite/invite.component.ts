@@ -1,16 +1,15 @@
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core'
 import { FormControl } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material'
-import { Store, select } from '@ngrx/store'
+import { select, Store } from '@ngrx/store'
 import { Subject } from 'rxjs'
-import { map, take, takeUntil, tap, withLatestFrom } from 'rxjs/operators'
+import { map, take, tap, withLatestFrom } from 'rxjs/operators'
 import { User } from 'src/app/auth/models/user.model'
+import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { Project } from 'src/app/domain/project.model'
 import { UserService } from 'src/app/services/user.service'
 import { Chip } from 'src/app/shared/models/chip.model'
 import { AppState } from 'src/app/store'
-import { AddOrRemoveMembersAction } from '../store/actions/project.actions'
-import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 
 @Component({
   selector: 'app-invite',
@@ -23,8 +22,6 @@ export class InviteComponent implements OnInit, OnDestroy {
   project: Project
 
   previousMembers: User[]
-  currentMembers: User[]
-
   searchedChips: Chip[] = []
 
   constructor(
@@ -62,29 +59,16 @@ export class InviteComponent implements OnInit, OnDestroy {
   }
 
   save() {
-    this.currentMembers = this.members.value.map((chip: Chip) => chip.value)
-
-    console.log('this.previousMembers', this.previousMembers)
-    console.log('this.currentMembers', this.currentMembers)
+    const currentMembers = this.members.value.map((chip: Chip) => chip.value)
 
     this.store
       .pipe(
         select(getUser),
-        tap(currentUser =>
-          this.store.dispatch(
-            new AddOrRemoveMembersAction({
-              projectId: this.project.id,
-              previousMembers: this.previousMembers,
-              // Include currentUser
-              currentMembers: [...this.currentMembers, currentUser]
-            })
-          )
-        ),
+        // Include currentUser
+        tap(currentUser => this.dialog.close([...currentMembers, currentUser])),
         take(1)
       )
       .subscribe()
-
-    this.dialog.close()
   }
 
   close() {
@@ -95,7 +79,6 @@ export class InviteComponent implements OnInit, OnDestroy {
     this.userService
       .searchUsers(filter)
       .pipe(
-        tap(v => console.log('[debug]', 'members', v)),
         // Exclude exists members
         map(members => members.filter(m => !this.previousMembers.map(pm => pm.id).includes(m.id))),
         tap(members => (this.searchedChips = members.map(m => ({ label: m.name, value: m })))),

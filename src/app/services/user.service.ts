@@ -1,15 +1,12 @@
-import { Injectable, Inject } from '@angular/core'
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http'
-import { Project } from '../domain/project.model'
-import { BASE_URL } from '../core/core.module'
-import { Observable, from } from 'rxjs'
-import { mergeMap, count, switchMap, map } from 'rxjs/operators'
-import { TaskList } from '../domain/task-list.model'
-import { Task } from '../domain/task.model'
-import { User } from '../auth/models/user.model'
-import { ProjectService } from './project.service'
-import { uniq } from 'lodash'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
+import { Inject, Injectable } from '@angular/core'
 import { Update } from '@ngrx/entity'
+import { uniq } from 'lodash'
+import { Observable } from 'rxjs'
+import { User } from '../auth/models/user.model'
+import { BASE_URL } from '../core/core.module'
+import { Project } from '../domain/project.model'
+import { map } from 'rxjs/operators'
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +17,29 @@ export class UserService {
     'Content-Type': 'application/json'
   })
 
-  constructor(
-    @Inject(BASE_URL) private baseUrl: string,
-    private http: HttpClient,
-    private projectService: ProjectService
-  ) {}
+  constructor(@Inject(BASE_URL) private baseUrl: string, private http: HttpClient) {}
+
+  // Search users by email
+  get(userId: string): Observable<User> {
+    const url = `${this.baseUrl}/${this.path}`
+
+    return this.http
+      .get<User[]>(url, {
+        headers: this.headers,
+        params: { id: userId }
+      })
+      .pipe(map(users => users && users[0]))
+  }
+
+  // Search users by email
+  getByIds(userIds: string[]): Observable<User[]> {
+    const url = `${this.baseUrl}/${this.path}`
+
+    return this.http.get<User[]>(url, {
+      headers: this.headers,
+      params: { id: userIds }
+    })
+  }
 
   // Search users by email
   searchUsers(filter: string): Observable<User[]> {
@@ -43,7 +58,7 @@ export class UserService {
     return this.http.get<User[]>(url, {
       headers: this.headers,
       params: {
-        projectIds_like: project.id
+        id: project.members
       }
     })
   }

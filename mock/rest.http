@@ -48,3 +48,6 @@ GET  http://localhost:3000/users?email=wpcfan@163.com
 // Get user by email and password
 GET  http://localhost:3000/users?email=wpcfan@163.com&password=wp123456
 ###
+
+// Get users by ids
+GET http://localhost:3000/users?id=JlQUPk5&id=ce75357e3035

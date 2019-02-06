@@ -20,11 +20,7 @@ export enum ProjectActionTypes {
   // Update project
   UPDATE_PROJECT = '[Project] update project',
   UPDATE_PROJECT_SUCCESS = '[Project] update project success',
-  UPDATE_PROJECT_FAIL = '[Project] update project fail',
-  // Add or remove members
-  ADD_OR_REMOVE_MEMBERS = '[Project] add or remove members',
-  ADD_OR_REMOVE_MEMBERS_SUCCESS = '[Project] add or remove members success',
-  ADD_OR_REMOVE_MEMBERS_FAIL = '[Project] add or remove members fail'
+  UPDATE_PROJECT_FAIL = '[Project] update project fail'
 }
 
 export class NeedAllProjectsAction implements Action {
@@ -98,23 +94,6 @@ export class UpdateProjectFailAction implements Action {
   readonly type = ProjectActionTypes.UPDATE_PROJECT_FAIL
 }
 
-// Add or remove members
-export class AddOrRemoveMembersAction implements Action {
-  readonly type = ProjectActionTypes.ADD_OR_REMOVE_MEMBERS
-
-  constructor(
-    public payload: { projectId: string; previousMembers: User[]; currentMembers: User[] }
-  ) {}
-}
-
-export class AddOrRemoveMembersSuccessAction implements Action {
-  readonly type = ProjectActionTypes.ADD_OR_REMOVE_MEMBERS_SUCCESS
-}
-
-export class AddOrRemoveMembersFailAction implements Action {
-  readonly type = ProjectActionTypes.ADD_OR_REMOVE_MEMBERS_FAIL
-}
-
 export type ProjectActions =
   | NeedAllProjectsAction
   | LoadAllProjectsAction
@@ -129,6 +108,3 @@ export type ProjectActions =
   | DeleteProjectFailAction
   | UpdateProjectSuccessAction
   | UpdateProjectFailAction
-  | AddOrRemoveMembersAction
-  | AddOrRemoveMembersSuccessAction
-  | AddOrRemoveMembersFailAction

@@ -20,12 +20,6 @@
       "avatar": "avatars:svg-1",
       "email": "zhangsan@163.com",
       "id": "ce75357e3035",
-      "projectIds": [
-        "Sk2HaTagb",
-        "mw6Es9f",
-        "Hya1moGb-",
-        "iSgb_pH"
-      ],
       "roleIds": [
         0,
         1,
@@ -38,9 +32,6 @@
       "avatar": "avatars:svg-2",
       "email": "lisi@163.com",
       "id": "BkkDvwee-",
-      "projectIds": [
-        "mw6Es9f"
-      ],
       "roleIds": [
         1
       ]
@@ -51,9 +42,6 @@
       "avatar": "avatars:svg-3",
       "email": "liming@163.com",
       "id": "fgasergase-",
-      "projectIds": [
-        "5z0Kw8c"
-      ],
       "roleIds": [
         1
       ]
@@ -90,6 +78,7 @@
       "desc": "为某某公司开发的定制化 ERP 系统",
       "coverImg": "/assets/img/covers/1.jpg",
       "members": [
+        "BkkDvwee-",
         "ce75357e3035"
       ],
       "id": "Hya1moGb-",
@@ -123,9 +112,10 @@
       "desc": "一个小型生鲜网站",
       "coverImg": "/assets/img/covers/7.jpg",
       "members": [
+        "ce75357e3035",
         "JlQUPk5"
       ],
-      "id": "iSgb_pH"
+      "id": "Glt0rv2"
     }
   ],
   "taskLists": [
@@ -179,9 +169,61 @@
     },
     {
       "name": "进行中",
-      "projectId": "iSgb_pH",
-      "order": null,
-      "id": "SDGgZbZ"
+      "projectId": "Glt0rv2",
+      "order": 0,
+      "id": "yNgZZPD",
+      "tasks": [
+        {
+          "desc": "设计原型图",
+          "priority": 1,
+          "dueDate": "2019-02-07T16:00:00.000Z",
+          "reminder": "2019-02-05T16:00:00.000Z",
+          "taskListId": "yNgZZPD",
+          "ownerId": "ce75357e3035",
+          "id": 31
+        },
+        {
+          "taskListId": "yNgZZPD",
+          "desc": "搭建开发环境xxx",
+          "dueDate": "2019-02-05T10:47:31.767Z",
+          "reminder": "2019-02-05T10:47:31.767Z",
+          "completed": false,
+          "participantIds": [],
+          "ownerId": "JlQUPk5",
+          "priority": 3,
+          "id": 32
+        },
+        {
+          "taskListId": "yNgZZPD",
+          "desc": "jjjjjjjjjjjjjjjjjjjjj",
+          "dueDate": "2019-02-05T11:14:53.345Z",
+          "reminder": "2019-02-05T11:14:53.345Z",
+          "completed": false,
+          "participantIds": [],
+          "ownerId": "JlQUPk5",
+          "priority": 3,
+          "id": 33
+        }
+      ]
+    },
+    {
+      "name": "小王已完成的",
+      "projectId": "Glt0rv2",
+      "order": 1,
+      "id": "XI1obnd",
+      "tasks": [
+        {
+          "taskListId": "XI1obnd",
+          "desc": "www",
+          "dueDate": "2019-02-05T11:19:08.535Z",
+          "reminder": "2019-02-05T11:19:08.535Z",
+          "completed": false,
+          "participantIds": [],
+          "ownerId": "JlQUPk5",
+          "priority": 3,
+          "id": 34
+        }
+      ]
     }
   ],
   "tasks": [
@@ -481,24 +523,46 @@
       "id": 28
     },
     {
-      "taskListId": "SDGgZbZ",
-      "desc": "搭建开发环境",
-      "dueDate": "2019-02-05T08:30:21.366Z",
-      "reminder": "2019-02-05T08:30:21.366Z",
-      "completed": false,
-      "participantIds": [],
-      "ownerId": "JlQUPk5",
-      "priority": 3,
-      "id": 29
-    },
-    {
       "desc": "设计原型图",
       "priority": 1,
       "dueDate": "2019-02-07T16:00:00.000Z",
       "reminder": "2019-02-05T16:00:00.000Z",
-      "taskListId": "SDGgZbZ",
+      "taskListId": "yNgZZPD",
+      "ownerId": "ce75357e3035",
+      "id": 31
+    },
+    {
+      "taskListId": "yNgZZPD",
+      "desc": "搭建开发环境xxx",
+      "dueDate": "2019-02-05T10:47:31.767Z",
+      "reminder": "2019-02-05T10:47:31.767Z",
+      "completed": false,
+      "participantIds": [],
       "ownerId": "JlQUPk5",
-      "id": 30
+      "priority": 3,
+      "id": 32
+    },
+    {
+      "taskListId": "yNgZZPD",
+      "desc": "jjjjjjjjjjjjjjjjjjjjj",
+      "dueDate": "2019-02-05T11:14:53.345Z",
+      "reminder": "2019-02-05T11:14:53.345Z",
+      "completed": false,
+      "participantIds": [],
+      "ownerId": "JlQUPk5",
+      "priority": 3,
+      "id": 33
+    },
+    {
+      "taskListId": "XI1obnd",
+      "desc": "www",
+      "dueDate": "2019-02-05T11:19:08.535Z",
+      "reminder": "2019-02-05T11:19:08.535Z",
+      "completed": false,
+      "participantIds": [],
+      "ownerId": "JlQUPk5",
+      "priority": 3,
+      "id": 34
     }
   ]
 }
