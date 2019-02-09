@@ -306,6 +306,13 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
+"@ng-bootstrap/ng-bootstrap@^4.0.2":
+  version "4.0.2"
+  resolved "http://registry.npm.taobao.org/@ng-bootstrap/ng-bootstrap/download/@ng-bootstrap/ng-bootstrap-4.0.2.tgz#333e90190eda76879a00df85d5aa031b78f7d565"
+  integrity sha1-Mz6QGQ7adoeaAN+F1aoDG3j31WU=
+  dependencies:
+    tslib "^1.9.0"
+
 "@ngrx/effects@^7.0.0":
   version "7.0.0"
   resolved "http://registry.npm.taobao.org/@ngrx/effects/download/@ngrx/effects-7.0.0.tgz#57ea3a42ed970b748e78292e54fe02a768027b05"
@@ -698,6 +705,38 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/amdefine/download/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
+
+angular-calendar@^0.26.6:
+  version "0.26.6"
+  resolved "http://registry.npm.taobao.org/angular-calendar/download/angular-calendar-0.26.6.tgz#c3535bc2e0e69347b123b30b73fb7ee94b7ac1d1"
+  integrity sha1-w1NbwuDmk0exI7MLc/t+6Ut6wdE=
+  dependencies:
+    angular-draggable-droppable "^4.0.2"
+    angular-resizable-element "^3.2.2"
+    calendar-utils "^0.2.2"
+    positioning "^1.4.0"
+    tslib "^1.9.0"
+
+angular-draggable-droppable@^4.0.2:
+  version "4.0.2"
+  resolved "http://registry.npm.taobao.org/angular-draggable-droppable/download/angular-draggable-droppable-4.0.2.tgz#76dded64c6738dc17ca624ece4226c7928b3c8b4"
+  integrity sha1-dt3tZMZzjcF8piTs5CJseSizyLQ=
+  dependencies:
+    tslib "^1.9.0"
+
+angular-resizable-element@^3.2.2:
+  version "3.2.3"
+  resolved "http://registry.npm.taobao.org/angular-resizable-element/download/angular-resizable-element-3.2.3.tgz#0080a61fdbe88634ea233596a6640ffa597130de"
+  integrity sha1-AICmH9vohjTqIzWWpmQP+llxMN4=
+  dependencies:
+    tslib "^1.9.0"
+
+angularx-flatpickr@^6.1.0:
+  version "6.1.0"
+  resolved "http://registry.npm.taobao.org/angularx-flatpickr/download/angularx-flatpickr-6.1.0.tgz#e1edad5a360b4c2b56c92cee5334c6319b968def"
+  integrity sha1-4e2tWjYLTCtWySzuUzTGMZuWje8=
+  dependencies:
+    tslib "^1.9.0"
 
 ansi-align@^2.0.0:
   version "2.0.0"
@@ -1193,6 +1232,11 @@ bonjour@^3.5.0:
     multicast-dns "^6.0.1"
     multicast-dns-service-types "^1.1.0"
 
+bootstrap@^4.2.1:
+  version "4.2.1"
+  resolved "http://registry.npm.taobao.org/bootstrap/download/bootstrap-4.2.1.tgz#8f8bdca024dbf0e8644da32e918c8a03a90a5757"
+  integrity sha1-j4vcoCTb8OhkTaMukYyKA6kKV1c=
+
 boxen@^1.2.1:
   version "1.3.0"
   resolved "http://registry.npm.taobao.org/boxen/download/boxen-1.3.0.tgz#55c6c39a8ba58d9c61ad22cd877532deb665a20b"
@@ -1434,6 +1478,11 @@ cache-base@^1.0.1:
     to-object-path "^0.3.0"
     union-value "^1.0.0"
     unset-value "^1.0.0"
+
+calendar-utils@^0.2.2:
+  version "0.2.3"
+  resolved "http://registry.npm.taobao.org/calendar-utils/download/calendar-utils-0.2.3.tgz#052224fe928e10ffeca7d89c72105f5a33b8855d"
+  integrity sha1-BSIk/pKOEP/sp9icchBfWjO4hV0=
 
 callsite@1.0.0:
   version "1.0.0"
@@ -3020,6 +3069,11 @@ find-up@^3.0.0:
   integrity sha1-SRafHXmTQwZG2mHsxa41XCHJe3M=
   dependencies:
     locate-path "^3.0.0"
+
+flatpickr@^4.5.2:
+  version "4.5.2"
+  resolved "http://registry.npm.taobao.org/flatpickr/download/flatpickr-4.5.2.tgz#47c8ad472a096e5fb7e74b809b0703535383f20d"
+  integrity sha1-R8itRyoJbl+350uAmwcDU1OD8g0=
 
 flush-write-stream@^1.0.0:
   version "1.0.3"
@@ -5175,6 +5229,13 @@ ngrx-store-freeze@^0.2.4:
   dependencies:
     deep-freeze-strict "^1.1.1"
 
+ngx-contextmenu@^5.1.1:
+  version "5.1.1"
+  resolved "http://registry.npm.taobao.org/ngx-contextmenu/download/ngx-contextmenu-5.1.1.tgz#c21c1b702df0d0327ddf297d1ff8d2abee32ee9f"
+  integrity sha1-whwbcC3w0DJ93yl9H/jSq+4y7p8=
+  dependencies:
+    tslib "^1.9.0"
+
 nice-try@^1.0.4:
   version "1.0.5"
   resolved "http://registry.npm.taobao.org/nice-try/download/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
@@ -5927,6 +5988,11 @@ portfinder@1.0.17, portfinder@^1.0.9:
     async "^1.5.2"
     debug "^2.2.0"
     mkdirp "0.5.x"
+
+positioning@^1.4.0:
+  version "1.4.0"
+  resolved "http://registry.npm.taobao.org/positioning/download/positioning-1.4.0.tgz#4aeca0eed70a50e38766348a89ebec7df1b6a2e7"
+  integrity sha1-Suyg7tcKUOOHZjSKievsffG2ouc=
 
 posix-character-classes@^0.1.0:
   version "0.1.1"

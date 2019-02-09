@@ -1,28 +1,51 @@
 <mat-nav-list>
-  <h3 matSubheader>项目</h3>
-  <a mat-list-item
-     routerLink="/projects">
-    <mat-icon mat-list-icon>folder</mat-icon>
-    <p mat-line>项目首页</p>
-    <p mat-line>查看所有的项目</p>
-  </a>
-  <mat-divider></mat-divider>
-  <h3 matSubheader>日历</h3>
-  <a mat-list-item
-     routerLink="/">
-    <mat-icon mat-list-icon>line_style</mat-icon>
-    <p mat-line>月视图</p>
-    <p mat-line>按月查看所有的项目</p>
-  </a>
-  <a mat-list-item
-     routerLink="/register">
-    <mat-icon mat-list-icon>date_range</mat-icon>
-    <p mat-line>周视图</p>
-    <p mat-line>按周查看所有的项目</p>
-  </a>
-  <a mat-list-item>
-    <mat-icon mat-list-icon>insert_invitation</mat-icon>
-    <p mat-line>日视图</p>
-    <p mat-line>按天查看所有的项目</p>
-  </a>
+  <ng-container *ngIf="!(isLoggedIn$ | async)">
+    <a mat-list-item
+       routerLink="/login">
+      <mat-icon mat-list-icon>person_outline</mat-icon>
+      <p mat-line>登陆</p>
+    </a>
+    <a mat-list-item
+       routerLink="/register">
+      <mat-icon mat-list-icon>control_point</mat-icon>
+      <p mat-line>注册</p>
+    </a>
+  </ng-container>
+
+  <ng-container *ngIf="isLoggedIn$ | async">
+    <h3 matSubheader>项目</h3>
+    <a mat-list-item
+       routerLink="/projects">
+      <mat-icon mat-list-icon>folder</mat-icon>
+      <p mat-line>项目首页</p>
+      <p mat-line>查看所有的项目</p>
+    </a>
+    <mat-divider></mat-divider>
+    <h3 matSubheader>日历</h3>
+    <a mat-list-item
+       routerLink="/calendar/month">
+      <mat-icon mat-list-icon>line_style</mat-icon>
+      <p mat-line>月视图</p>
+      <p mat-line>按月查看所有的项目</p>
+    </a>
+    <a mat-list-item
+       routerLink="/calendar/week">
+      <mat-icon mat-list-icon>date_range</mat-icon>
+      <p mat-line>周视图</p>
+      <p mat-line>按周查看所有的项目</p>
+    </a>
+    <a mat-list-item
+       routerLink="/calendar/day">
+      <mat-icon mat-list-icon>insert_invitation</mat-icon>
+      <p mat-line>日视图</p>
+      <p mat-line>按天查看所有的项目</p>
+    </a>
+    <mat-divider></mat-divider>
+    <a mat-list-item
+       (click)="logout()">
+      <mat-icon mat-list-icon>exit_to_app</mat-icon>
+      <p mat-line>退出</p>
+    </a>
+  </ng-container>
+
 </mat-nav-list>

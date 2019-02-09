@@ -67,7 +67,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
         let userIds: string[] = []
         // Get all userIds in all tasks
         taskListViews.forEach(taskListView => {
-          taskListView.tasks.forEach(task => userIds.push(task.ownerId))
+          userIds = userIds.concat(taskListView.tasks.map(task => task.ownerId))
         })
         // For avatars
         this.store.dispatch(new NeedUsersAction({ userIds: uniq(userIds) }))

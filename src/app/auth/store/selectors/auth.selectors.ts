@@ -3,7 +3,7 @@ import { AuthFeatureState } from '..'
 
 export const getAuthFeatureState = createFeatureSelector<AuthFeatureState>('auth')
 
-export const getLoggedIn = createSelector(
+export const getIsLoggedIn = createSelector(
   getAuthFeatureState,
   state => !!state.auth.user && !!state.auth.token
 )

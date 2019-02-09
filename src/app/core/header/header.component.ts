@@ -2,7 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core'
 import { Observable } from 'rxjs'
 import { Store, select } from '@ngrx/store'
 import { AppState } from 'src/app/store'
-import { getLoggedIn, getUser } from 'src/app/auth/store/selectors/auth.selectors'
+import { getIsLoggedIn, getUser } from 'src/app/auth/store/selectors/auth.selectors'
 import { LogoutAction } from 'src/app/auth/store/actions/auth.actions'
 import { User } from 'src/app/auth/models/user.model'
 
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.loggedIn$ = this.store.pipe(select(getLoggedIn))
+    this.loggedIn$ = this.store.pipe(select(getIsLoggedIn))
     this.user$ = this.store.pipe(select(getUser))
   }
 

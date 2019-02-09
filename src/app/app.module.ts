@@ -17,6 +17,10 @@ import { EffectsModule } from '@ngrx/effects'
 import { environment } from 'src/environments/environment'
 import { CustomSerializer } from './store/custom-route-serializer'
 import { StoreRouterConnectingModule } from '@ngrx/router-store'
+import { CalendarModule, DateAdapter } from 'angular-calendar'
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns'
+import { FlatpickrModule } from 'angularx-flatpickr'
+import { ContextMenuModule } from 'ngx-contextmenu'
 
 @NgModule({
   declarations: [AppComponent, PageNotFoundComponent],
@@ -31,16 +35,24 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store'
     StoreModule.forRoot(appReducers, { metaReducers: appMetaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot({ stateKey: 'router', serializer: CustomSerializer }),
-    EffectsModule.forRoot(appEffects)
+    EffectsModule.forRoot(appEffects),
+    FlatpickrModule.forRoot(),
+    CalendarModule.forRoot({
+      provide: DateAdapter,
+      useFactory: adapterFactory
+    }),
+    ContextMenuModule.forRoot({
+      useBootstrap4: true
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  // // Diagnostic only: inspect router configuration
-  // constructor(router: Router) {
-  //   // Use a custom replacer to display function names in the route configs
-  //   const replacer = (key, value) => (typeof value === 'function' ? value.name : value)
-  //   console.log('Routes: ', JSON.stringify(router.config, replacer, 2))
-  // }
+  // Diagnostic only: inspect router configuration
+  constructor(router: Router) {
+    // Use a custom replacer to display function names in the route configs
+    const replacer = (key, value) => (typeof value === 'function' ? value.name : value)
+    console.log('Routes: ', JSON.stringify(router.config, replacer, 2))
+  }
 }

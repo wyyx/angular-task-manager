@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects'
 import { select, Store } from '@ngrx/store'
 import { Observable, of } from 'rxjs'
 import { catchError, filter, map, mapTo, mergeMap, tap, withLatestFrom } from 'rxjs/operators'
-import { getLoggedIn } from 'src/app/auth/store/selectors/auth.selectors'
+import { getIsLoggedIn } from 'src/app/auth/store/selectors/auth.selectors'
 import { TaskListService } from 'src/app/services/task-list.service'
 import { TaskService } from 'src/app/services/task.service'
 import { AppState } from 'src/app/store'
@@ -35,7 +35,7 @@ export class TaskListEffects {
     mergeMap(projectId =>
       this.store.pipe(
         select(getTaskListsIsLoaded(projectId)),
-        withLatestFrom(this.store.pipe(select(getLoggedIn))),
+        withLatestFrom(this.store.pipe(select(getIsLoggedIn))),
         filter(([loaded, loggedIn]) => loggedIn && !loaded),
         mapTo(new LoadTaskListsAction({ projectId }))
       )

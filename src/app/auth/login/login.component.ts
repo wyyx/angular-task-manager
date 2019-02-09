@@ -3,7 +3,7 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { Store, select } from '@ngrx/store'
 import { AppState } from 'src/app/store'
 import { LoginAction } from '../store/actions/auth.actions'
-import { getLoggedIn } from '../store/selectors/auth.selectors'
+import { getIsLoggedIn } from '../store/selectors/auth.selectors'
 import { tap, takeUntil } from 'rxjs/operators'
 import { Router } from '@angular/router'
 import { Subject } from 'rxjs'
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store
       .pipe(
-        select(getLoggedIn),
+        select(getIsLoggedIn),
         tap(loggedIn => loggedIn && this.router.navigateByUrl('/projects')),
         takeUntil(this.kill$)
       )

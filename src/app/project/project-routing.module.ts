@@ -6,7 +6,7 @@ import { AuthGuard } from '../auth/guards/auth.guard'
 
 const routes: Routes = [
   {
-    path: 'projects',
+    path: '',
     children: [
       {
         path: '',

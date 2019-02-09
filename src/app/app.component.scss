@@ -1,11 +1,14 @@
 mat-sidenav {
-	width: 300px;
+  width: 300px;
 }
 
 mat-sidenav-container.my-dark-theme {
-	background-color: rgb(27, 27, 27);
+  background-color: rgb(27, 27, 27);
 }
 
 main {
-	position: relative;
+  position: relative;
+}
+.header {
+  z-index: 99;
 }
