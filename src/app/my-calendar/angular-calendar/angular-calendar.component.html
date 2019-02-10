@@ -155,7 +155,7 @@
     <div [ngSwitch]="view">
       <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month"
                                [viewDate]="viewDate"
-                               [events]="events"
+                               [events]="(events$ | async)"
                                [refresh]="refresh"
                                [activeDayIsOpen]="activeDayIsOpen"
                                (dayClicked)="dayClicked($event.day)"
@@ -165,7 +165,7 @@
       </mwl-calendar-month-view>
       <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week"
                               [viewDate]="viewDate"
-                              [events]="events"
+                              [events]="(events$ | async)"
                               [refresh]="refresh"
                               (eventClicked)="handleEvent('Clicked', $event.event)"
                               (eventTimesChanged)="eventTimesChanged($event)"
@@ -173,7 +173,7 @@
       </mwl-calendar-week-view>
       <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day"
                              [viewDate]="viewDate"
-                             [events]="events"
+                             [events]="(events$ | async)"
                              [refresh]="refresh"
                              (eventClicked)="handleEvent('Clicked', $event.event)"
                              (eventTimesChanged)="eventTimesChanged($event)"
@@ -206,7 +206,7 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let event of events; let index = index">
+        <tr *ngFor="let event of events$ | async; let index = index">
           <td>
             <input type="text"
                    class="form-control"
@@ -224,7 +224,7 @@
                    (change)="refresh.next()" />
           </td>
           <td>
-            <input class="form-control"
+            <input class="form-control date-picker"
                    type="text"
                    mwlFlatpickr
                    [(ngModel)]="event.start"
@@ -237,7 +237,7 @@
                    placeholder="Not set" />
           </td>
           <td>
-            <input class="form-control"
+            <input class="form-control date-picker"
                    type="text"
                    mwlFlatpickr
                    [(ngModel)]="event.end"
@@ -251,7 +251,7 @@
           </td>
           <td>
             <button class="btn btn-danger"
-                    (click)="events.splice(index, 1); refresh.next()">
+                    (click)="deleteEvent(event); refresh.next()">
               Delete
             </button>
           </td>

@@ -3,6 +3,8 @@ import { TaskFeatureState } from '..'
 import { taskAdapter } from '../reducers/task.reducer'
 import { getAllUsers } from 'src/app/auth/store/selectors/user.selector'
 import { TaskView } from 'src/app/domain/task-view.model'
+import { CalendarEvent } from 'calendar-utils'
+import { EVENT_COLORS } from 'src/app/my-calendar/angular-calendar/data'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = taskAdapter.getSelectors()
 
@@ -40,4 +42,24 @@ export const getTasksByTaskListId = (taskListId: string) =>
 export const getTasksIsLoading = createSelector(
   getTaskFeatureState,
   state => state.tasks.isLoading
+)
+
+export const getAllEvents = createSelector(
+  getAllTasks,
+  tasks =>
+    tasks.map(
+      task =>
+        ({
+          start: new Date(task.reminder),
+          end: new Date(task.dueDate),
+          title: task.desc,
+          color: EVENT_COLORS.red,
+          // actions: this.actions,
+          resizable: {
+            beforeStart: true,
+            afterEnd: true
+          },
+          draggable: true
+        } as CalendarEvent)
+    )
 )

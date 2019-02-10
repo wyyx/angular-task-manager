@@ -4,7 +4,11 @@ import {
   OnInit,
   TemplateRef,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
+  SystemJsNgModuleLoader,
+  NgModuleFactory,
+  Injector,
+  ViewContainerRef
 } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import {
@@ -23,22 +27,16 @@ import {
   startOfDay,
   subDays
 } from 'date-fns'
-import { Subject } from 'rxjs'
+import { Subject, Observable } from 'rxjs'
+import { Store, select } from '@ngrx/store'
+import { AppState } from 'src/app/store'
+import { ActivatedRouteSnapshot, ActivatedRoute, UrlSegment } from '@angular/router'
+import { getAllEvents } from 'src/app/task/store/selectors/task.selectors'
+import { EVENT_COLORS } from './data'
+import { getAllProjects } from 'src/app/project/store/selectors/projects.selectors'
+import { map, tap, takeUntil } from 'rxjs/operators'
+import { NeedTaskListsAction } from 'src/app/task/store/actions/task-list.actions'
 
-const colors: any = {
-  red: {
-    primary: '#ad2121',
-    secondary: '#FAE3E3'
-  },
-  blue: {
-    primary: '#1e90ff',
-    secondary: '#D1E8FF'
-  },
-  yellow: {
-    primary: '#e3bc08',
-    secondary: '#FDF1BA'
-  }
-}
 @Component({
   selector: 'app-angular-calendar',
   templateUrl: './angular-calendar.component.html',
@@ -46,19 +44,16 @@ const colors: any = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AngularCalendarComponent implements OnInit {
+  kill$: Subject<any> = new Subject()
+
   @ViewChild('modalContent') modalContent: TemplateRef<any>
-
   view: CalendarView = CalendarView.Month
-
   CalendarView = CalendarView
-
   viewDate: Date = new Date()
-
   modalData: {
     action: string
     event: CalendarEvent
   }
-
   actions: CalendarEventAction[] = [
     {
       label: '<i class="fa fa-fw fa-pencil"></i>',
@@ -74,15 +69,13 @@ export class AngularCalendarComponent implements OnInit {
       }
     }
   ]
-
   refresh: Subject<any> = new Subject()
-
   events: CalendarEvent[] = [
     {
       start: subDays(startOfDay(new Date()), 1),
       end: addDays(new Date(), 1),
       title: 'A 3 day event',
-      color: colors.red,
+      color: EVENT_COLORS.red,
       actions: this.actions,
       allDay: true,
       resizable: {
@@ -94,21 +87,21 @@ export class AngularCalendarComponent implements OnInit {
     {
       start: startOfDay(new Date()),
       title: 'An event with no end date',
-      color: colors.yellow,
+      color: EVENT_COLORS.yellow,
       actions: this.actions
     },
     {
       start: subDays(endOfMonth(new Date()), 3),
       end: addDays(endOfMonth(new Date()), 3),
       title: 'A long event that spans 2 months',
-      color: colors.blue,
+      color: EVENT_COLORS.blue,
       allDay: true
     },
     {
       start: addHours(startOfDay(new Date()), 2),
       end: new Date(),
       title: 'A draggable and resizable event',
-      color: colors.yellow,
+      color: EVENT_COLORS.yellow,
       actions: this.actions,
       resizable: {
         beforeStart: true,
@@ -117,12 +110,49 @@ export class AngularCalendarComponent implements OnInit {
       draggable: true
     }
   ]
-
   activeDayIsOpen: boolean = true
+  events$: Observable<CalendarEvent[]>
 
-  constructor(private modal: NgbModal) {}
+  constructor(
+    private modal: NgbModal,
+    private activatedRoute: ActivatedRoute,
+    private store: Store<AppState>
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    // Load all tasks
+    this.store
+      .pipe(
+        select(getAllProjects),
+        tap(projects =>
+          projects.forEach(p => this.store.dispatch(new NeedTaskListsAction({ projectId: p.id })))
+        ),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
+
+    const path = this.activatedRoute.snapshot.url[0]['path']
+    switch (path) {
+      case CalendarView.Month:
+        this.view = CalendarView.Month
+        break
+      case CalendarView.Week:
+        this.view = CalendarView.Week
+        break
+      case CalendarView.Day:
+        this.view = CalendarView.Day
+        break
+      default:
+        break
+    }
+
+    this.events$ = this.store.pipe(select(getAllEvents))
+  }
+
+  ngOnDestroy(): void {
+    this.kill$.next()
+    this.kill$.complete()
+  }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {
     if (isSameMonth(date, this.viewDate)) {
@@ -155,7 +185,7 @@ export class AngularCalendarComponent implements OnInit {
       title: 'New event',
       start: startOfDay(date || new Date()),
       end: endOfDay(date || new Date()),
-      color: colors.red,
+      color: EVENT_COLORS.red,
       draggable: true,
       resizable: {
         beforeStart: true,
@@ -164,4 +194,6 @@ export class AngularCalendarComponent implements OnInit {
     })
     this.refresh.next()
   }
+
+  deleteEvent() {}
 }
