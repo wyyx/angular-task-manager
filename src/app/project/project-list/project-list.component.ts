@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
+import { Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core'
 import { MatDialog } from '@angular/material'
 import { Router } from '@angular/router'
 import { select, Store } from '@ngrx/store'

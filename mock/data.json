@@ -644,11 +644,12 @@
       "desc": "搭建开发环境xxx",
       "dueDate": "2019-02-05T10:47:31.767Z",
       "reminder": "2019-02-05T10:47:31.767Z",
-      "completed": false,
+      "completed": true,
       "participantIds": [],
       "ownerId": "JlQUPk5",
       "priority": 3,
-      "id": 32
+      "id": 32,
+      "avatar": "avatars:svg-13"
     },
     {
       "taskListId": "yNgZZPD",
@@ -683,7 +684,8 @@
       "participantIds": [],
       "ownerId": "JlQUPk5",
       "priority": 3,
-      "id": 35
+      "id": 35,
+      "avatar": "avatars:svg-13"
     }
   ]
 }

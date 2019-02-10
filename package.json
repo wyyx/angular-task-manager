@@ -4,13 +4,14 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "hmr": "ng serve --configuration hmr",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "ng-server": "ng serve",
     "server": "json-server ./mock/data.json --watch",
-    "dev": "concurrently \"npm run ng-server\" \"npm run server\"",
+    "dev": "concurrently \"npm run hmr\" \"npm run server\"",
     "validate-ts": "tsc -w --noEmit"
   },
   "private": true,
@@ -50,6 +51,7 @@
     "@angular/cli": "~7.2.3",
     "@angular/compiler-cli": "^7.2.2",
     "@angular/language-service": "^7.2.2",
+    "@angularclass/hmr": "^2.1.3",
     "@types/jasmine": "~2.8.6",
     "@types/jasminewd2": "~2.0.3",
     "@types/lodash": "^4.14.119",
