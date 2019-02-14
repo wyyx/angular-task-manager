@@ -50,7 +50,8 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
   showMenu: boolean = false
   isLoading$: Observable<boolean>
 
-  @HostBinding('@slideToRightAnim') state
+  state
+
   constructor(
     public dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
