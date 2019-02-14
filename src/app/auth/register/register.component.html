@@ -7,7 +7,7 @@
         [formGroup]="registerForm">
     <mat-card>
       <mat-tab-group>
-        <mat-tab label="账号信息">
+        <mat-tab label="第一步：账号信息">
           <mat-card-content class="pt-10">
             <mat-form-field class="full-width">
               <input type="text"
@@ -63,10 +63,10 @@
           </app-image-selector>
           <mat-card-actions class="text-center">
             <p>已经注册了？<a routerLink="/login">登陆</a></p>
-            <p>忘记密码？<a href="">找回</a></p>
+            <!-- <p>忘记密码？<a href="">找回</a></p> -->
           </mat-card-actions>
         </mat-tab>
-        <mat-tab label="个人信息">
+        <mat-tab label="第二步：个人信息">
           <mat-card-content class="pt-10">
             <app-certificate-selector #certificateSelector
                                       formControlName="certificate"></app-certificate-selector>
@@ -76,6 +76,7 @@
           </mat-card-content>
           <div class="text-center pb-20 register-btn-container">
             <button class="register-btn"
+                    color="primary"
                     mat-raised-button
                     type="button"
                     (click)="onRegisterClick(certificateSelector, addressSelector)">
@@ -89,7 +90,7 @@
           </div>
           <mat-card-actions class="text-center">
             <p>已经注册了？<a routerLink="/login">登陆</a></p>
-            <p>忘记密码？<a href="">找回</a></p>
+            <!-- <p>忘记密码？<a href="">找回</a></p> -->
           </mat-card-actions>
         </mat-tab>
       </mat-tab-group>

@@ -78,12 +78,15 @@ export class ChipSelectorComponent implements OnInit, OnDestroy, ControlValueAcc
     this.propagateTouch = fn
   }
 
-  onAutocompleteClick(chip: Chip) {
-    this.selectedChips.push(chip)
-    this.propagateChange(this.selectedChips)
+  onAutocompleteSelect(event, chip: Chip) {
+    // Fix onSelectionChange emit twice everytime
+    if (event.source.selected == true) {
+      this.selectedChips.push(chip)
+      this.propagateChange(this.selectedChips)
 
-    // Clear filter input
-    this.filter.setValue(null)
+      // Clear filter input
+      this.filter.setValue(null)
+    }
   }
 
   onRemoveChipClick(chip: Chip) {

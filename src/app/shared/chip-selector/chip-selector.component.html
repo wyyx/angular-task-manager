@@ -21,7 +21,7 @@
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let chip of candidateChips"
                   [value]="chip"
-                  (click)="onAutocompleteClick(chip)">
+                  (onSelectionChange)="onAutocompleteSelect($event, chip)">
         {{chip.label}}
       </mat-option>
     </mat-autocomplete>

@@ -112,7 +112,7 @@ export class AddressSelectorComponent implements OnInit, OnDestroy, ControlValue
   }
 
   propageteChangeAsync(province, city, district) {
-    console.log('address', { province, city, district })
+    // console.log('address', { province, city, district })
     setTimeout(() => {
       this.propagateChange({ province, city, district })
     }, 0)

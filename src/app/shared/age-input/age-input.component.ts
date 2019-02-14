@@ -133,7 +133,7 @@ export class AgeInputComponent implements OnInit, ControlValueAccessor {
 
     // Subscribe
     const mergedSubscription = merged$.subscribe(v => {
-      console.log(v)
+      // console.log(v)
 
       const currentAgeUint = this.ageUnit.value
       const now = Date.now()

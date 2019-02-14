@@ -48,7 +48,7 @@
     },
     {
       "name": "小王",
-      "email": "test@test.com",
+      "email": "xiaowang@test.com",
       "password": "111222",
       "address": {
         "province": "浙江省",
@@ -112,8 +112,8 @@
       "desc": "一个小型生鲜网站",
       "coverImg": "/assets/img/covers/7.jpg",
       "members": [
-        "ce75357e3035",
-        "JlQUPk5"
+        "JlQUPk5",
+        "ce75357e3035"
       ],
       "id": "Glt0rv2"
     }
