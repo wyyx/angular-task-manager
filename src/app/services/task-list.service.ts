@@ -10,7 +10,7 @@ import { Update } from '@ngrx/entity'
   providedIn: 'root'
 })
 export class TaskListService {
-  private readonly path = 'taskLists'
+  private readonly path = 'api/taskLists'
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
   })

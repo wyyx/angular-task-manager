@@ -10,7 +10,7 @@ import { Auth } from '../../domain/auth.model'
   providedIn: 'root'
 })
 export class AuthService {
-  private readonly path = 'users'
+  private readonly path = 'api/users'
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
   })

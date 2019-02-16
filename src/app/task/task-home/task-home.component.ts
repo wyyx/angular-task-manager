@@ -296,7 +296,7 @@ export class TaskHomeComponent implements OnInit, OnDestroy {
               })
             )
           ),
-          takeUntil(this.kill$)
+          take(1)
         )
         .subscribe()
     }

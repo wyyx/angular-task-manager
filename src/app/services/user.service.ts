@@ -12,7 +12,7 @@ import { map } from 'rxjs/operators'
   providedIn: 'root'
 })
 export class UserService {
-  private readonly path = 'users'
+  private readonly path = 'api/users'
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
   })

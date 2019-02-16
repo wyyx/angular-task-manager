@@ -12,7 +12,7 @@ import { Update } from '@ngrx/entity'
   providedIn: 'root'
 })
 export class ProjectService {
-  private readonly path = 'projects'
+  private readonly path = 'api/projects'
   private headers = new HttpHeaders({
     'Content-Type': 'application/json'
   })

@@ -13,30 +13,23 @@ import { RouterModule } from '@angular/router'
 export const BASE_URL = new InjectionToken<string>('App base url')
 
 @NgModule({
-	imports: [
-		CommonModule,
-		MyCustomMaterialModule,
-		HttpClientModule,
-		RouterModule
-	],
-	declarations: [ HeaderComponent, FooterComponent, SidebarComponent ],
-	exports: [ HeaderComponent, FooterComponent, SidebarComponent ],
-	providers: [ { provide: BASE_URL, useValue: 'http://localhost:3000' } ]
+  imports: [CommonModule, MyCustomMaterialModule, HttpClientModule, RouterModule],
+  declarations: [HeaderComponent, FooterComponent, SidebarComponent],
+  exports: [HeaderComponent, FooterComponent, SidebarComponent],
+  providers: [{ provide: BASE_URL, useValue: 'http://localhost:8002' }]
 })
 export class CoreModule {
-	constructor(
-		@SkipSelf()
-		@Optional()
-		parent: CoreModule,
-		ir: MatIconRegistry,
-		ds: DomSanitizer
-	) {
-		if (parent) {
-			throw new Error(
-				'CoreModule is already loaded. Import it in the AppModule only'
-			)
-		}
+  constructor(
+    @SkipSelf()
+    @Optional()
+    parent: CoreModule,
+    ir: MatIconRegistry,
+    ds: DomSanitizer
+  ) {
+    if (parent) {
+      throw new Error('CoreModule is already loaded. Import it in the AppModule only')
+    }
 
-		loadSvgResources(ir, ds)
-	}
+    loadSvgResources(ir, ds)
+  }
 }

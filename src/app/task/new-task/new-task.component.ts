@@ -6,7 +6,7 @@ import { TaskList } from 'src/app/domain/task-list.model'
 import { Store, select } from '@ngrx/store'
 import { AppState } from 'src/app/store'
 import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
-import { tap, takeUntil } from 'rxjs/operators'
+import { tap, takeUntil, take } from 'rxjs/operators'
 import { Subject } from 'rxjs'
 import { markFormGroupAsTouched } from 'src/app/utils/form.util'
 
@@ -80,7 +80,7 @@ export class NewTaskComponent implements OnInit, OnDestroy {
               ownerId: user.id
             } as Task)
           ),
-          takeUntil(this.kill$)
+          take(1)
         )
         .subscribe()
     }
