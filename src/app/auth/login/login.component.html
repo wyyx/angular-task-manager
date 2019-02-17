@@ -15,8 +15,8 @@
                  formControlName="email">
           <mat-error *ngIf="loginForm.controls['email'].errors && !loginForm.controls['email'].touched"
                      class="error-msg">
-            <div [hidden]="!loginForm.controls['email'].errors.required">Email is required.</div>
-            <div [hidden]="!loginForm.controls['email'].errors.email">Email is invalid.</div>
+            <div [hidden]="!loginForm.controls['email'].errors.required">需要一个邮箱地址</div>
+            <div [hidden]="!loginForm.controls['email'].errors.email">邮箱地址不合法</div>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
@@ -26,7 +26,7 @@
                  formControlName="password">
           <mat-error *ngIf="loginForm.controls['password'].errors && !loginForm.controls['password'].touched"
                      class="error-msg">
-            <div [hidden]="!loginForm.controls['password'].errors.required">Password is required.</div>
+            <div [hidden]="!loginForm.controls['password'].errors.required">请输入您的的密码</div>
           </mat-error>
         </mat-form-field>
 

@@ -15,7 +15,8 @@
     "server": "json-server ./mock/data.json --watch",
     "dev": "concurrently \"npm run ng-server\" \"npm run server\"",
     "dev-hmr": "concurrently \"npm run hmr\" \"npm run server\"",
-    "validate-ts": "tsc -w --noEmit"
+    "validate-ts": "tsc -w --noEmit",
+    "deploy": "git add . && git "
   },
   "private": true,
   "dependencies": {

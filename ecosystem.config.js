@@ -21,7 +21,8 @@ module.exports = {
       ref: 'origin/master',
       repo: 'https://github.com/wyyx/angular-task-manager.git',
       path: '/www/angular-task-manager-website/production',
-      'post-deploy': 'yarn start && pm2 startOrRestart ecosystem.json --env production'
+      'pre-deploy': 'git fetch origin master && git reset --hard origin/master',
+      'post-deploy': 'yarn start && pm2 startOrRestart ecosystem.config.js --env production'
     }
   }
 }

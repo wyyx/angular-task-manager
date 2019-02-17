@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  hmr: false
+  hmr: false,
+  base_url: 'localhost:3000'
 }
 
 /*

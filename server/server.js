@@ -10,7 +10,8 @@ var jsonServer = require('json-server')
 server.use(bodyParser.json())
 
 // you may want to mount JSON Server on a specific end-point, for example /api
-server.use('/api', jsonServer.router('../mock/data.json'))
+const dataPath = path.join(__dirname, '..', 'mock/data.json')
+server.use('/api', jsonServer.router(dataPath))
 
 // static resources
 const staticPath = path.join(__dirname, '..', 'dist/angular-task-manager')
