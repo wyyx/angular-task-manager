@@ -14,7 +14,7 @@ mat-icon.avatar {
 
 .scroll-container {
   overflow-y: scroll;
-  height: 200px;
+  height: 128px;
 }
 
 .image-container {
@@ -35,8 +35,12 @@ mat-icon.avatar {
   height: 100%;
 }
 
-.dimmer {
+.image-container .dimmer {
   display: none;
+}
+
+.image-container.selected .dimmer {
+  display: flex;
   flex: 0 0 auto;
   justify-content: center;
   align-items: center;
@@ -47,12 +51,21 @@ mat-icon.avatar {
 
 .image-container:hover .dimmer {
   display: flex;
+  flex: 0 0 auto;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
   background-color: rgba(0, 0, 0, 0.15);
   cursor: pointer;
 }
 
-.image-container.selected .dimmer {
-  display: flex;
+.image-container:not(.selected):hover .dimmer.mobile {
+  display: none;
+}
+
+.image-container.selected:hover .dimmer.mobile {
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
 .dimmer mat-icon {

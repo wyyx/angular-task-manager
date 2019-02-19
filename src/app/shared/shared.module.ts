@@ -13,6 +13,8 @@ import { AddressSelectorComponent } from './address-selector/address-selector.co
 import { ContextMenuComponent } from './context-menu/context-menu.component'
 import { ContextMenuItemComponent } from './context-menu-item/context-menu-item.component'
 import { ContextMenuTriggerDirective } from './context-menu-trigger.directive'
+import { FlexLayoutModule } from '@angular/flex-layout'
+import { MediaClassDirective } from '../directive/media-class.directive'
 
 @NgModule({
   imports: [
@@ -21,7 +23,8 @@ import { ContextMenuTriggerDirective } from './context-menu-trigger.directive'
     RouterModule,
     DirectiveModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FlexLayoutModule
   ],
   declarations: [
     ConfirmDialogComponent,
@@ -48,7 +51,8 @@ import { ContextMenuTriggerDirective } from './context-menu-trigger.directive'
     AddressSelectorComponent,
     ContextMenuComponent,
     ContextMenuItemComponent,
-    ContextMenuTriggerDirective
+    ContextMenuTriggerDirective,
+    FlexLayoutModule
   ],
   entryComponents: [ConfirmDialogComponent]
 })

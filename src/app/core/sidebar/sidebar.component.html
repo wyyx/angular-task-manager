@@ -1,12 +1,14 @@
 <mat-nav-list>
   <ng-container *ngIf="!(isLoggedIn$ | async)">
     <a mat-list-item
-       routerLink="/login">
+       routerLink="/login"
+       (click)="hideSideNav()">
       <mat-icon mat-list-icon>person_outline</mat-icon>
       <p mat-line>登陆</p>
     </a>
     <a mat-list-item
-       routerLink="/register">
+       routerLink="/register"
+       (click)="hideSideNav()">
       <mat-icon mat-list-icon>control_point</mat-icon>
       <p mat-line>注册</p>
     </a>
@@ -15,7 +17,8 @@
   <ng-container *ngIf="isLoggedIn$ | async">
     <h3 matSubheader>项目</h3>
     <a mat-list-item
-       routerLink="/projects">
+       routerLink="/projects"
+       (click)="hideSideNav()">
       <mat-icon mat-list-icon>home</mat-icon>
       <p mat-line>项目首页</p>
       <p mat-line>查看所有的项目</p>
@@ -23,19 +26,22 @@
     <mat-divider></mat-divider>
     <h3 matSubheader>日历</h3>
     <a mat-list-item
-       routerLink="/calendar/month">
+       routerLink="/calendar/month"
+       (click)="hideSideNav()">
       <mat-icon mat-list-icon>line_style</mat-icon>
       <p mat-line>月视图</p>
       <p mat-line>按月查看所有的项目</p>
     </a>
     <a mat-list-item
-       routerLink="/calendar/week">
+       routerLink="/calendar/week"
+       (click)="hideSideNav()">
       <mat-icon mat-list-icon>date_range</mat-icon>
       <p mat-line>周视图</p>
       <p mat-line>按周查看所有的项目</p>
     </a>
     <a mat-list-item
-       routerLink="/calendar/day">
+       routerLink="/calendar/day"
+       (click)="hideSideNav()">
       <mat-icon mat-list-icon>insert_invitation</mat-icon>
       <p mat-line>日视图</p>
       <p mat-line>按天查看所有的项目</p>

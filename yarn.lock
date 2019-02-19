@@ -171,6 +171,13 @@
   dependencies:
     tslib "^1.9.0"
 
+"@angular/flex-layout@^7.0.0-beta.23":
+  version "7.0.0-beta.23"
+  resolved "http://registry.npm.taobao.org/@angular/flex-layout/download/@angular/flex-layout-7.0.0-beta.23.tgz#eff267584284bf534932deac513827d1b059c92e"
+  integrity sha1-7/JnWEKEv1NJMt6sUTgn0bBZyS4=
+  dependencies:
+    tslib "^1.7.1"
+
 "@angular/forms@^7.2.2":
   version "7.2.2"
   resolved "http://registry.npm.taobao.org/@angular/forms/download/@angular/forms-7.2.2.tgz#d439216db53072f3fe83db877e88db5a56e37c41"

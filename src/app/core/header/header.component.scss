@@ -5,3 +5,12 @@ mat-slide-toggle {
 .user-icon-container {
   font-size: 14px;
 }
+
+.user-icon-container:hover .account,
+.name {
+  cursor: pointer;
+}
+
+.account .mat-icon {
+  transform: scale(1.5);
+}

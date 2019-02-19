@@ -1,20 +1,26 @@
-.card {
-	flex: 0 0 360px;
-	margin: 10px;
+.list-container {
+  box-sizing: border-box;
 }
 
-.container {
-	display: flex;
-	flex-wrap: wrap;
+.card {
+  flex: 0 0 360px;
+  margin: 10px;
 }
 
 .fab-button {
-	position: fixed;
-	bottom: 96px;
-	right: 32px;
-	z-index: 990;
+  position: fixed;
+  bottom: 96px;
+  right: 32px;
+  z-index: 990;
+}
+
+.fab-button-mobile {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 990;
 }
 
 app-project-item:hover {
-	cursor: pointer;
+  cursor: pointer;
 }

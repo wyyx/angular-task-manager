@@ -6,9 +6,13 @@
 
 <div class="container"
      [@slideToRightAnim]="state">
-  <div class="task-lists">
+  <div class="task-lists"
+       fxLayout="row wrap">
     <app-task-list *ngFor="let list of (taskListViews$ | async)"
-                   class="list-container p-10"
+                   class="list-container p-20"
+                   fxFlex="50"
+                   fxFlex.gt-sm="0 0 360px"
+                   fxFlex.lt-sm="100"
                    appDroppable
                    [dragEnterClass]="'drag-enter'"
                    [acceptedTags]="['task-item', 'task-list']"
@@ -71,6 +75,7 @@
 
   <button mat-fab
           class="fab-button"
+          mediaClass.lt-sm="fab-button-mobile"
           (click)="openNewTaskListDialog()">
     <mat-icon>add</mat-icon>
   </button>

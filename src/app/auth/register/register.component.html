@@ -3,7 +3,7 @@
     registerForm.controls['email'].invalid{{registerForm.controls['email'].invalid}} <br>
     registerForm.controls['email'].touched {{registerForm.controls['email'].touched}}
   </div> -->
-  <form class="form"
+  <form class="form p-30"
         [formGroup]="registerForm">
     <mat-card>
       <mat-tab-group>
@@ -54,7 +54,7 @@
           </mat-card-content>
 
           <app-image-selector [useSvgIcon]="true"
-                              [cols]="7"
+                              [cols]="6"
                               [rowHeight]="'1:1'"
                               [title]="'选择你的头像：'"
                               [itemWidth]="'64px'"
@@ -71,8 +71,10 @@
             <app-certificate-selector #certificateSelector
                                       formControlName="certificate"></app-certificate-selector>
             <app-age-input formControlName="age"></app-age-input>
-            <app-address-selector #addressSelector
-                                  formControlName="address"></app-address-selector>
+            <div class="pt-10">
+              <app-address-selector #addressSelector
+                                    formControlName="address"></app-address-selector>
+            </div>
           </mat-card-content>
           <div class="text-center pb-20 register-btn-container">
             <button class="register-btn"

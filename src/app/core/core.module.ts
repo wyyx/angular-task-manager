@@ -11,10 +11,11 @@ import { HttpClientModule } from '@angular/common/http'
 import { RouterModule } from '@angular/router'
 
 import { environment } from '../../environments/environment'
+import { SharedModule } from '../shared/shared.module'
 export const BASE_URL = new InjectionToken<string>('App base url')
 
 @NgModule({
-  imports: [CommonModule, MyCustomMaterialModule, HttpClientModule, RouterModule],
+  imports: [CommonModule, SharedModule, HttpClientModule, RouterModule],
   declarations: [HeaderComponent, FooterComponent, SidebarComponent],
   exports: [HeaderComponent, FooterComponent, SidebarComponent],
   providers: [{ provide: BASE_URL, useValue: environment.base_url }]

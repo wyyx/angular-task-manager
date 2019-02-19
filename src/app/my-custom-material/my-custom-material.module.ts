@@ -23,6 +23,7 @@ import {
   MatChipsModule
 } from '@angular/material'
 import { NgModule } from '@angular/core'
+import { LayoutModule } from '@angular/cdk/layout'
 
 @NgModule({
   exports: [
@@ -50,7 +51,8 @@ import { NgModule } from '@angular/core'
     MatButtonToggleModule,
     MatChipsModule,
     MatTabsModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    LayoutModule
   ]
 })
 export class MyCustomMaterialModule {}

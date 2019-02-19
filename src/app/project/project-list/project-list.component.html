@@ -1,17 +1,25 @@
-<div class="container"
-     [@listAnim]="(projects$ | async)?.length">
-  <app-project-item *ngFor="let project of (projects$ | async)"
-                    [item]="project"
-                    class="card"
-                    (invite)="openInviteDialog(project)"
-                    (editProject)="openEditProjectDialog(project)"
-                    (deleteProject)="openDeleteProjectDialog(project)"
-                    (click)="onProjectClick(project)">
-  </app-project-item>
-</div>
+<div class="list-container p-20">
+  <div fxLayout="row wrap"
+       fxLayoutGap="20px grid"
+       [@listAnim]="(projects$ | async)?.length">
+    <app-project-item *ngFor="let project of (projects$ | async)"
+                      [item]="project"
+                      fxFlex="33.33"
+                      fxFlex.gt-md="0 0 360px"
+                      fxFlex.lt-md="50"
+                      fxFlex.lt-sm="100"
+                      (invite)="openInviteDialog(project)"
+                      (editProject)="openEditProjectDialog(project)"
+                      (deleteProject)="openDeleteProjectDialog(project)"
+                      (click)="onProjectClick(project)">
+    </app-project-item>
 
-<button mat-fab
-        class="fab-button"
-        (click)="openNewProjectDialog()">
-  <mat-icon>add</mat-icon>
-</button>
+
+  </div>
+  <button class="fab-button"
+          mediaClass.lt-sm="fab-button-mobile"
+          mat-fab
+          (click)="openNewProjectDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>

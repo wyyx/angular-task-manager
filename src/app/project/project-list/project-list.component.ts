@@ -1,11 +1,12 @@
-import { Component, HostBinding, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core'
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
 import { MatDialog } from '@angular/material'
 import { Router } from '@angular/router'
 import { select, Store } from '@ngrx/store'
 import { Observable, Subject } from 'rxjs'
-import { takeUntil, tap, filter } from 'rxjs/operators'
+import { filter, takeUntil, tap } from 'rxjs/operators'
 import { listAnim } from 'src/app/animations/list.anim'
 import { slideToRightAnim } from 'src/app/animations/route.anim'
+import { User } from 'src/app/auth/models/user.model'
 import { Project } from 'src/app/domain/project.model'
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component'
 import { AppState } from 'src/app/store'
@@ -17,8 +18,7 @@ import {
   NeedAllProjectsAction,
   UpdateProjectAction
 } from '../store/actions/project.actions'
-import { getAllProjects, getProjects } from '../store/selectors/projects.selectors'
-import { User } from 'src/app/auth/models/user.model'
+import { getProjects } from '../store/selectors/projects.selectors'
 
 @Component({
   selector: 'app-project-list',

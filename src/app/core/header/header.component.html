@@ -7,14 +7,15 @@
   <span>企业协作平台</span>
   <div class="filler"></div>
 
-  <div class="user-icon-container pr-20">
-    <button mat-icon-button
+  <div class="user-icon-container pl-20">
+    <button [matMenuTriggerFor]="menu"
+            mat-icon-button
             class="account"
             *ngIf="loggedIn$ | async">
-      <mat-icon aria-label="toggle sidebar"
-                [matMenuTriggerFor]="menu">account_circle</mat-icon>
+      <mat-icon aria-label="toggle sidebar">account_circle</mat-icon>
     </button>
-    <span>{{(user$ | async)?.name}}</span>
+    <span [matMenuTriggerFor]="menu"
+          class="name pl-5">{{(user$ | async)?.name}}</span>
 
     <mat-menu #menu="matMenu">
       <button mat-menu-item
@@ -24,6 +25,8 @@
       </button>
     </mat-menu>
   </div>
-
-  <mat-slide-toggle (change)="onToggleTheme($event.checked)"> 暗色主题 </mat-slide-toggle>
+  <mat-slide-toggle class="pl-20"
+                    fxShow
+                    fxHide.lt-sm
+                    (change)="onToggleTheme($event.checked)"> 暗色主题 </mat-slide-toggle>
 </mat-toolbar>

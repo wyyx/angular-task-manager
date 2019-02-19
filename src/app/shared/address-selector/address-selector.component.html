@@ -1,5 +1,7 @@
-<form [formGroup]="form">
-  <mat-form-field>
+<form [formGroup]="form"
+      fxLayout="row"
+      fxLayout.lt-sm="column">
+  <mat-form-field fxFlex="33.33">
     <mat-select placeholder="请输入省份"
                 formControlName="province">
       <mat-option *ngFor="let province of provinces"
@@ -12,7 +14,7 @@
       <div>请输入省份</div>
     </mat-error>
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field fxFlex="33.33">
     <mat-select placeholder="请输入城市"
                 formControlName="city">
       <mat-option *ngFor="let city of cities"
@@ -24,7 +26,7 @@
       <div>请输入城市</div>
     </mat-error>
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field fxFlex="33.33">
     <mat-select placeholder="请输入区县"
                 formControlName="district">
       <mat-option *ngFor="let district of districts"

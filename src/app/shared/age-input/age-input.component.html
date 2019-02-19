@@ -1,6 +1,11 @@
 <div [formGroup]="form"
-     class="age-input pr-5">
-  <mat-form-field class="birthday pr-20">
+     class="age-input"
+     fxLayout="row"
+     fxLayout.lt-sm="column"
+     fxLayoutGap="20px"
+     fxLayoutGap.lt-sm="">
+  <mat-form-field fxFlex="33.33"
+                  class="birthday">
     <input matInput
            [matDatepicker]="birthdayPicker"
            type="text"
@@ -11,23 +16,26 @@
                            [for]="birthdayPicker"></mat-datepicker-toggle>
     <mat-datepicker #birthdayPicker></mat-datepicker>
     <mat-error *ngIf="birthday.invalid && birthday.touched">
-      <div *ngIf="birthday.errors.required">生日不能为空</div>
-      <div *ngIf="birthday.errors.birthdayValidation && !birthday.errors.required">日期不合法</div>
+      <div *ngIf="birthday.errors['required']">生日不能为空</div>
+      <div *ngIf="birthday.errors['birthdayValidation'] && !birthday.errors['required']">日期不合法</div>
     </mat-error>
   </mat-form-field>
   <ng-container formGroupName="age">
-    <mat-form-field class="age-num pl-20">
+    <mat-form-field fxFlex="33.33"
+                    class="age-num">
       <input matInput
              type="number"
              placeholder="年龄"
              formControlName="ageNum"
              (focusout)="onFocusOut($event)">
       <mat-error *ngIf="ageNum.invalid && ageNum.touched && ageNum.value">
-        <div *ngIf="ageNum.errors && ageNum.errors.min">不能小于1</div>
+        <div *ngIf="ageNum.errors['min']">不能小于1</div>
         <div *ngIf="age.invalid">年龄不合法</div>
       </mat-error>
     </mat-form-field>
-    <mat-button-toggle-group formControlName="ageUnit"
+    <mat-button-toggle-group fxFlex="33.33"
+                             fxFlexAlign="baseline"
+                             formControlName="ageUnit"
                              class="age-unit"
                              #group="matButtonToggleGroup"
                              (focusout)="onFocusOut($event)">
