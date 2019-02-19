@@ -17,7 +17,7 @@ import {
   NeedAllProjectsAction,
   UpdateProjectAction
 } from '../store/actions/project.actions'
-import { getAllProjects } from '../store/selectors/projects.selectors'
+import { getAllProjects, getProjects } from '../store/selectors/projects.selectors'
 import { User } from 'src/app/auth/models/user.model'
 
 @Component({
@@ -36,7 +36,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.store.dispatch(new NeedAllProjectsAction())
-    this.projects$ = this.store.pipe(select(getAllProjects))
+    this.projects$ = this.store.pipe(select(getProjects))
   }
 
   ngOnDestroy(): void {

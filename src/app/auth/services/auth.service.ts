@@ -45,8 +45,6 @@ export class AuthService {
 
   login(email: string, password: string) {
     const url = `${this.baseUrl}/${this.path}`
-    console.log('login()', { email, password })
-    console.log('url', url)
 
     return this.http.get<User[]>(url, { headers: this.headers, params: { email, password } }).pipe(
       map(users => {

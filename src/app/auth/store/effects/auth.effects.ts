@@ -90,8 +90,6 @@ export class AuthEffects implements OnInitEffects {
       const user = localStorage.getItem('user')
       const token = localStorage.getItem('token')
 
-      console.log(user, token)
-
       if (user && token) {
         this.router.navigateByUrl('/projects')
         return new LoginSuccessAction({ user: JSON.parse(user), token })

@@ -44,8 +44,6 @@ export class ContextMenuComponent implements OnInit {
       this.root.clientRect.width = this.root.clientRect.right - this.root.clientRect.left
       this.root.clientRect.height = this.root.clientRect.bottom - this.root.clientRect.top
 
-      console.log(this.root.clientRect)
-
       const { top, bottom, left, right, width, height } = this.root.clientRect
 
       if (window) {

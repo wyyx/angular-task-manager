@@ -19,8 +19,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   loginForm: FormGroup
   constructor(private fb: FormBuilder, private store: Store<AppState>, private router: Router) {
     this.loginForm = this.fb.group({
-      email: ['', Validators.compose([Validators.required, Validators.email])],
-      password: ['', Validators.required]
+      email: ['zhangsan@163.com', Validators.compose([Validators.required, Validators.email])],
+      password: ['123456', Validators.required]
     })
   }
 
@@ -40,8 +40,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    console.log('onSubmit')
-    console.log('this.loginForm.valid', this.loginForm.valid)
     if (this.loginForm.valid) {
       const value = this.loginForm.value
       const { email, password } = value

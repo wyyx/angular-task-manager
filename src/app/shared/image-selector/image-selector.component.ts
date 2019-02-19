@@ -27,13 +27,7 @@ export class ImageSelectorComponent implements OnInit, ControlValueAccessor {
 
   constructor() {}
 
-  ngOnInit() {
-    const randomIndex = Math.floor(Math.random() * this.items.length)
-    setTimeout(() => {
-      this.selected = this.items[randomIndex]
-      this.propagate(this.selected)
-    }, 0)
-  }
+  ngOnInit() {}
 
   writeValue(obj: any): void {
     this.selected = obj

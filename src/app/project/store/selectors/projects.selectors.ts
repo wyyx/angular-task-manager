@@ -2,6 +2,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store'
 import { projectAdapter, ProjectState } from '../reducers/project.reducer'
 import { ProjectFeatureState } from '..'
 import { AppState } from 'src/app/store'
+import { getUser } from 'src/app/auth/store/selectors/auth.selectors'
 
 export const { selectAll, selectEntities, selectIds, selectTotal } = projectAdapter.getSelectors()
 
@@ -20,6 +21,12 @@ export const getAllProjectsIsLoading = createSelector(
 export const getAllProjects = createSelector(
   getProjectsState,
   selectAll
+)
+
+export const getProjects = createSelector(
+  getAllProjects,
+  getUser,
+  (projects, user) => projects.filter(p => p.members.includes(user.id))
 )
 
 export const getAllProjectsIsLoaded = createSelector(

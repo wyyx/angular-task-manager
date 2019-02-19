@@ -77,7 +77,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
     certificateSelector.markAsTouched()
 
     if (this.registerForm.valid) {
-      console.log('this.registerForm.value', this.registerForm.value)
       const formValue = this.registerForm.value
 
       this.store.dispatch(

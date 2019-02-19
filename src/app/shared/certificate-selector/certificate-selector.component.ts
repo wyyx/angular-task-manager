@@ -69,7 +69,6 @@ export class CertificateSelectorComponent implements OnInit, OnDestroy, ControlV
       .pipe(takeUntil(this.kill$))
       .subscribe(([type, number]) => {
         if (validateCertificate(type, number)) {
-          console.log({ certificateType: type, certificateNumber: number })
           setTimeout(() => {
             this.propagateChange({ certificateType: type, certificateNumber: number })
           }, 0)
