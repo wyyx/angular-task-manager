@@ -275,7 +275,7 @@
     {
       "name": "进行中",
       "projectId": "Glt0rv2",
-      "order": 0,
+      "order": 1,
       "id": "yNgZZPD",
       "tasks": [
         {
@@ -319,13 +319,25 @@
           "ownerId": "ce75357e3035",
           "id": 38,
           "avatar": "avatars:svg-1"
+        },
+        {
+          "taskListId": "yNgZZPD",
+          "desc": "Sedgv",
+          "dueDate": "2019-02-16T11:19:07.756Z",
+          "reminder": "2019-02-16T11:19:07.756Z",
+          "completed": false,
+          "participantIds": [],
+          "ownerId": "ce75357e3035",
+          "priority": 3,
+          "id": 40,
+          "avatar": "avatars:svg-1"
         }
       ]
     },
     {
       "name": "小王已完成的",
       "projectId": "Glt0rv2",
-      "order": 1,
+      "order": 0,
       "id": "XI1obnd",
       "tasks": [
         {
@@ -336,6 +348,18 @@
           "taskListId": "XI1obnd",
           "ownerId": "ce75357e3035",
           "id": 39,
+          "avatar": "avatars:svg-1"
+        },
+        {
+          "taskListId": "XI1obnd",
+          "desc": "jjjjjjjjjjjjjjjjjj",
+          "dueDate": "2019-02-16T11:29:24.175Z",
+          "reminder": "2019-02-16T11:29:24.175Z",
+          "completed": false,
+          "participantIds": [],
+          "ownerId": "ce75357e3035",
+          "priority": 3,
+          "id": 41,
           "avatar": "avatars:svg-1"
         }
       ]
