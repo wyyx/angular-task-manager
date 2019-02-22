@@ -29,12 +29,20 @@
             <div [hidden]="!loginForm.controls['password'].errors.required">请输入您的的密码</div>
           </mat-error>
         </mat-form-field>
-
-        <div class="text-center">
-          <button color="primary"
+        <div class="text-center login-btn-wrapper">
+          <button class="login-btn"
+                  color="primary"
                   mat-raised-button
                   type="submit"
-                  (click)="onSubmit()">登陆</button>
+                  (click)="onSubmit()">
+            <ng-container *ngIf="isLogging$ | async; else elseTemplate">
+              <mat-spinner color="accent"
+                           [diameter]="24"></mat-spinner>
+            </ng-container>
+            <ng-template #elseTemplate>
+              登陆
+            </ng-template>
+          </button>
         </div>
       </mat-card-content>
       <mat-card-actions class="text-center">

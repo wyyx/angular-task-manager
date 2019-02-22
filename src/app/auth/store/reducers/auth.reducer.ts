@@ -5,20 +5,24 @@ export interface AuthState {
   token: string
   user: User
   isResigering: boolean
+  isLogging: boolean
 }
 
 const initialAuthState: AuthState = {
   token: '',
   user: null,
-  isResigering: false
+  isResigering: false,
+  isLogging: false
 }
 
 export function authReducer(state = initialAuthState, action: AuthActions): AuthState {
   switch (action.type) {
+    case AuthActionTypes.LOGIN:
+      return { ...state, isLogging: true }
     case AuthActionTypes.LOGIN_SUCCESS:
-      return { ...state, ...action.payload }
+      return { ...state, ...action.payload, isLogging: false }
     case AuthActionTypes.LOGIN_FAIL:
-      return state
+      return { ...state, isLogging: false }
     case AuthActionTypes.LOGOUT:
       return { ...state, token: '', user: null }
     case AuthActionTypes.REGISTER:

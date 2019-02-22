@@ -3,10 +3,10 @@ import { FormBuilder, Validators, FormGroup } from '@angular/forms'
 import { Store, select } from '@ngrx/store'
 import { AppState } from 'src/app/store'
 import { LoginAction } from '../store/actions/auth.actions'
-import { getIsLoggedIn } from '../store/selectors/auth.selectors'
+import { getIsLoggedIn, getIsLogging } from '../store/selectors/auth.selectors'
 import { tap, takeUntil } from 'rxjs/operators'
 import { Router } from '@angular/router'
-import { Subject } from 'rxjs'
+import { Subject, Observable } from 'rxjs'
 
 @Component({
   selector: 'app-login',
@@ -15,6 +15,7 @@ import { Subject } from 'rxjs'
 })
 export class LoginComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
+  isLogging$: Observable<boolean>
 
   loginForm: FormGroup
   constructor(private fb: FormBuilder, private store: Store<AppState>, private router: Router) {
@@ -25,6 +26,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isLogging$ = this.store.pipe(select(getIsLogging))
+
     this.store
       .pipe(
         select(getIsLoggedIn),

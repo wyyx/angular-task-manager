@@ -17,3 +17,8 @@ export const getIsRegistering = createSelector(
   getAuthFeatureState,
   state => state.auth.isResigering
 )
+
+export const getIsLogging = createSelector(
+  getAuthFeatureState,
+  state => state.auth.isLogging
+)

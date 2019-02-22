@@ -2,15 +2,20 @@ mat-slide-toggle {
   font-size: 14px;
 }
 
-.user-icon-container {
+.user-avatar-container {
   font-size: 14px;
 }
 
-.user-icon-container:hover .account,
+.user-avatar-container:hover .account,
 .name {
   cursor: pointer;
 }
 
 .account .mat-icon {
   transform: scale(1.5);
+}
+
+.user-avatar {
+  overflow: hidden;
+  border-radius: 50%;
 }
