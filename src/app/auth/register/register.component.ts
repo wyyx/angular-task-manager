@@ -1,58 +1,81 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
 import {
-  FormGroup,
-  FormBuilder,
-  Validators,
   AbstractControl,
-  ValidatorFn,
-  ValidationErrors,
+  FormBuilder,
   FormControl,
+  FormGroup,
   FormGroupDirective,
-  NgForm
+  NgForm,
+  ValidationErrors,
+  Validators
 } from '@angular/forms'
-import { Subject, Observable } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
 import { ErrorStateMatcher } from '@angular/material'
-import { markFormGroupAsTouched } from 'src/app/utils/form.util'
-import { CertificateSelectorComponent } from 'src/app/shared/certificate-selector/certificate-selector.component'
+import { select, Store } from '@ngrx/store'
+import { Observable, Subject } from 'rxjs'
+import { slideToRightAnim } from 'src/app/animations/route.anim'
 import { AddressSelectorComponent } from 'src/app/shared/address-selector/address-selector.component'
-import { Store, select } from '@ngrx/store'
+import { CertificateSelectorComponent } from 'src/app/shared/certificate-selector/certificate-selector.component'
 import { AppState } from 'src/app/store'
-import { getIsRegistering } from '../store/selectors/auth.selectors'
-import { RegisterAction } from '../store/actions/auth.actions'
+import { markFormGroupAsTouched } from 'src/app/utils/form.util'
 import { User } from '../models/user.model'
+import { RegisterAction } from '../store/actions/auth.actions'
+import { getIsRegistering } from '../store/selectors/auth.selectors'
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  styleUrls: ['./register.component.scss'],
+  animations: [slideToRightAnim]
 })
 export class RegisterComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
   isRegistering$: Observable<boolean>
-  registerForm = this.fb.group({
-    name: [''],
-    email: ['', Validators.compose([Validators.required, Validators.email])],
-    passwordGroup: this.fb.group(
-      {
-        password: ['', Validators.required],
-        repassword: ['', Validators.required]
-      },
-      { validator: validatePasswordGroup }
-    ),
-    certificate: ['', Validators.required],
-    age: ['1990-01-01'],
-    address: ['', validateAddress],
-    avatar: ['']
-  })
+  registerForm: FormGroup
+
+  name: AbstractControl
+  email: AbstractControl
+  passwordGroup: AbstractControl
+  password: AbstractControl
+  repassword: AbstractControl
+  certificate: AbstractControl
+  age: AbstractControl
+  address: AbstractControl
+  avatar: AbstractControl
 
   items: string[] = []
   selected: string
-  repasswordMatcher = new RepasswordMatcher(this.registerForm.get('passwordGroup'))
+  repasswordMatcher: RepasswordMatcher
+  @HostBinding('@slideToRightAnim') state
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {}
 
   ngOnInit() {
+    this.registerForm = this.fb.group({
+      name: [''],
+      email: ['', Validators.compose([Validators.required, Validators.email])],
+      passwordGroup: this.fb.group(
+        {
+          password: ['', Validators.required],
+          repassword: ['', Validators.required]
+        },
+        { validator: validatePasswordGroup }
+      ),
+      certificate: ['', Validators.required],
+      age: ['1990-01-01'],
+      address: ['', validateAddress],
+      avatar: ['']
+    })
+    this.name = this.registerForm.get('name')
+    this.email = this.registerForm.get('email')
+    this.passwordGroup = this.registerForm.get('passwordGroup')
+    this.password = this.registerForm.get('passwordGroup.password')
+    this.repassword = this.registerForm.get('passwordGroup.repassword')
+    this.certificate = this.registerForm.get('certificate')
+    this.age = this.registerForm.get('age')
+    this.address = this.registerForm.get('address')
+    this.avatar = this.registerForm.get('avatar')
+    this.repasswordMatcher = new RepasswordMatcher(this.registerForm.get('passwordGroup'))
+
     this.getAvatars()
     this.isRegistering$ = this.store.pipe(select(getIsRegistering))
   }

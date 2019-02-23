@@ -26,6 +26,10 @@ export class SidebarComponent implements OnInit {
   }
 
   hideSideNav() {
+    if (this.sideNav.mode !== 'over') {
+      return
+    }
+
     this.sideNav.close()
   }
 }

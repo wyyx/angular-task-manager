@@ -1,20 +1,31 @@
-import { Component, OnInit, OnDestroy } from '@angular/core'
-import { FormBuilder, Validators, FormGroup, AbstractControl } from '@angular/forms'
-import { Store, select } from '@ngrx/store'
-import { AppState } from 'src/app/store'
-import { LoginAction, AuthActionTypes, LoginFailAction } from '../store/actions/auth.actions'
-import { getIsLoggedIn, getIsLogging, getIsLoginFail } from '../store/selectors/auth.selectors'
-import { tap, takeUntil, take } from 'rxjs/operators'
-import { Router } from '@angular/router'
-import { Subject, Observable } from 'rxjs'
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  HostBinding,
+  ViewChild,
+  TemplateRef,
+  ViewContainerRef,
+  AfterViewInit
+} from '@angular/core'
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material'
-import { AlertComponent } from './alert/alert.component'
+import { Router } from '@angular/router'
 import { Actions, ofType } from '@ngrx/effects'
+import { select, Store } from '@ngrx/store'
+import { Observable, Subject } from 'rxjs'
+import { takeUntil, tap } from 'rxjs/operators'
+import { AppState } from 'src/app/store'
+import { AuthActionTypes, LoginAction, LoginFailAction } from '../store/actions/auth.actions'
+import { getIsLoggedIn, getIsLogging } from '../store/selectors/auth.selectors'
+import { AlertComponent } from './alert/alert.component'
+import { slideToRightAnim } from 'src/app/animations/route.anim'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  animations: [slideToRightAnim]
 })
 export class LoginComponent implements OnInit, OnDestroy {
   kill$: Subject<any> = new Subject()
@@ -23,6 +34,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   password: AbstractControl
 
   loginForm: FormGroup
+
+  @HostBinding('@slideToRightAnim') state
+
   constructor(
     private fb: FormBuilder,
     private store: Store<AppState>,
@@ -41,18 +55,18 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.isLogging$ = this.store.pipe(select(getIsLogging))
 
-    this.actions$
-      .pipe(
-        ofType<LoginFailAction>(AuthActionTypes.LOGIN_FAIL),
-        tap(_ => this.openSnackBar()),
-        takeUntil(this.kill$)
-      )
-      .subscribe()
-
     this.store
       .pipe(
         select(getIsLoggedIn),
         tap(loggedIn => loggedIn && this.router.navigateByUrl('/projects')),
+        takeUntil(this.kill$)
+      )
+      .subscribe()
+
+    this.actions$
+      .pipe(
+        ofType<LoginFailAction>(AuthActionTypes.LOGIN_FAIL),
+        tap(_ => this.openSnackBar()),
         takeUntil(this.kill$)
       )
       .subscribe()
@@ -61,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   openSnackBar() {
     this.snackBar.openFromComponent(AlertComponent, {
       duration: 2000,
-      verticalPosition: 'top',
+      verticalPosition: 'bottom',
       panelClass: 'error-alert'
     })
   }

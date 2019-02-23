@@ -8,7 +8,8 @@ import {
   SystemJsNgModuleLoader,
   NgModuleFactory,
   Injector,
-  ViewContainerRef
+  ViewContainerRef,
+  HostBinding
 } from '@angular/core'
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 import {
@@ -36,15 +37,19 @@ import { EVENT_COLORS } from './data'
 import { getAllProjects } from 'src/app/project/store/selectors/projects.selectors'
 import { map, tap, takeUntil } from 'rxjs/operators'
 import { NeedTaskListsAction } from 'src/app/task/store/actions/task-list.actions'
+import { slideToRightAnim } from 'src/app/animations/route.anim'
 
 @Component({
   selector: 'app-angular-calendar',
   templateUrl: './angular-calendar.component.html',
   styleUrls: ['./angular-calendar.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [slideToRightAnim]
 })
 export class AngularCalendarComponent implements OnInit {
   kill$: Subject<any> = new Subject()
+
+  @HostBinding('@slideToRightAnim') state
 
   @ViewChild('modalContent') modalContent: TemplateRef<any>
   view: CalendarView = CalendarView.Month
@@ -70,46 +75,7 @@ export class AngularCalendarComponent implements OnInit {
     }
   ]
   refresh: Subject<any> = new Subject()
-  events: CalendarEvent[] = [
-    {
-      start: subDays(startOfDay(new Date()), 1),
-      end: addDays(new Date(), 1),
-      title: 'A 3 day event',
-      color: EVENT_COLORS.red,
-      actions: this.actions,
-      allDay: true,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    },
-    {
-      start: startOfDay(new Date()),
-      title: 'An event with no end date',
-      color: EVENT_COLORS.yellow,
-      actions: this.actions
-    },
-    {
-      start: subDays(endOfMonth(new Date()), 3),
-      end: addDays(endOfMonth(new Date()), 3),
-      title: 'A long event that spans 2 months',
-      color: EVENT_COLORS.blue,
-      allDay: true
-    },
-    {
-      start: addHours(startOfDay(new Date()), 2),
-      end: new Date(),
-      title: 'A draggable and resizable event',
-      color: EVENT_COLORS.yellow,
-      actions: this.actions,
-      resizable: {
-        beforeStart: true,
-        afterEnd: true
-      },
-      draggable: true
-    }
-  ]
+  events: CalendarEvent[] = []
   activeDayIsOpen: boolean = true
   events$: Observable<CalendarEvent[]>
 
