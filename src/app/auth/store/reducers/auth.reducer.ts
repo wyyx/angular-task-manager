@@ -6,13 +6,15 @@ export interface AuthState {
   user: User
   isResigering: boolean
   isLogging: boolean
+  isLoginFail: boolean
 }
 
 const initialAuthState: AuthState = {
   token: '',
   user: null,
   isResigering: false,
-  isLogging: false
+  isLogging: false,
+  isLoginFail: false
 }
 
 export function authReducer(state = initialAuthState, action: AuthActions): AuthState {
@@ -20,9 +22,9 @@ export function authReducer(state = initialAuthState, action: AuthActions): Auth
     case AuthActionTypes.LOGIN:
       return { ...state, isLogging: true }
     case AuthActionTypes.LOGIN_SUCCESS:
-      return { ...state, ...action.payload, isLogging: false }
+      return { ...state, ...action.payload, isLogging: false, isLoginFail: false }
     case AuthActionTypes.LOGIN_FAIL:
-      return { ...state, isLogging: false }
+      return { ...state, isLogging: false, isLoginFail: true }
     case AuthActionTypes.LOGOUT:
       return { ...state, token: '', user: null }
     case AuthActionTypes.REGISTER:

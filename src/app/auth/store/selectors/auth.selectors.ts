@@ -22,3 +22,8 @@ export const getIsLogging = createSelector(
   getAuthFeatureState,
   state => state.auth.isLogging
 )
+
+export const getIsLoginFail = createSelector(
+  getAuthFeatureState,
+  state => state.auth.isLoginFail
+)

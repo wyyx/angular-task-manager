@@ -7,6 +7,7 @@ import { LoginRoutingModule } from './auth-routing.module'
 import { LoginComponent } from './login/login.component'
 import { RegisterComponent } from './register/register.component'
 import { authFeatureEffects, authFeatureReducers } from './store'
+import { AlertComponent } from './login/alert/alert.component'
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { authFeatureEffects, authFeatureReducers } from './store'
     StoreModule.forFeature('auth', authFeatureReducers),
     EffectsModule.forFeature(authFeatureEffects)
   ],
-  declarations: [LoginComponent, RegisterComponent]
+  declarations: [LoginComponent, RegisterComponent, AlertComponent],
+  entryComponents: [AlertComponent]
 })
 export class AuthModule {}

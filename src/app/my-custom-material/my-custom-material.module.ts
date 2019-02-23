@@ -20,7 +20,8 @@ import {
   MatSlideToggleModule,
   MatGridListModule,
   MatDialogModule,
-  MatChipsModule
+  MatChipsModule,
+  MatSnackBarModule
 } from '@angular/material'
 import { NgModule } from '@angular/core'
 import { LayoutModule } from '@angular/cdk/layout'
@@ -52,7 +53,8 @@ import { LayoutModule } from '@angular/cdk/layout'
     MatChipsModule,
     MatTabsModule,
     MatProgressSpinnerModule,
-    LayoutModule
+    LayoutModule,
+    MatSnackBarModule
   ]
 })
 export class MyCustomMaterialModule {}

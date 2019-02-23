@@ -13,10 +13,10 @@
                  type="text"
                  placeholder="邮箱"
                  formControlName="email">
-          <mat-error *ngIf="loginForm.controls['email'].errors && !loginForm.controls['email'].touched"
+          <mat-error *ngIf="email.invalid && email.touched"
                      class="error-msg">
-            <div [hidden]="!loginForm.controls['email'].errors.required">需要一个邮箱地址</div>
-            <div [hidden]="!loginForm.controls['email'].errors.email">邮箱地址不合法</div>
+            <div *ngIf="email.errors.required">需要一个邮箱地址</div>
+            <div *ngIf="email.errors.email">邮箱地址不合法</div>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
@@ -24,9 +24,9 @@
                  type="password"
                  placeholder="密码"
                  formControlName="password">
-          <mat-error *ngIf="loginForm.controls['password'].errors && !loginForm.controls['password'].touched"
+          <mat-error *ngIf="password.invalid && password.touched"
                      class="error-msg">
-            <div [hidden]="!loginForm.controls['password'].errors.required">请输入您的的密码</div>
+            <div *ngIf="password.errors.required">请输入您的的密码</div>
           </mat-error>
         </mat-form-field>
         <div class="text-center login-btn-wrapper">
