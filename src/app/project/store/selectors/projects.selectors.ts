@@ -26,7 +26,7 @@ export const getAllProjects = createSelector(
 export const getProjects = createSelector(
   getAllProjects,
   getUser,
-  (projects, user) => projects.filter(p => p.members.includes(user.id))
+  (projects, user) => (user ? projects.filter(p => p.members.includes(user.id)) : [])
 )
 
 export const getAllProjectsIsLoaded = createSelector(

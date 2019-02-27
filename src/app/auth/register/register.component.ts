@@ -21,6 +21,19 @@ import { User } from '../models/user.model'
 import { RegisterAction } from '../store/actions/auth.actions'
 import { getIsRegistering } from '../store/selectors/auth.selectors'
 
+// To show error when passwordGroup is invalid
+export class RepasswordMatcher implements ErrorStateMatcher {
+  constructor(private group: AbstractControl) {}
+
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    return (control && control.touched && control.invalid) ||
+      (control && control.touched && this.group.invalid)
+      ? true
+      : false
+  }
+}
+const DEFAULT_AVATAR = 'avatars:svg-1'
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -108,7 +121,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           email: formValue.email,
           password: formValue.passwordGroup.password,
           address: formValue.address,
-          avatar: formValue.avatar,
+          avatar: formValue.avatar || DEFAULT_AVATAR,
           certificate: formValue.certificate
         } as User)
       )
@@ -136,16 +149,4 @@ function validatePasswordGroup(group: FormGroup): ValidationErrors {
     : {
         passwordsInconsistent: true
       }
-}
-
-// To show error when passwordGroup is invalid
-export class RepasswordMatcher implements ErrorStateMatcher {
-  constructor(private group: AbstractControl) {}
-
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
-    return (control && control.touched && control.invalid) ||
-      (control && control.touched && this.group.invalid)
-      ? true
-      : false
-  }
 }
