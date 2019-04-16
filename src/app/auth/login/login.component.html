@@ -1,7 +1,5 @@
 <div class="form-wrapper">
-  <form #form
-        class="form p-20"
-        [formGroup]="loginForm">
+  <form #form class="form p-20" [formGroup]="loginForm">
     <mat-card>
       <mat-card-header>
         <mat-card-title>
@@ -10,35 +8,28 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field class="full-width">
-          <input matInput
-                 type="text"
-                 placeholder="邮箱"
-                 formControlName="email">
-          <mat-error *ngIf="email.invalid && email.touched"
-                     class="error-msg">
+          <input matInput type="text" placeholder="邮箱" formControlName="email" />
+          <mat-error *ngIf="email.invalid && email.touched" class="error-msg">
             <div *ngIf="email.errors.required">需要一个邮箱地址</div>
             <div *ngIf="email.errors.email">邮箱地址不合法</div>
           </mat-error>
         </mat-form-field>
         <mat-form-field class="full-width">
-          <input matInput
-                 type="password"
-                 placeholder="密码"
-                 formControlName="password">
-          <mat-error *ngIf="password.invalid && password.touched"
-                     class="error-msg">
+          <input matInput type="password" placeholder="密码" formControlName="password" />
+          <mat-error *ngIf="password.invalid && password.touched" class="error-msg">
             <div *ngIf="password.errors.required">请输入您的的密码</div>
           </mat-error>
         </mat-form-field>
         <div class="text-center login-btn-wrapper">
-          <button class="login-btn"
-                  color="primary"
-                  mat-raised-button
-                  type="submit"
-                  (click)="onSubmit()">
-            <ng-container *ngIf="isLogging$ | async; else elseTemplate">
-              <mat-spinner color="accent"
-                           [diameter]="24"></mat-spinner>
+          <button
+            class="login-btn"
+            color="primary"
+            mat-raised-button
+            type="submit"
+            (click)="onSubmit()"
+          >
+            <ng-container *ngIf="(isLogging$ | async); else elseTemplate">
+              <mat-spinner class="white-spinner" [diameter]="24"></mat-spinner>
             </ng-container>
             <ng-template #elseTemplate>
               登陆

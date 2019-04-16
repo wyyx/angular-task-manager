@@ -4,6 +4,7 @@
 @import 'styles/text.scss';
 @import 'styles/spacing.scss';
 @import 'styles/theme.scss';
+@import 'styles/common.scss';
 
 // // Bootstrap
 // @import '~bootstrap/dist/css/bootstrap.css';
@@ -96,7 +97,7 @@ context-menu-content .dropdown-menu.show .dropdown-item {
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-mat-spinner circle {
+.white-spinner circle {
   stroke: white !important;
 }
 

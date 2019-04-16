@@ -1,25 +1,41 @@
-<div class="list-container p-20">
-  <div fxLayout="row wrap"
-       fxLayoutGap="20px grid"
-       [@listAnim]="(projects$ | async)?.length">
-    <app-project-item *ngFor="let project of (projects$ | async)"
-                      [item]="project"
-                      fxFlex="33.33"
-                      fxFlex.gt-md="0 0 360px"
-                      fxFlex.lt-md="50"
-                      fxFlex.lt-sm="100"
-                      (invite)="openInviteDialog(project)"
-                      (editProject)="openEditProjectDialog(project)"
-                      (deleteProject)="openDeleteProjectDialog(project)"
-                      (click)="onProjectClick(project)">
-    </app-project-item>
-
-
+<div class="container p-20">
+  <div
+    class="list-container"
+    fxLayout="row wrap"
+    fxLayoutGap="20px grid"
+    [@listAnim]="(projects$ | async)?.length"
+  >
+    <ng-container
+      *ngIf="(projects$ | async)?.length > 0 || (isLoading$ | async); else elseTemplate"
+    >
+      <app-project-item
+        *ngFor="let project of (projects$ | async)"
+        [item]="project"
+        fxFlex="33.33"
+        fxFlex.gt-md="0 0 360px"
+        fxFlex.lt-md="50"
+        fxFlex.lt-sm="100"
+        (invite)="openInviteDialog(project)"
+        (editProject)="openEditProjectDialog(project)"
+        (deleteProject)="openDeleteProjectDialog(project)"
+        (click)="onProjectClick(project)"
+      >
+      </app-project-item>
+    </ng-container>
+    <ng-template #elseTemplate>
+      <div class="no-projects-wrapper">
+        <h4 class="no-projects mat-subheading-2">
+          还没有项目，<span class="create-link link" (click)="openNewProjectDialog()">创建</span>
+        </h4>
+      </div>
+    </ng-template>
   </div>
-  <button class="fab-button"
-          ngClass.lt-sm="fab-button-mobile"
-          mat-fab
-          (click)="openNewProjectDialog()">
+  <button
+    class="fab-button"
+    ngClass.lt-sm="fab-button-mobile"
+    mat-fab
+    (click)="openNewProjectDialog()"
+  >
     <mat-icon>add</mat-icon>
   </button>
 </div>

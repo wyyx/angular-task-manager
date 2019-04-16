@@ -818,7 +818,7 @@
       "id": 45
     },
     {
-      "taskListId": "BkWpk7jGZb",
+      "taskListId": "GknsKy_",
       "desc": "df",
       "dueDate": "2019-02-21T03:53:10.727Z",
       "reminder": "2019-02-21T03:53:10.727Z",
@@ -826,7 +826,8 @@
       "participantIds": [],
       "ownerId": "ce75357e3035",
       "priority": 3,
-      "id": 46
+      "id": 46,
+      "avatar": "avatars:svg-1"
     },
     {
       "taskListId": "BkWpk7jGZb",

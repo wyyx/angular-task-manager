@@ -1,21 +1,14 @@
 <div class="form-wrapper">
-  <form class="form p-20"
-        [formGroup]="registerForm">
+  <form class="form p-20" [formGroup]="registerForm">
     <mat-card>
       <mat-tab-group>
         <mat-tab label="第一步：账号信息">
           <mat-card-content class="pt-10">
             <mat-form-field class="full-width">
-              <input type="text"
-                     matInput
-                     placeholder="昵称"
-                     formControlName="name">
+              <input type="text" matInput placeholder="昵称" formControlName="name" />
             </mat-form-field>
             <mat-form-field class="full-width">
-              <input matInput
-                     type="text"
-                     placeholder="邮箱"
-                     formControlName="email">
+              <input matInput type="text" placeholder="邮箱" formControlName="email" />
               <mat-error *ngIf="email.invalid && email.touched">
                 <div *ngIf="email.errors.required">请输入邮箱</div>
                 <div *ngIf="email.errors.email">邮箱地址不合法</div>
@@ -23,10 +16,7 @@
             </mat-form-field>
             <ng-container formGroupName="passwordGroup">
               <mat-form-field class="full-width">
-                <input matInput
-                       type="password"
-                       placeholder="密码"
-                       formControlName="password">
+                <input matInput type="password" placeholder="密码" formControlName="password" />
                 <mat-error *ngIf="password.invalid && password.touched">
                   <div *ngIf="password.errors.required">
                     密码不能为空
@@ -34,28 +24,32 @@
                 </mat-error>
               </mat-form-field>
               <mat-form-field class="full-width">
-                <input matInput
-                       type="password"
-                       placeholder="再次输入密码"
-                       formControlName="repassword"
-                       [errorStateMatcher]="repasswordMatcher">
-                <mat-error *ngIf="passwordGroup.invalid || repassword.invalid && repassword.touched">
+                <input
+                  matInput
+                  type="password"
+                  placeholder="再次输入密码"
+                  formControlName="repassword"
+                  [errorStateMatcher]="repasswordMatcher"
+                />
+                <mat-error
+                  *ngIf="passwordGroup.invalid || (repassword.invalid && repassword.touched)"
+                >
                   <div *ngIf="repassword.invalid">请再次输入密码确认</div>
                   <div *ngIf="passwordGroup.invalid">两次密码不一致</div>
                 </mat-error>
               </mat-form-field>
             </ng-container>
-
-
           </mat-card-content>
 
-          <app-image-selector [useSvgIcon]="true"
-                              [cols]="6"
-                              [rowHeight]="'1:1'"
-                              [title]="'选择你的头像：'"
-                              [itemWidth]="'64px'"
-                              [items]="items"
-                              formControlName="avatar">
+          <app-image-selector
+            [useSvgIcon]="true"
+            [cols]="6"
+            [rowHeight]="'1:1'"
+            [title]="'选择你的头像：'"
+            [itemWidth]="'64px'"
+            [items]="items"
+            formControlName="avatar"
+          >
           </app-image-selector>
           <mat-card-actions class="text-center">
             <p>已经注册了？<a routerLink="/login">登陆</a></p>
@@ -64,22 +58,28 @@
         </mat-tab>
         <mat-tab label="第二步：个人信息">
           <mat-card-content class="pt-10">
-            <app-certificate-selector #certificateSelector
-                                      formControlName="certificate"></app-certificate-selector>
+            <app-certificate-selector
+              #certificateSelector
+              formControlName="certificate"
+            ></app-certificate-selector>
             <app-age-input formControlName="age"></app-age-input>
             <div class="pt-10">
-              <app-address-selector #addressSelector
-                                    formControlName="address"></app-address-selector>
+              <app-address-selector
+                #addressSelector
+                formControlName="address"
+              ></app-address-selector>
             </div>
           </mat-card-content>
           <div class="text-center pb-20 register-btn-container">
-            <button class="register-btn"
-                    color="primary"
-                    mat-raised-button
-                    type="button"
-                    (click)="onRegisterClick(certificateSelector, addressSelector)">
-              <ng-container *ngIf="isRegistering$ | async; else elseTemplate">
-                <mat-spinner [diameter]="24"></mat-spinner>
+            <button
+              class="register-btn"
+              color="primary"
+              mat-raised-button
+              type="button"
+              (click)="onRegisterClick(certificateSelector, addressSelector)"
+            >
+              <ng-container *ngIf="(isRegistering$ | async); else elseTemplate">
+                <mat-spinner class="white-spinner" [diameter]="24"></mat-spinner>
               </ng-container>
               <ng-template #elseTemplate>
                 注册

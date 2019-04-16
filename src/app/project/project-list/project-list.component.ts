@@ -18,7 +18,7 @@ import {
   NeedAllProjectsAction,
   UpdateProjectAction
 } from '../store/actions/project.actions'
-import { getProjects } from '../store/selectors/projects.selectors'
+import { getProjects, getAllProjectsIsLoading } from '../store/selectors/projects.selectors'
 
 @Component({
   selector: 'app-project-list',
@@ -28,6 +28,7 @@ import { getProjects } from '../store/selectors/projects.selectors'
 })
 export class ProjectListComponent implements OnInit, OnDestroy {
   projects$: Observable<Project[]>
+  isLoading$: Observable<boolean>
   kill$: Subject<any> = new Subject()
 
   @HostBinding('@slideToRightAnim') state
@@ -37,6 +38,7 @@ export class ProjectListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.store.dispatch(new NeedAllProjectsAction())
     this.projects$ = this.store.pipe(select(getProjects))
+    this.isLoading$ = this.store.pipe(select(getAllProjectsIsLoading))
   }
 
   ngOnDestroy(): void {

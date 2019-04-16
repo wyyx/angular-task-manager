@@ -1,83 +1,97 @@
-<div class="spinner-container"
-     *ngIf="isLoading$ | async">
-  <mat-spinner></mat-spinner>
+<div class="spinner-container" *ngIf="(isLoading$ | async)">
+  <mat-spinner color="primary"></mat-spinner>
 </div>
 
+<div class="container" [@slideToRightAnim]="state">
+  <ng-container
+    *ngIf="(taskListViews$ | async)?.length > 0 || (isLoading$ | async); else elseTemplate"
+  >
+    <div class="task-lists" fxLayout="row wrap">
+      <app-task-list
+        *ngFor="let list of (taskListViews$ | async)"
+        class="list-container p-20"
+        fxFlex="50"
+        fxFlex.gt-sm="0 0 360px"
+        fxFlex.lt-sm="100"
+        appDroppable
+        [dragEnterClass]="'drag-enter'"
+        [acceptedTags]="['task-item', 'task-list']"
+        (dropped)="onDropped($event, list)"
+        [appDraggable]="true"
+        [dragClass]="'drag-start'"
+        [dragTag]="'task-list'"
+        [dragData]="list"
+        [ngStyle]="{ order: list.order }"
+      >
+        <app-task-header
+          [listType]="list.name"
+          (newTask)="openNewTaskDialog(list)"
+          (moveAll)="openMoveAllDialog(list)"
+          (deleteList)="openDeleteTaskListDialog(list)"
+          (modifyListName)="openModifyListNameDialog(list)"
+        ></app-task-header>
+        <app-quick-task (quickTask)="onQuickTask($event, list)"></app-quick-task>
+        <app-task-item
+          *ngFor="let item of list.tasks; let i = index"
+          [task]="item"
+          (click)="openEditTaskDialog(item, list)"
+          (contextmenu)="onContextMenu($event, rootMenu, item, list)"
+        ></app-task-item>
+      </app-task-list>
 
-<div class="container"
-     [@slideToRightAnim]="state">
-  <div class="task-lists"
-       fxLayout="row wrap">
-    <app-task-list *ngFor="let list of (taskListViews$ | async)"
-                   class="list-container p-20"
-                   fxFlex="50"
-                   fxFlex.gt-sm="0 0 360px"
-                   fxFlex.lt-sm="100"
-                   appDroppable
-                   [dragEnterClass]="'drag-enter'"
-                   [acceptedTags]="['task-item', 'task-list']"
-                   (dropped)="onDropped($event, list)"
-                   [appDraggable]="true"
-                   [dragClass]="'drag-start'"
-                   [dragTag]="'task-list'"
-                   [dragData]="list"
-                   [ngStyle]="{ order: list.order }">
-      <app-task-header [listType]="list.name"
-                       (newTask)="openNewTaskDialog(list)"
-                       (moveAll)="openMoveAllDialog(list)"
-                       (deleteList)="openDeleteTaskListDialog(list)"
-                       (modifyListName)="openModifyListNameDialog(list)"></app-task-header>
-      <app-quick-task (quickTask)="onQuickTask($event, list)"></app-quick-task>
-      <app-task-item *ngFor="let item of list.tasks; let i = index"
-                     [task]="item"
-                     (click)="openEditTaskDialog(item, list)"
-                     (contextmenu)="onContextMenu($event, rootMenu, item, list)"></app-task-item>
-    </app-task-list>
+      <app-context-menu #rootMenu>
+        <mat-list role="list">
+          <app-context-menu-item>
+            <mat-list-item role="listitem" (click)="deleteTask(rootMenu.data.currentItem)">
+              <mat-icon mat-list-icon>delete</mat-icon>
+              <span>
+                删除
+              </span>
+            </mat-list-item>
+          </app-context-menu-item>
+          <app-context-menu-item
+            [appContextMenuTriggerFor]="moveToLists"
+            *ngIf="rootMenu.data.otherLists"
+          >
+            <mat-list-item role="listitem">
+              <mat-icon mat-list-icon>compare_arrows</mat-icon>
+              <span>
+                移动到
+              </span>
+            </mat-list-item>
+          </app-context-menu-item>
+        </mat-list>
+      </app-context-menu>
 
-    <app-context-menu #rootMenu>
-      <mat-list role="list">
-        <app-context-menu-item>
-          <mat-list-item role="listitem"
-                         (click)="deleteTask(rootMenu.data.currentItem)">
-            <mat-icon mat-list-icon>delete</mat-icon>
-            <span>
-              删除
-            </span>
-          </mat-list-item>
-        </app-context-menu-item>
-        <app-context-menu-item [appContextMenuTriggerFor]="moveToLists"
-                               *ngIf="rootMenu.data.otherLists">
-          <mat-list-item role="listitem">
-            <mat-icon mat-list-icon>compare_arrows</mat-icon>
-            <span>
-              移动到
-            </span>
-          </mat-list-item>
-        </app-context-menu-item>
-      </mat-list>
-    </app-context-menu>
+      <!-- Level 2 menu -->
+      <app-context-menu #moveToLists>
+        <mat-list role="list">
+          <app-context-menu-item *ngFor="let list of rootMenu.data.otherLists || []">
+            <mat-list-item role="listitem" (click)="moveTo(rootMenu.data.currentItem, list)">
+              <mat-icon mat-list-icon>view_list</mat-icon>
+              <span>
+                {{ list.name }}
+              </span>
+            </mat-list-item>
+          </app-context-menu-item>
+        </mat-list>
+      </app-context-menu>
+    </div>
+  </ng-container>
+  <ng-template #elseTemplate>
+    <div class="no-tasks-wrapper">
+      <h4 class="no-tasks mat-subheading-2">
+        还没有任务，<span class="create-link link" (click)="openNewTaskListDialog()">创建</span>
+      </h4>
+    </div>
+  </ng-template>
 
-    <!-- Level 2 menu -->
-    <app-context-menu #moveToLists>
-      <mat-list role="list">
-        <app-context-menu-item *ngFor="let list of rootMenu.data.otherLists || []">
-          <mat-list-item role="listitem"
-                         (click)="moveTo(rootMenu.data.currentItem, list)">
-            <mat-icon mat-list-icon>view_list</mat-icon>
-            <span>
-              {{ list.name }}
-            </span>
-          </mat-list-item>
-        </app-context-menu-item>
-      </mat-list>
-    </app-context-menu>
-  </div>
-
-  <button mat-fab
-          class="fab-button"
-          ngClass.lt-sm="fab-button-mobile"
-          (click)="openNewTaskListDialog()">
+  <button
+    mat-fab
+    class="fab-button"
+    ngClass.lt-sm="fab-button-mobile"
+    (click)="openNewTaskListDialog()"
+  >
     <mat-icon>add</mat-icon>
   </button>
-
 </div>
