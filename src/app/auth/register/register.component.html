@@ -1,5 +1,5 @@
-<div class="form-wrapper">
-  <form class="form p-20" [formGroup]="registerForm">
+<div class="form-wrapper" #formWrapper [ngStyle]="{ height: newFormWrapperHeight + 40 + 'px' }">
+  <form class="form p-20" #form [formGroup]="registerForm">
     <mat-card>
       <mat-tab-group>
         <mat-tab label="第一步：账号信息">
@@ -78,7 +78,7 @@
               type="button"
               (click)="onRegisterClick(certificateSelector, addressSelector)"
             >
-              <ng-container *ngIf="(isRegistering$ | async); else elseTemplate">
+              <ng-container *ngIf="isRegistering$ | async; else elseTemplate">
                 <mat-spinner class="white-spinner" [diameter]="24"></mat-spinner>
               </ng-container>
               <ng-template #elseTemplate>

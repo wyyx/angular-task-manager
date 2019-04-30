@@ -1,4 +1,12 @@
-import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core'
+import {
+  Component,
+  HostBinding,
+  OnDestroy,
+  OnInit,
+  AfterViewInit,
+  ViewChild,
+  ElementRef
+} from '@angular/core'
 import {
   AbstractControl,
   FormBuilder,
@@ -40,7 +48,7 @@ const DEFAULT_AVATAR = 'avatars:svg-1'
   styleUrls: ['./register.component.scss'],
   animations: [slideToRightAnim]
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnInit, OnDestroy, AfterViewInit {
   kill$: Subject<any> = new Subject()
   isRegistering$: Observable<boolean>
   registerForm: FormGroup
@@ -59,8 +67,23 @@ export class RegisterComponent implements OnInit, OnDestroy {
   selected: string
   repasswordMatcher: RepasswordMatcher
   @HostBinding('@slideToRightAnim') state
+  newFormWrapperHeight: number
+
+  @ViewChild('formWrapper') formWrapper: ElementRef
+  @ViewChild('form') form: ElementRef
 
   constructor(private fb: FormBuilder, private store: Store<AppState>) {}
+
+  ngAfterViewInit(): void {
+    const formWrapperHeight = this.formWrapper.nativeElement.getBoundingClientRect().height
+    const formHeight = this.form.nativeElement.getBoundingClientRect().height
+
+    if (formHeight > formWrapperHeight) {
+      setTimeout(() => {
+        this.newFormWrapperHeight = formHeight
+      }, 0)
+    }
+  }
 
   ngOnInit() {
     this.registerForm = this.fb.group({

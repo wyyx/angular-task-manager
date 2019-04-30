@@ -3,6 +3,13 @@
   max-width: 500px;
 }
 
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .mat-icon {
   overflow: hidden;
   width: 48px;
